@@ -34,23 +34,7 @@ export default {
 }
 .home {
 
-  .app-sidebar {
-    position: fixed;
-    top: 50px;
-    left: 0;
-    bottom: 0;
-    padding: 15px 0 50px;
-    width: 180px;
-    min-width: 45px;
-    max-height: 100vh;
-    height: calc(100% - 50px);
-    z-index: 1024 - 1;
-    background: #FFF;
-    box-shadow: 0 2px 3px rgba(17, 17, 17, 0.1), 0 0 0 1px rgba(17, 17, 17, 0.1);
-    overflow-y: auto;
-    overflow-x: hidden;
-    margin-top: 0.2rem;
-  }
+  
   .app-main {
     padding-left: 12rem;
     padding-top: 1rem;
