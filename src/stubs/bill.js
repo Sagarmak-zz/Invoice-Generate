@@ -1,0 +1,18 @@
+export default {
+  srno: null,
+  particulars: 'Abcd Testing 123',
+  msncode: 12345,
+  size: 'L-XL-XXL',
+  quantity: 500,
+  rate: 80,
+  amount: 40000,
+  discRate: 3,
+  discAmount: 1200,
+  discTaxamount: 38800,
+  cgstRate: 2.5,
+  cgstAmount: 970,
+  sgstRate: 2.5,
+  sgstAmount: 970,
+  igstRate: 5,
+  igstAmount: 1940,
+}

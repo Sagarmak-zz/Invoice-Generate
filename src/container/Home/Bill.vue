@@ -64,7 +64,7 @@
 
       <div class="table" v-if="dataIsHere">
         <!-- part-1 -->
-        <div class="columns">
+        <div class="columns box">
           <div class="column sr-no1">SR</div>
           <div class="column particulars1">Particulars</div>
           <div class="column discount1">Discount</div>
@@ -73,7 +73,7 @@
           <div class="column igst">IGST</div>
         </div>
 
-        <div class="columns">
+        <div class="columns box">
           <div class="column sr-no"></div>
           <div class="column particulars"></div>
           <div class="column size">Size</div>
@@ -91,7 +91,7 @@
           <div class="column amount">Amount</div>
         </div>
 
-        <div class="columns" v-for="data,index in dataArr">
+        <div class="columns box" v-for="data,index in dataArr">
           <div class="column sr-no">{{index + 1}}</div>
           <div class="column particulars">{{data.particulars}} - {{data.msncode}}</div>
           <div class="column size">{{data.size}}</div>
@@ -108,13 +108,19 @@
           <div class="column rate">{{data.igstRate}}</div>
           <div class="column amount">{{data.igstAmount}}</div>
         </div>
+      </div>
 
-
+      <div class="additional-details" v-if="dataIsHere">
+        <div class="is-pulled-right">Total Taxable Amount: <strong>&#8377; {{totalTaxableAmount}}</strong></div> <br>
+        <div class="is-pulled-right">CGST: <strong>&#8377; {{finalcgst}}</strong></div> <br>
+        <div class="is-pulled-right">SGST: <strong>&#8377; {{finalsgst}}</strong></div> <br>
+        <div class="is-pulled-right">IGST: <strong>&#8377; {{finaligst}}</strong></div> <br>
+        <div class="is-pulled-right">Total Invoice Value: <strong>&#8377; {{totalInvoiceAmount}}</strong></div>
       </div>
 
       <div class="field submit-btn">
         <p>
-          <button class="button is-success submit-button">
+          <button @click="validateBeforeSubmit" class="button is-success submit-button">
             Submit
           </button>
           <!-- <pre>
@@ -127,6 +133,8 @@
 </template>
 
 <script>
+import bill from '@/stubs/bill';
+import bill2 from '@/stubs/bill2';
 import Datepicker from 'vue-bulma-datepicker';
 import BillModal from '@/components/BillModal';
 export default {
@@ -140,8 +148,14 @@ export default {
       this.dataIsHere = true;
       this.showDetailModal = false;
       this.dataArr.push(response.data);
-      console.log(this.dataArr);
+      this.length = this.dataArr.length;
+      this.calculateAmount();
     });
+    // this.dataIsHere = true;
+    // this.showDetailModal = false;
+    // this.dataArr.push(bill);
+    // this.dataArr.push(bill2);
+    // this.calculateAmount();
   },
   data() {
     return {
@@ -152,29 +166,52 @@ export default {
       date: '',
       showDetailModal: false,
       formSubmitted: false,
+      igstAmount: null,
       dataArr: [
-      ]
+      ],
+      totalTaxableAmount: 0,
+      totalTaxableAmountTemp: 0,
+      finalcgst: 0,
+      finalsgst: 0,
+      finaligst: 0,
+      totalInvoiceAmount: 0,
+      length: null
     }
   },
   methods: {
     validateBeforeSubmit() {
       this.$validator.validateAll();
       if (!this.errors.any()) {
-        alert('Yes');
-        this.submitForm()
+        if(this.dataIsHere == false) {
+          alert('No');
+        }
+        else {
+          this.submitForm();
+        }
       }
       else {
-        alert('No')
+        alert('No');
       }
     },
     validate() {
       return this.$validator.validateAll();
     },
-    submitForm(){
+    submitForm() {
+      //send to another page, with nice invoice template and hit print
+      // window.print();
     },
     addDynamicData() {
-      console.log(this.dynamicData);
       this.dynamicArr.push(this.dynamicData);
+    },
+    calculateAmount() {
+      for (var i = 0; i < this.dataArr.length; i++) {
+        this.totalTaxableAmount += this.dataArr[this.length-1].discTaxamount;
+        this.finalcgst += this.dataArr[this.length-1].cgstAmount;
+        this.finalsgst += this.dataArr[this.length-1].sgstAmount;
+        this.finaligst += this.dataArr[this.length-1].igstAmount;
+        this.totalInvoiceAmount = this.totalTaxableAmount + this.finalcgst + this.finalsgst + this.finaligst;
+        break;
+      }
     }
   },
 }
@@ -218,6 +255,7 @@ export default {
   .main-details {
     padding: 1rem;
     border-top: solid 1px #ddd;
+    border-bottom: solid 1px #ddd;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -228,61 +266,116 @@ export default {
   }
 
   .sr-no1 {
+    border-left: solid 1px #ddd;
     max-width: 2.1rem;
     border-bottom: solid 1px #ddd;
     border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
   }
   .particulars1 {
     max-width: 32rem;
     border-bottom: solid 1px #ddd;
     border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    text-align:center;
   }
   .numbers {
     max-width: 5rem;
     border-bottom: solid 1px #ddd;
     border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
   }
   .discount1 {
-    max-width: 12rem;
+    max-width: 13rem;
     border-bottom: solid 1px #ddd;
     border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    text-align:center;
   }
   .cgst {
     max-width: 8rem;
     border-bottom: solid 1px #ddd;
     border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    text-align:center;
   }
   .sgst {
     max-width: 8rem;
     border-bottom: solid 1px #ddd;
     border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    text-align:center;
   }
   .igst {
     max-width: 8rem;
     border-bottom: solid 1px #ddd;
     border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    text-align:center;
   }
   .size {
     max-width: 6rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
   }
   .sr-no {
-    max-width: 1rem;
+    border-left: solid 1px #ddd;
+    max-width: 2.1rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
+  }
+  .particulars {
+    max-width: 15rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
   }
   .qty {
     max-width: 3rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
   }
   .rate {
     max-width: 3rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
   }
   .amount {
     max-width: 5rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
   }
   .total {
     max-width: 5rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
+  }
+
+  .columns {
+    max-width: 100%;
+  }
+
+  .box {
+    border-radius: 0;
   }
 
   .table {
     padding: 1rem;
+    padding-top: 2rem;
+  }
+
+  .additional-details {
+    border-top: solid 1px #ddd;
+    display: flow-root;
+    .is-pulled-right {
+      margin-right: 1rem;
+    }
   }
 
   .submit-btn {
