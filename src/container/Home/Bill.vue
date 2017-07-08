@@ -65,13 +65,12 @@
       <div class="table" v-if="dataIsHere">
         <!-- part-1 -->
         <div class="columns">
-          <div class="column sr-no">SR</div>
-          <div class="column particulars">Particulars</div>
-          <div class="column">Numbers</div>
-          <div class="column">Discount</div>
-          <div class="column">CGST</div>
-          <div class="column">SGST</div>
-          <div class="column">IGST</div>
+          <div class="column sr-no1">SR</div>
+          <div class="column particulars1">Particulars</div>
+          <div class="column discount1">Discount</div>
+          <div class="column cgst">CGST</div>
+          <div class="column sgst">SGST</div>
+          <div class="column igst">IGST</div>
         </div>
 
         <div class="columns">
@@ -92,23 +91,25 @@
           <div class="column amount">Amount</div>
         </div>
 
-        <div class="columns v-for="data,index in dynamicArr">
+        <div class="columns" v-for="data,index in dataArr">
           <div class="column sr-no">{{index + 1}}</div>
-          <div class="column particulars">{{data.dynamicData.particulars}}</div>
-          <div class="column size">{{data.dynamicData.size}}</div>
-          <div class="column qty">{{data.dynamicData.quantity}}</div>
-          <div class="column rate">{{data.dynamicData.rate}}</div>
-          <div class="column amount">{{data.dynamicData.amount}}</div>
-          <div class="column rate">{{data.discData.rate}}</div>
-          <div class="column amount">{{data.discData.amount}}</div>
-          <div class="column amount">{{data.discData.taxamount}}</div>
-          <div class="column rate">{{data.taxData.cgstRate}}</div>
-          <div class="column amount">{{data.taxData.cgstAmount}}</div>
-          <div class="column rate">{{data.taxData.sgstRate}}</div>
-          <div class="column amount">{{data.taxData.sgstAmount}}</div>
-          <div class="column rate">{{data.taxData.igstRate}}</div>
-          <div class="column amount">{{data.taxData.igstAmount}}</div>
+          <div class="column particulars">{{data.particulars}} - {{data.msncode}}</div>
+          <div class="column size">{{data.size}}</div>
+          <div class="column qty">{{data.quantity}}</div>
+          <div class="column rate">{{data.rate}}</div>
+          <div class="column amount">{{data.amount}}</div>
+          <div class="column rate">{{data.discRate}}</div>
+          <div class="column amount">{{data.discAmount}}</div>
+          <div class="column amount">{{data.discTaxamount}}</div>
+          <div class="column rate">{{data.cgstRate}}</div>
+          <div class="column amount">{{data.cgstAmount}}</div>
+          <div class="column rate">{{data.sgstRate}}</div>
+          <div class="column amount">{{data.sgstAmount}}</div>
+          <div class="column rate">{{data.igstRate}}</div>
+          <div class="column amount">{{data.igstAmount}}</div>
         </div>
+
+
       </div>
 
       <div class="field submit-btn">
@@ -117,7 +118,7 @@
             Submit
           </button>
           <!-- <pre>
-          {{$data}}
+          {{$dynamicArr}}
         </pre> -->
       </p>
     </div>
@@ -138,28 +139,20 @@ export default {
     this.$bus.$on('sendItemData', (response) => {
       this.dataIsHere = true;
       this.showDetailModal = false;
-      this.dynamicArr.push(response.data);
-      console.log(this.dynamicArr);
+      this.dataArr.push(response.data);
+      console.log(this.dataArr);
     });
   },
   data() {
     return {
+      dynamic: '',
       dataIsHere: false,
       name: '',
       invNum: '',
       date: '',
       showDetailModal: false,
-      dynamicData: {
-        srno: null,
-        particulars: '',
-        msncode: '',
-        size: '',
-        quantity: null,
-        rate: null,
-        amount: null
-      },
       formSubmitted: false,
-      dynamicArr: [
+      dataArr: [
       ]
     }
   },
@@ -234,6 +227,41 @@ export default {
     // padding: 1rem;
   }
 
+  .sr-no1 {
+    max-width: 2.1rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+  }
+  .particulars1 {
+    max-width: 32rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+  }
+  .numbers {
+    max-width: 5rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+  }
+  .discount1 {
+    max-width: 12rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+  }
+  .cgst {
+    max-width: 8rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+  }
+  .sgst {
+    max-width: 8rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+  }
+  .igst {
+    max-width: 8rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+  }
   .size {
     max-width: 6rem;
   }

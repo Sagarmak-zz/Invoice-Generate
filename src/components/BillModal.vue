@@ -14,7 +14,7 @@
                 <div :class="{'has-error': errors.has('particular') }">
                   <label class="label">Particulars</label>
                   <p class="control">
-                    <input v-model="dynamicData.particulars" :class="{'input': true, 'is-danger': errors.has('particular') }"
+                    <input v-model="particulars" :class="{'input': true, 'is-danger': errors.has('particular') }"
                     name="particular" v-validate="'required'"
                     type="text" placeholder="Particulars Dropdown">
                   </p>
@@ -27,7 +27,7 @@
                 <div :class="{'has-error': errors.has('msn') }">
                   <label class="label">MSN Code</label>
                   <p class="control">
-                    <input v-model="dynamicData.msncode" :class="{'input': true, 'is-danger': errors.has('msn') }"
+                    <input v-model="msncode" :class="{'input': true, 'is-danger': errors.has('msn') }"
                     name="msn" v-validate="'required'"
                     type="text" placeholder="MSN Code">
                   </p>
@@ -42,7 +42,7 @@
                 <div :class="{'has-error': errors.has('size') }">
                   <label class="label">Size</label>
                   <p class="control">
-                    <input v-model="dynamicData.size" :class="{'input': true, 'is-danger': errors.has('size') }"
+                    <input v-model="size" :class="{'input': true, 'is-danger': errors.has('size') }"
                     name="size" v-validate="'required'"
                     type="text" placeholder="Size">
                   </p>
@@ -55,7 +55,7 @@
                 <div :class="{'has-error': errors.has('qty') }">
                   <label class="label">Quantity</label>
                   <p class="control">
-                    <input v-model="dynamicData.quantity" :class="{'input': true, 'is-danger': errors.has('qty') }"
+                    <input v-model="quantity" :class="{'input': true, 'is-danger': errors.has('qty') }"
                     name="qty" v-validate="'required'"
                     type="number" placeholder="Quantity">
                   </p>
@@ -72,7 +72,7 @@
                       <a class="button is-static"> &#8377; </a>
                     </p>
                     <p class="control">
-                      <input v-model="dynamicData.rate" :class="{'input': true, 'is-danger': errors.has('rate') }"
+                      <input v-model="rate" :class="{'input': true, 'is-danger': errors.has('rate') }"
                       name="rate" v-validate="'required'"
                       type="number" placeholder="Rate">
                     </p>
@@ -90,7 +90,7 @@
                       <a class="button is-static"> &#8377; </a>
                     </p>
                     <p class="control">
-                      <input v-model="dynamicData.amount = amountComputed" :class="{'input': true, 'is-danger': errors.has('amount') }"
+                      <input v-model="amount = amountComputed" :class="{'input': true, 'is-danger': errors.has('amount') }"
                       name="amount" v-validate="'required'"
                       type="number" placeholder="Amount">
                     </p>
@@ -112,7 +112,7 @@
                   <label class="label">Rate</label>
                   <div class="field has-addons">
                     <p class="control">
-                      <input v-model="discData.rate" :class="{'input': true, 'is-danger': errors.has('drate') }"
+                      <input v-model="discRate" :class="{'input': true, 'is-danger': errors.has('drate') }"
                       name="drate" v-validate="'required'"
                       type="number" placeholder="Rate">
                     </p>
@@ -133,7 +133,7 @@
                       <a class="button is-static"> &#8377; </a>
                     </p>
                     <p class="control">
-                      <input v-model="discData.amount = discountAmount" :class="{'input': true, 'is-danger': errors.has('damount') }"
+                      <input v-model="discAmount = discountAmount" :class="{'input': true, 'is-danger': errors.has('damount') }"
                       name="damount" v-validate="'required'"
                       type="number" placeholder="Amount">
                     </p>
@@ -151,7 +151,7 @@
                       <a class="button is-static"> &#8377; </a>
                     </p>
                     <p class="control">
-                      <input v-model="discData.taxamount = discountTaxableAmount" :class="{'input': true, 'is-danger': errors.has('tamount') }"
+                      <input v-model="discTaxamount = discountTaxableAmount" :class="{'input': true, 'is-danger': errors.has('tamount') }"
                       name="tamount" v-validate="'required'"
                       type="number" placeholder="Amount">
                     </p>
@@ -174,7 +174,7 @@
                   <label class="label">Rate</label>
                   <div class="field has-addons">
                     <p class="control">
-                      <input v-model="taxData.cgstRate" :class="{'input': true, 'is-danger': errors.has('cgstRate') }"
+                      <input v-model="cgstRate" :class="{'input': true, 'is-danger': errors.has('cgstRate') }"
                       name="cgstRate" v-validate="'required'"
                       type="number" placeholder="Rate">
                     </p>
@@ -195,7 +195,7 @@
                       <a class="button is-static"> &#8377; </a>
                     </p>
                     <p class="control">
-                      <input v-model="taxData.cgstAmount = cgstTaxAmount" :class="{'input': true, 'is-danger': errors.has('cgstAmount') }"
+                      <input v-model="cgstAmount = cgstTaxAmount" :class="{'input': true, 'is-danger': errors.has('cgstAmount') }"
                       name="cgstAmount" v-validate="'required'"
                       type="number" placeholder="Amount">
                     </p>
@@ -211,7 +211,7 @@
                   <label class="label">Rate</label>
                   <div class="field has-addons">
                     <p class="control">
-                      <input v-model="taxData.sgstRate" :class="{'input': true, 'is-danger': errors.has('sgstRate') }"
+                      <input v-model="sgstRate" :class="{'input': true, 'is-danger': errors.has('sgstRate') }"
                       name="sgstRate" v-validate="'required'"
                       type="number" placeholder="Rate">
                     </p>
@@ -232,7 +232,7 @@
                       <a class="button is-static"> &#8377; </a>
                     </p>
                     <p class="control">
-                      <input v-model="taxData.sgstAmount = sgstTaxAmount" :class="{'input': true, 'is-danger': errors.has('sgstAmount') }"
+                      <input v-model="sgstAmount = sgstTaxAmount" :class="{'input': true, 'is-danger': errors.has('sgstAmount') }"
                       name="sgstAmount" v-validate="'required'"
                       type="number" placeholder="Amount">
                     </p>
@@ -248,7 +248,7 @@
                   <label class="label">Rate</label>
                   <div class="field has-addons">
                     <p class="control">
-                      <input v-model="taxData.igstRate" :class="{'input': true, 'is-danger': errors.has('igstRate') }"
+                      <input v-model="igstRate" :class="{'input': true, 'is-danger': errors.has('igstRate') }"
                       name="igstRate" v-validate="'required'"
                       type="number" placeholder="Rate">
                     </p>
@@ -269,7 +269,7 @@
                       <a class="button is-static"> &#8377; </a>
                     </p>
                     <p class="control">
-                      <input v-model="taxData.igstAmount = igstTaxAmount" :class="{'input': true, 'is-danger': errors.has('igstAmount') }"
+                      <input v-model="igstAmount = igstTaxAmount" :class="{'input': true, 'is-danger': errors.has('igstAmount') }"
                       name="igstAmount" v-validate="'required'"
                       type="number" placeholder="Amount">
                     </p>
@@ -300,28 +300,22 @@ export default {
   data() {
     return {
       // data: {
-        dynamicData: {
-          srno: null,
-          particulars: '',
-          msncode: '',
-          size: '',
-          quantity: null,
-          rate: null,
-          amount: null
-        },
-        discData: {
-          rate: 0,
-          amount: 0,
-          taxamount: 0
-        },
-        taxData: {
-          cgstRate: 0,
-          cgstAmount: 0,
-          sgstRate: 0,
-          sgstAmount: 0,
-          igstRate: 0,
-          igstAmount: 0,
-        },
+      srno: null,
+      particulars: '',
+      msncode: '',
+      size: '',
+      quantity: null,
+      rate: null,
+      amount: null,
+      discRate: 0,
+      discAmount: 0,
+      discTaxamount: 0,
+      cgstRate: 0,
+      cgstAmount: 0,
+      sgstRate: 0,
+      sgstAmount: 0,
+      igstRate: 0,
+      igstAmount: 0,
       // }
     };
   },
@@ -341,25 +335,25 @@ export default {
   },
   computed: {
     amountComputed() {
-      return this.dynamicData.amount = this.dynamicData.quantity * this.dynamicData.rate;
+      return this.amount = this.quantity * this.rate;
     },
     discountAmount() {
-      return this.discData.amount = (this.discData.rate / 100) * this.dynamicData.amount;
+      return this.discAmount = (this.discRate / 100) * this.amount;
     },
     discountTaxableAmount() {
-      return this.discData.taxamount = this.dynamicData.amount - this.discData.amount;
+      return this.discTaxamount = this.amount - this.discAmount;
     },
     cgstTaxAmount() {
-      return this.taxData.cgstAmount = (this.taxData.cgstRate / 100) * this.discData.taxamount;
+      return this.cgstAmount = (this.cgstRate / 100) * this.discTaxamount;
     },
     sgstTaxAmount() {
-      return this.taxData.sgstAmount = (this.taxData.sgstRate / 100) * this.discData.taxamount;
+      return this.sgstAmount = (this.sgstRate / 100) * this.discTaxamount;
     },
     igstTaxAmount() {
-      return this.taxData.igstAmount = (this.taxData.igstRate / 100) * this.discData.taxamount;
+      return this.igstAmount = (this.igstRate / 100) * this.discTaxamount;
     },
     payableAmount() {
-      return this.discData.taxamount + this.taxData.cgstAmount + this.taxData.sgstAmount + this.taxData.igstAmount;
+      return this.discTaxamount + this.cgstAmount + this.sgstAmount + this.igstAmount;
     }
   }
 }
