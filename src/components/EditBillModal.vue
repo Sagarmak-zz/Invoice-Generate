@@ -1,11 +1,16 @@
 <template lang="html">
-  <div class="bill-modal">
-    <div class="modal is-active">
+  <div class="edit-bill-modal">
+    <a @click="hidden = false" class="icon is-small" v-if="hidden">
+      <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+    </a>
+
+
+    <div class="modal is-active" v-if="!hidden">
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
           <p class="modal-card-title">Add Item</p>
-          <button class="delete" @click="$emit('close')"></button>
+          <button class="delete" @click="hidden = true"></button>
         </header>
         <section class="modal-card-body">
           <div class="main-det">
@@ -14,7 +19,7 @@
                 <div :class="{'has-error': errors.has('particular') }">
                   <label class="label">Particulars</label>
                   <p class="control">
-                    <input v-model="particulars" :class="{'input': true, 'is-danger': errors.has('particular') }"
+                    <input v-model="particulars = data.particulars" :class="{'input': true, 'is-danger': errors.has('particular') }"
                     name="particular" v-validate="'required'"
                     type="text" placeholder="Particulars Dropdown">
                   </p>
@@ -27,7 +32,7 @@
                 <div :class="{'has-error': errors.has('msn') }">
                   <label class="label">MSN Code</label>
                   <p class="control">
-                    <input v-model="msncode" :class="{'input': true, 'is-danger': errors.has('msn') }"
+                    <input v-model="msncode = data.msncode" :class="{'input': true, 'is-danger': errors.has('msn') }"
                     name="msn" v-validate="'required'"
                     type="text" placeholder="MSN Code">
                   </p>
@@ -42,7 +47,7 @@
                 <div :class="{'has-error': errors.has('size') }">
                   <label class="label">Size</label>
                   <p class="control">
-                    <input v-model="size" :class="{'input': true, 'is-danger': errors.has('size') }"
+                    <input v-model="size = data.size" :class="{'input': true, 'is-danger': errors.has('size') }"
                     name="size" v-validate="'required'"
                     type="text" placeholder="Size">
                   </p>
@@ -55,7 +60,7 @@
                 <div :class="{'has-error': errors.has('qty') }">
                   <label class="label">Quantity</label>
                   <p class="control">
-                    <input v-model="quantity" :class="{'input': true, 'is-danger': errors.has('qty') }"
+                    <input v-model="quantity = data.quantity" :class="{'input': true, 'is-danger': errors.has('qty') }"
                     name="qty" v-validate="'required'"
                     type="number" placeholder="Quantity">
                   </p>
@@ -72,7 +77,7 @@
                       <a class="button is-static"> &#8377; </a>
                     </p>
                     <p class="control">
-                      <input v-model="rate" :class="{'input': true, 'is-danger': errors.has('rate') }"
+                      <input v-model="rate = data.rate" :class="{'input': true, 'is-danger': errors.has('rate') }"
                       name="rate" v-validate="'required'"
                       type="number" placeholder="Rate">
                     </p>
@@ -112,7 +117,7 @@
                   <label class="label">Rate</label>
                   <div class="field has-addons">
                     <p class="control">
-                      <input v-model="discRate" :class="{'input': true, 'is-danger': errors.has('drate') }"
+                      <input v-model="discRate = data.discRate" :class="{'input': true, 'is-danger': errors.has('drate') }"
                       name="drate" v-validate="'required'"
                       type="number" placeholder="Rate">
                     </p>
@@ -174,7 +179,7 @@
                   <label class="label">Rate</label>
                   <div class="field has-addons">
                     <p class="control">
-                      <input v-model="cgstRate" :class="{'input': true, 'is-danger': errors.has('cgstRate') }"
+                      <input v-model="cgstRate = data.cgstRate" :class="{'input': true, 'is-danger': errors.has('cgstRate') }"
                       name="cgstRate" v-validate="'required'"
                       type="number" placeholder="Rate">
                     </p>
@@ -211,7 +216,7 @@
                   <label class="label">Rate</label>
                   <div class="field has-addons">
                     <p class="control">
-                      <input v-model="sgstRate" :class="{'input': true, 'is-danger': errors.has('sgstRate') }"
+                      <input v-model="sgstRate = data.sgstRate" :class="{'input': true, 'is-danger': errors.has('sgstRate') }"
                       name="sgstRate" v-validate="'required'"
                       type="number" placeholder="Rate">
                     </p>
@@ -248,7 +253,7 @@
                   <label class="label">Rate</label>
                   <div class="field has-addons">
                     <p class="control">
-                      <input v-model="igstRate" :class="{'input': true, 'is-danger': errors.has('igstRate') }"
+                      <input v-model="igstRate = data.igstRate" :class="{'input': true, 'is-danger': errors.has('igstRate') }"
                       name="igstRate" v-validate="'required'"
                       type="number" placeholder="Rate">
                     </p>
@@ -284,8 +289,8 @@
         </section>
         <footer class="modal-card-foot">
           <div class="">
-            <a class="button is-success" @click="validateAndUpdateAdminDetails">Save changes</a>
-            <a class="button" v-on:click="$emit('close')">Cancel</a>
+            <a class="button is-success">Save changes</a>
+            <a class="button" @click="hidden = true">Cancel</a>
           </div>
           <h1 class="title is-4 is-pulled-right	is-right"><strong>Item Amount: &#8377;{{payableAmount}}</strong></h1>
         </footer>
@@ -296,10 +301,14 @@
 
 <script>
 export default {
-  name: 'bill-modal',
+  name: 'edit-bill-modal',
+  props: ['data'],
+  created() {
+  },
   data() {
     return {
       // data: {
+      hidden: true,
       srno: null,
       particulars: '',
       msncode: '',
@@ -318,20 +327,6 @@ export default {
       igstAmount: 0,
       // }
     };
-  },
-  methods: {
-    validateAndUpdateAdminDetails() {
-      this.validate()
-      if (!this.errors.any()) {
-        this.$bus.$emit('sendItemData', {data: this.$data });
-      }
-      else {
-        //print some error message
-      }
-    },
-    validate() {
-      return this.$validator.validateAll();
-    }
   },
   computed: {
     amountComputed() {
@@ -360,8 +355,8 @@ export default {
 </script>
 
 <style lang="scss">
-.bill-modal {
-  z-index: 1025;
+.edit-bill-modal {
+  z-index: 1026;
   // .modal-card-body {
   //   padding: 0;
   // }
@@ -369,11 +364,8 @@ export default {
   //   padding: 1rem;
   // }
   .modal-head {
-    padding-top: 1rem;
     padding-bottom: 1rem;
-    border-top: solid 1px #ddd;
     border-bottom: solid 1px #ddd;
-    align-items: center;
   }
   .modal-card {
     width: 1000px;

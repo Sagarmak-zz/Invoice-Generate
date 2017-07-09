@@ -8,7 +8,7 @@
     <ul class="menu-list">
       <List name="Dashboard" icon="fa fa-tachometer" route="Dashboard"></List>
       <List name="Generate Bill" icon="fa fa-file-text" route="Bill"></List>
-      <List name="User" icon="fa fa-user-o" route="User"></List>
+      <List name="User" icon="fa fa-user-circle-o" route="User"></List>
       <List name="Product" icon="fa fa-plus" route="Product"></List>
       <List name="History" icon="fa fa-history" route="History"></List>
       <List name="Reports" icon="fa fa-line-chart" route="Reports"></List>

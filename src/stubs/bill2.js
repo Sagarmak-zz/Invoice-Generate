@@ -1,6 +1,6 @@
 export default {
   srno: null,
-  particulars: 'Abcd Testing 123',
+  particulars: 'Abcd Testing 12',
   msncode: 12345,
   size: 'L-XL-XXL',
   quantity: 100,

@@ -71,6 +71,7 @@
           <div class="column cgst">CGST</div>
           <div class="column sgst">SGST</div>
           <div class="column igst">IGST</div>
+          <div class="column edit-delete1"></div>
         </div>
 
         <div class="columns box">
@@ -89,10 +90,11 @@
           <div class="column amount">Amount</div>
           <div class="column rate">Rate</div>
           <div class="column amount">Amount</div>
+          <div class="column edit-delete"></div>
         </div>
 
         <div class="columns box" v-for="data,index in dataArr">
-          <div class="column sr-no">{{index + 1}}</div>
+          <div class="column sr-no">{{data.srno}}</div>
           <div class="column particulars">{{data.particulars}} - {{data.msncode}}</div>
           <div class="column size">{{data.size}}</div>
           <div class="column qty">{{data.quantity}}</div>
@@ -107,6 +109,12 @@
           <div class="column amount">{{data.sgstAmount}}</div>
           <div class="column rate">{{data.igstRate}}</div>
           <div class="column amount">{{data.igstAmount}}</div>
+          <!-- Edit -->
+          <div class="column sr-no edit"><EditBillModal :key="data.srno-1" :data="data"></EditBillModal></div>
+          <!-- Delete -->
+          <div class="column sr-no"><a @click="deleteItem(data.srno-1)" class="icon is-small">
+            <i class="fa fa-times-circle" aria-hidden="true"></i> </a></div>
+
         </div>
       </div>
 
@@ -137,23 +145,28 @@ import bill from '@/stubs/bill';
 import bill2 from '@/stubs/bill2';
 import Datepicker from 'vue-bulma-datepicker';
 import BillModal from '@/components/BillModal';
+import EditBillModal from '@/components/EditBillModal';
 export default {
   name: 'bill',
   components: {
     Datepicker,
-    BillModal
+    BillModal,
+    EditBillModal
   },
   created() {
     this.$bus.$on('sendItemData', (response) => {
       this.dataIsHere = true;
       this.showDetailModal = false;
+      response.data.srno = this.dataArr.length + 1;
       this.dataArr.push(response.data);
       this.length = this.dataArr.length;
       this.calculateAmount();
     });
     // this.dataIsHere = true;
     // this.showDetailModal = false;
+    // bill.srno = this.dataArr.length + 1;
     // this.dataArr.push(bill);
+    // bill2.srno = this.dataArr.length + 1;
     // this.dataArr.push(bill2);
     // this.calculateAmount();
   },
@@ -165,6 +178,7 @@ export default {
       invNum: '',
       date: '',
       showDetailModal: false,
+      showEditDetailModal: false,
       formSubmitted: false,
       igstAmount: null,
       dataArr: [
@@ -200,9 +214,6 @@ export default {
       //send to another page, with nice invoice template and hit print
       // window.print();
     },
-    addDynamicData() {
-      this.dynamicArr.push(this.dynamicData);
-    },
     calculateAmount() {
       for (var i = 0; i < this.dataArr.length; i++) {
         this.totalTaxableAmount += this.dataArr[this.length-1].discTaxamount;
@@ -212,6 +223,9 @@ export default {
         this.totalInvoiceAmount = this.totalTaxableAmount + this.finalcgst + this.finalsgst + this.finaligst;
         break;
       }
+    },
+    deleteItem(indexNo) {
+      console.log(this.dataArr.splice(indexNo, 1));
     }
   },
 }
@@ -271,9 +285,11 @@ export default {
     border-bottom: solid 1px #ddd;
     border-right: solid 1px #ddd;
     border-top: solid 1px #ddd;
+    text-align:center;
+    padding-left: 0.4rem;
   }
   .particulars1 {
-    max-width: 32rem;
+    max-width: 26rem;
     border-bottom: solid 1px #ddd;
     border-right: solid 1px #ddd;
     border-top: solid 1px #ddd;
@@ -325,6 +341,10 @@ export default {
     border-bottom: solid 1px #ddd;
     border-right: solid 1px #ddd;
     text-align:center;
+    padding-left: 0.6rem;
+  }
+  .sr-no.edit {
+    z-index: 1026;
   }
   .particulars {
     max-width: 15rem;
@@ -355,6 +375,12 @@ export default {
     border-bottom: solid 1px #ddd;
     border-right: solid 1px #ddd;
     text-align:center;
+  }
+  .edit-delete1 {
+    max-width: 3rem;
+  }
+  .edit-delete {
+    max-width: 4.2rem;
   }
 
   .columns {
