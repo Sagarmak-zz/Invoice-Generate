@@ -29,15 +29,15 @@
                 </div>
               </div>
               <div class="column">
-                <div :class="{'has-error': errors.has('msn') }">
-                  <label class="label">MSN Code</label>
+                <div :class="{'has-error': errors.has('hsn') }">
+                  <label class="label">HSN Code</label>
                   <p class="control">
-                    <input v-model="msncode = data.msncode" :class="{'input': true, 'is-danger': errors.has('msn') }"
-                    name="msn" v-validate="'required'"
-                    type="text" placeholder="MSN Code">
+                    <input v-model="hsncode = data.hsncode" :class="{'input': true, 'is-danger': errors.has('hsn') }"
+                    name="hsn" v-validate="'required'"
+                    type="text" placeholder="HSN Code">
                   </p>
-                  <div v-show="errors.has('msn')" class="help is-danger">
-                    The MSN Code is required.
+                  <div v-show="errors.has('hsn')" class="help is-danger">
+                    The HSN Code is required.
                   </div>
                 </div>
               </div>
@@ -311,7 +311,7 @@ export default {
       hidden: true,
       srno: null,
       particulars: '',
-      msncode: '',
+      hsncode: '',
       size: '',
       quantity: null,
       rate: null,

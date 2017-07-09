@@ -10,29 +10,34 @@
         <section class="modal-card-body">
           <div class="main-det">
             <div class="columns">
-              <div class="column">
-                <div :class="{'has-error': errors.has('particular') }">
-                  <label class="label">Particulars</label>
-                  <p class="control">
-                    <input v-model="particulars" :class="{'input': true, 'is-danger': errors.has('particular') }"
-                    name="particular" v-validate="'required'"
-                    type="text" placeholder="Particulars Dropdown">
-                  </p>
-                  <div v-show="errors.has('particular')" class="help is-danger">
-                    The Particulars is required.
+              <div class="column flex">
+                <div class="flex">
+                  <div :class="{'has-error': errors.has('particular') }">
+                    <label class="label">Particulars</label>
+                    <p class="control">
+                      <input v-model="particulars" :class="{'input': true, 'is-danger': errors.has('particular') }"
+                      name="particular" v-validate="'required'"
+                      type="text" placeholder="Particulars Dropdown">
+                    </p>
+                    <div v-show="errors.has('particular')" class="help is-danger">
+                      The Particulars is required.
+                    </div>
                   </div>
                 </div>
+                <a class="icon is-medium">
+                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                </a>
               </div>
               <div class="column">
-                <div :class="{'has-error': errors.has('msn') }">
-                  <label class="label">MSN Code</label>
+                <div :class="{'has-error': errors.has('hsn') }">
+                  <label class="label">HSN Code</label>
                   <p class="control">
-                    <input v-model="msncode" :class="{'input': true, 'is-danger': errors.has('msn') }"
-                    name="msn" v-validate="'required'"
-                    type="text" placeholder="MSN Code">
+                    <input v-model="hsncode" :class="{'input': true, 'is-danger': errors.has('hsn') }"
+                    name="hsn" v-validate="'required'"
+                    type="text" placeholder="HSN Code">
                   </p>
-                  <div v-show="errors.has('msn')" class="help is-danger">
-                    The MSN Code is required.
+                  <div v-show="errors.has('hsn')" class="help is-danger">
+                    The HSN Code is required.
                   </div>
                 </div>
               </div>
@@ -302,7 +307,7 @@ export default {
       // data: {
       srno: null,
       particulars: '',
-      msncode: '',
+      hsncode: '',
       size: '',
       quantity: null,
       rate: null,
@@ -362,6 +367,15 @@ export default {
 <style lang="scss">
 .bill-modal {
   z-index: 1025;
+  .column.flex {
+    display: flex;
+    .flex {
+      width: 25rem;
+    }
+  }
+  .icon.is-medium {
+    margin-top: 2rem;
+  }
   // .modal-card-body {
   //   padding: 0;
   // }

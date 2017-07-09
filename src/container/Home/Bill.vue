@@ -26,8 +26,6 @@
               <div :class="{'has-error': errors.has('date') }">
                 <label class="label">Invoice Date</label>
                 <p class="control">
-                  <!-- <input :class="{'input': true, 'is-danger': errors.has('date') }" name="date"
-                  v-validate="'required'" type="text" placeholder="Invoice Date"> -->
                   <datepicker v-model="date" v-validate="'required'" name="date" placeholder="Invoice Date"
                   :config="{ dateFormat: 'Y-m-d', wrap: true, maxDate: 'today', static: true }"></datepicker>
                 </p>
@@ -44,7 +42,8 @@
                 <p class="control is-mobile">
                   <input v-model="name" :class="{'input': true, 'is-danger': errors.has('name') }" name="name" v-validate="'required'"
                   type="text" placeholder="Customer Name Dropdown">
-                  <span class="icon is-medium"> <i class="fa fa-plus-circle" aria-hidden="true"></i> </span>
+                  <a class="icon is-medium" @click="showAddUserModal = true"> <i class="fa fa-plus-circle" aria-hidden="true"></i> </a>
+                  <AddUserModal v-if="showAddUserModal" @close="showAddUserModal = false"></AddUserModal>
                 </p>
                 <div v-show="errors.has('name')" class="help is-danger">
                   The Customer Name is required and should contain only letters.
@@ -58,8 +57,8 @@
       <!-- part-2 -->
       <div class="main-details">
         <h3 class="title">Main Details</h3>
-        <a class="button is-primary" @click="showDetailModal = true">Add</a>
-        <BillModal @close="showDetailModal = false" v-if="showDetailModal"></BillModal>
+        <a class="button is-primary" @click="showAddItemModal = true">Add</a>
+        <AddItemModal @close="showAddItemModal = false" v-if="showAddItemModal"></AddItemModal>
       </div>
 
       <div class="table" v-if="dataIsHere">
@@ -95,7 +94,7 @@
 
         <div class="columns box" v-for="data,index in dataArr">
           <div class="column sr-no">{{data.srno}}</div>
-          <div class="column particulars">{{data.particulars}} - {{data.msncode}}</div>
+          <div class="column particulars">{{data.particulars}} - {{data.hsncode}}</div>
           <div class="column size">{{data.size}}</div>
           <div class="column qty">{{data.quantity}}</div>
           <div class="column rate">{{data.rate}}</div>
@@ -144,28 +143,30 @@
 import bill from '@/stubs/bill';
 import bill2 from '@/stubs/bill2';
 import Datepicker from 'vue-bulma-datepicker';
-import BillModal from '@/components/BillModal';
+import AddItemModal from '@/components/AddItemModal';
 import EditBillModal from '@/components/EditBillModal';
+import AddUserModal from '@/components/AddUserModal';
 export default {
   name: 'bill',
   components: {
     Datepicker,
-    BillModal,
-    EditBillModal
+    AddItemModal,
+    EditBillModal,
+    AddUserModal
   },
   created() {
     var converter = require('number-to-words');
     console.log(converter.toWords(42654))
     this.$bus.$on('sendItemData', (response) => {
       this.dataIsHere = true;
-      this.showDetailModal = false;
+      this.showAddItemModal = false;
       response.data.srno = this.dataArr.length + 1;
       this.dataArr.push(response.data);
       this.length = this.dataArr.length;
       this.calculateAmount();
     });
     // this.dataIsHere = true;
-    // this.showDetailModal = false;
+    // this.showAddItemModal = false;
     // bill.srno = this.dataArr.length + 1;
     // this.dataArr.push(bill);
     // bill2.srno = this.dataArr.length + 1;
@@ -179,7 +180,7 @@ export default {
       name: '',
       invNum: '',
       date: '',
-      showDetailModal: false,
+      showAddItemModal: false,
       showEditDetailModal: false,
       formSubmitted: false,
       igstAmount: null,
@@ -191,7 +192,8 @@ export default {
       finalsgst: 0,
       finaligst: 0,
       totalInvoiceAmount: 0,
-      length: null
+      length: null,
+      showAddUserModal: false
     }
   },
   methods: {
