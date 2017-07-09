@@ -34,10 +34,12 @@ export default {
 }
 .home {
 
-  
+
   .app-main {
     padding-left: 12rem;
     padding-top: 1rem;
+    margin-right: 1rem;
+    margin-bottom: 1.5rem;
   }
 }
 </style>

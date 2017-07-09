@@ -58,7 +58,7 @@
       <!-- part-2 -->
       <div class="main-details">
         <h3 class="title">Main Details</h3>
-        <a class="button" @click="showDetailModal = true">Add</a>
+        <a class="button is-primary" @click="showDetailModal = true">Add</a>
         <BillModal @close="showDetailModal = false" v-if="showDetailModal"></BillModal>
       </div>
 
@@ -115,29 +115,29 @@
           <div class="column sr-no"><a @click="deleteItem(data.srno-1)" class="icon is-small">
             <i class="fa fa-times-circle" aria-hidden="true"></i> </a></div>
 
+          </div>
         </div>
-      </div>
 
-      <div class="additional-details" v-if="dataIsHere">
-        <div class="is-pulled-right">Total Taxable Amount: <strong>&#8377; {{totalTaxableAmount}}</strong></div> <br>
-        <div class="is-pulled-right">CGST: <strong>&#8377; {{finalcgst}}</strong></div> <br>
-        <div class="is-pulled-right">SGST: <strong>&#8377; {{finalsgst}}</strong></div> <br>
-        <div class="is-pulled-right">IGST: <strong>&#8377; {{finaligst}}</strong></div> <br>
-        <div class="is-pulled-right">Total Invoice Value: <strong>&#8377; {{totalInvoiceAmount}}</strong></div>
-      </div>
+        <div class="additional-details" v-if="dataIsHere">
+          <div class="is-pulled-right">Total Taxable Amount: <strong>&#8377; {{totalTaxableAmount}}</strong></div> <br>
+          <div class="is-pulled-right">CGST: <strong>&#8377; {{finalcgst}}</strong></div> <br>
+          <div class="is-pulled-right">SGST: <strong>&#8377; {{finalsgst}}</strong></div> <br>
+          <div class="is-pulled-right">IGST: <strong>&#8377; {{finaligst}}</strong></div> <br>
+          <div class="is-pulled-right">Total Invoice Value: <strong>&#8377; {{totalInvoiceAmount}}</strong></div>
+        </div>
 
-      <div class="field submit-btn">
-        <p>
-          <button @click="validateBeforeSubmit" class="button is-success submit-button">
-            Submit
-          </button>
-          <!-- <pre>
-          {{$dynamicArr}}
-        </pre> -->
-      </p>
+        <div class="field submit-btn" v-if="dataIsHere">
+          <p>
+            <button @click="validateBeforeSubmit" class="button is-success submit-button">
+              Submit
+            </button>
+            <!-- <pre>
+            {{$dynamicArr}}
+          </pre> -->
+        </p>
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -154,6 +154,8 @@ export default {
     EditBillModal
   },
   created() {
+    var converter = require('number-to-words');
+    console.log(converter.toWords(42654))
     this.$bus.$on('sendItemData', (response) => {
       this.dataIsHere = true;
       this.showDetailModal = false;
@@ -233,9 +235,6 @@ export default {
 
 <style lang="scss">
 .bill {
-  margin-bottom: 1rem;
-  margin-right: 1rem;
-
   .box {
     padding: 0;
   }
