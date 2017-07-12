@@ -2,6 +2,61 @@
   <div class="dashboard">
     <div class="chart">
 
+      <div class="extra">
+        <div class="columns is-multiline">
+          <div class="column head-column">
+            <div class="columns">
+              <div class="column part-left">
+                <div class="figure">
+                  <i class="fa fa-file-text fa-5x"></i>
+                </div>
+              </div>
+              <div class="column part-right box">
+                <div class="title">
+                  100
+                </div>
+                <div class="subtitle">
+                  Total Invoices
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column head-column">
+            <div class="columns">
+              <div class="column part-left">
+                <div class="figure">
+                  <i class="fa fa-user-circle-o fa-5x"></i>
+                </div>
+              </div>
+              <div class="column part-right box">
+                <div class="title">
+                  25
+                </div>
+                <div class="subtitle">
+                  Total Users
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column head-column">
+            <div class="columns">
+              <div class="column part-left">
+                <div class="figure">
+                  <i class="fa fa-suitcase fa-5x"></i>
+                </div>
+              </div>
+              <div class="column part-right box">
+                <div class="title">
+                  20
+                </div>
+                <div class="subtitle">
+                  Total Products
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="tile is-ancestor">
         <div class="tile is-parent">
@@ -393,6 +448,21 @@ export default {
 
 <style lang="scss">
 .dashboard {
+  .head-column {
+    // padding: 0;
+    margin: 1rem;
+    .box {
+      padding: 0;
+    }
+  }
+  .part-left {
+    padding: 0;
+  }
+  .part-right.box {
+    padding: 0;
+    height: 8.2rem;
+    border-radius: inherit;
+  }
   margin-bottom: 1rem;
   margin-right: 1rem;
   .title {
@@ -406,6 +476,31 @@ export default {
     width: 100%;
     min-height: .01%;
     overflow-x: auto;
+  }
+  .figure {
+    background: turquoise;
+    i {
+      font-size: 5rem;
+      height: 8.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .column {
+    .title {
+
+      height: 50%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .subtitle {
+      height: 30%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
   }
 }
 </style>

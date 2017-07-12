@@ -7,8 +7,16 @@
 </template>
 
 <script>
+import MessageBox from 'vue-msgbox';
+
 export default {
-  name: 'reports'
+  name: 'reports',
+  components: {
+    MessageBox
+  },
+  created() {
+    MessageBox("Good job!");// title, message, type
+  }
 }
 </script>
 
