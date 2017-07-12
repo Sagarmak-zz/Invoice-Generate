@@ -142,7 +142,7 @@ export default {
 
 <style lang="scss">
 .history {
-
+  height: 100%;
   .box {
     padding: 0;
   }

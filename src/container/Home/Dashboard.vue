@@ -448,6 +448,7 @@ export default {
 
 <style lang="scss">
 .dashboard {
+  height: 100%;
   .head-column {
     // padding: 0;
     margin: 1rem;

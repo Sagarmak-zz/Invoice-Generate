@@ -29,9 +29,9 @@ export default {
 </script>
 
 <style lang="scss">
-.tile.is-ancestor:last-child {
-  margin-bottom: 0;
-}
+// .tile.is-ancestor:last-child {
+//   margin-bottom: 0;
+// }
 .home {
 
 
