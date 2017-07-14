@@ -12,6 +12,7 @@
       <List name="Product" icon="fa fa-plus" route="Product"></List>
       <List name="History" icon="fa fa-history" route="History"></List>
       <List name="Reports" icon="fa fa-line-chart" route="Reports"></List>
+      <List name="Settings" icon="fa fa-cogs" route="Settings"></List>
     </ul>
   </aside>
 </div>

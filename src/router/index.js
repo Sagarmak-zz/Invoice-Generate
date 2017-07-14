@@ -45,6 +45,11 @@ export default new Router({
           name: 'Reports',
           component: require('@/container/Home/Reports')
         },
+        {
+          path: '/settings',
+          name: 'Settings',
+          component: require('@/container/Home/Settings')
+        },
       ]
     }, //Home ends*
   ]
