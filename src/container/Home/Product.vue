@@ -1,6 +1,6 @@
 <template lang="html">
 <div class="add-product">
-  <div class="box heading">
+  <div class="box head-product">
     <h3 class="title">Add Product</h3>
     <button class="button is-primary" @click="showAddProductModal = true">Add</button>
     <AddProductModal @close="showAddProductModal = false" v-if="showAddProductModal"></AddProductModal>
@@ -85,7 +85,8 @@ export default {
 
 <style lang="scss">
 .add-product {
-  .heading {
+  .head-product {
+    padding: 1rem;
     display: flex;
     justify-content: space-between;
     .title {

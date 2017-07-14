@@ -82,47 +82,6 @@ export default {
 </script>
 
 <style lang="scss">
-// .login {
-//
-// .image {
-//   padding-left: 2.4rem;
-// }
-//
-// .hero.is-dark .title {
-//   color: #000000;
-// }
-//
-// hr.image-text {
-//   margin-bottom: 0.5rem;
-// }
-//
-// h3.title {
-//   margin-bottom: 0;
-//   color: black;
-//   padding-left: 2rem;
-// }
-//
-// hr.text-body {
-//   margin-top: 0.5rem;
-// }
-//
-// .notification.is-danger {
-//   margin-top: 0.5rem;
-//   margin-bottom: 0.5rem;
-//   padding: 0.5rem;
-//   background: rgba(260,0,0,0.4);
-//   filter: alpha(opacity=80);
-// }
-//
-// .control {
-//   .forgot {
-//     color: #000000;
-//   }
-// }
-
-
-
-
 .body {
   font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
   height: 100%;

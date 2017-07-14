@@ -26,6 +26,7 @@ export default {
   },
   methods: {
     logout() {
+      this.$router.push({name: 'Login'})
       let toast = this.$toasted.show("Successfully Logged Out!", {
         theme: "outline",
         position: "top-center",

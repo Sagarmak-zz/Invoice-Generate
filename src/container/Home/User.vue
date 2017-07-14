@@ -1,6 +1,6 @@
 <template lang="html">
 <div class="add-user">
-  <div class="box heading">
+  <div class="box head-user">
     <h3 class="title">Add User</h3>
     <button class="button is-primary" @click="showAddUserModal = true">Add</button>
     <AddUserModal @close="showAddUserModal = false" v-if="showAddUserModal"></AddUserModal>
@@ -85,7 +85,8 @@ export default {
 
 <style lang="scss">
 .add-user {
-  .heading {
+  .head-user {
+    padding: 1rem;
     display: flex;
     justify-content: space-between;
     .title {

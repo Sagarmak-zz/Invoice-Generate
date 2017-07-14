@@ -7,7 +7,7 @@
 
       <form @submit.prevent="validateBeforeSubmit" v-if="!formSubmitted">
         <!-- part 1 -->
-        <div class="heading">
+        <div class="head-form">
           <div class="columns">
             <div class="column">
               <div :class="{'has-error': errors.has('name') }">
@@ -246,12 +246,8 @@ export default {
     border-bottom: solid 1px #ddd;
   }
 
-  .heading {
+  .head-form {
     padding: 1rem;
-  }
-
-  .heading.modal {
-    padding: 0;
   }
 
   .control.is-mobile {
