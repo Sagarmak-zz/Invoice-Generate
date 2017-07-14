@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="home">
     <div class="navbar">
-      <navbar></navbar>
+      <navbar @logout="logout"></navbar>
     </div>
     <sidebar></sidebar>
     <div class="app-main">
@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import {firebaseApp} from '@/firebaseApp';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 
@@ -24,7 +25,19 @@ export default {
     Navbar,
     Sidebar
   },
-
+  methods: {
+    logout() {
+      firebaseApp.auth().signOut().then(() => {
+        let toast = this.$toasted.show("Signout Successful", {
+          theme: "outline",
+          position: "bottom-center",
+          duration : 3000
+        })
+      })
+      .catch((error) => {
+      });
+    }
+  }
 }
 </script>
 

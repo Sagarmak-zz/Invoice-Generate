@@ -70,13 +70,13 @@ Forgot Password
               </h1>
               <div class="login-form">
                 <p class="control has-icon has-icon-right">
-                  <input class="input email-input" type="text" placeholder="jsmith@example.org">
+                  <input v-model="email" class="input email-input" type="text" placeholder="jsmith@example.org">
                   <span class="icon user">
                     <i class="fa fa-user"></i>
                   </span>
                 </p>
                 <p class="control has-icon has-icon-right">
-                  <input class="input password-input" type="password" placeholder="●●●●●●●">
+                  <input v-model="password" class="input password-input" type="password" placeholder="●●●●●●●">
                   <span class="icon user">
                     <i class="fa fa-lock"></i>
                   </span>
@@ -104,16 +104,33 @@ Forgot Password
 </template>
 
 <script>
+import {firebaseApp} from '@/firebaseApp';
 export default {
   name: 'login',
+  data() {
+    return {
+      email: '',
+      password: ''
+    }
+  },
   methods: {
     redirect() {
-      //use replace for not going back
-      this.$router.replace({ name: 'Dashboard' });
-      let toast = this.$toasted.success("Welcome back, User", {
-        theme: "outline",
-        position: "top-center",
-        duration : 3000
+      firebaseApp.auth().signInWithEmailAndPassword(this.email, this.password)
+      .then((response) => {
+        console.log(response);
+        let toast = this.$toasted.success("Welcome back, User", {
+          theme: "outline",
+          position: "top-center",
+          duration : 3000
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+        let toast = this.$toasted.error(error.message, {
+          theme: "outline",
+          position: "top-center",
+          duration : 3000
+        });
       });
     }
   }

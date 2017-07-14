@@ -19,13 +19,17 @@
           <div class="nav-right is-flex">
             <!-- <a class="nav-item">Logout</a> -->
             <a class="nav-item">
-            User
-            <span class="icon is-small"> <i class="fa fa-caret-down" aria-hidden="true"></i> </span> </a>
+              User
+              <span class="icon is-small"> <i class="fa fa-caret-down" aria-hidden="true"></i> </span> </a>
 
-            <router-link class="nav-item" to="">
+              <!-- <router-link class="nav-item" to="">
               <span class="icon is-small"> <i class="fa fa-cog" aria-hidden="true"></i> </span>
               Settings
-            </router-link>
+            </router-link> -->
+            <a @click="$emit('logout')" class="nav-item">
+              <span class="icon is-small"> <i class="fa fa-sign-out" aria-hidden="true"></i> </span>
+              Logout
+            </a>
           </div>
         </nav>
       </div>
