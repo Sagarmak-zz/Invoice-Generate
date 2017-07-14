@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import {firebaseApp} from '@/firebaseApp';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 
@@ -27,14 +26,10 @@ export default {
   },
   methods: {
     logout() {
-      firebaseApp.auth().signOut().then(() => {
-        let toast = this.$toasted.show("Signout Successful", {
-          theme: "outline",
-          position: "bottom-center",
-          duration : 3000
-        })
-      })
-      .catch((error) => {
+      let toast = this.$toasted.show("Successfully Logged Out!", {
+        theme: "outline",
+        position: "top-center",
+        duration : 3000
       });
     }
   }

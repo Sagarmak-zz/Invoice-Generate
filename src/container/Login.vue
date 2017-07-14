@@ -1,110 +1,65 @@
 <template lang="html">
   <div class="login body">
-    <!-- <section class="hero is-fullheight is-dark is-bold">
-    <div class="hero-body">
-    <div class="container">
-    <div class="columns is-vcentered">
-    <div class="column is-4 is-offset-4">
-    <div class="box">
-    <img class="image is-256x256" alt="SW">
-    <hr class=image-text>
-    <h3 class="title">Siddhartha Wear</h3>
-    <hr class="text-body">
-    <label class="label">Email</label>
-    <p class="control">
-    <input name="email" v-validate="'required|email'" class="input" type="text" placeholder="abc@example.ac.in">
-  </p>
-  <div class="notification is-danger" v-show="errors.has('email')">
-  <span>{{ errors.first('email') }}</span>
-</div>
-
-<label class="label">Password</label>
-<p class="control">
-<input v-validate="'required'" name="password"
-class="input" type="password" placeholder="●●●●●●●">
-</p>
-<div class="notification is-danger" v-show="errors.has('password')">
-<span>{{ errors.first('password') }}</span>
-</div>
-<hr>
-<p class="control">
-<button @click="redirect" class="button is-primary">Login</button>
-<a class="button npm ruforgot is-pulled-right" @click="forgotModal = true">
-<small class="forgot">
-Forgot Password
-</small>
-</a>
-</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-</section> -->
-
-<div class="login-wrapper columns">
-  <div class="column is-8 is-hidden-mobile hero-banner">
-    <section class="hero is-fullheight is-dark">
-      <div class="hero-body">
-        <div class="container section">
-          <div class="has-text-right">
-            <!-- any text -->
-          </div>
-        </div>
-      </div>
-    </section>
-  </div>
-  <div class="column is-4">
-    <section class="hero is-fullheight">
-      <div class="hero-heading">
-        <div class="section has-text-centered">
-          <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma logo" width="150px">
-        </div>
-      </div>
-      <div class="hero-body">
-        <div class="container">
-          <div class="columns">
-            <div class="column is-8 is-offset-2">
-              <h1 class="avatar has-text-centered section">
-                <img src="https://placehold.it/128x128">
-              </h1>
-              <div class="login-form">
-                <p class="control has-icon has-icon-right">
-                  <input v-model="email" class="input email-input" type="text" placeholder="jsmith@example.org">
-                  <span class="icon user">
-                    <i class="fa fa-user"></i>
-                  </span>
-                </p>
-                <p class="control has-icon has-icon-right">
-                  <input v-model="password" class="input password-input" type="password" placeholder="●●●●●●●">
-                  <span class="icon user">
-                    <i class="fa fa-lock"></i>
-                  </span>
-                </p>
-                <p class="control login">
-                  <button @click="redirect" class="button is-success is-outlined is-large is-fullwidth">Login</button>
-                </p>
-              </div>
-              <div class="section forgot-password">
-                <p class="has-text-centered">
-                  <a href="#">Forgot password</a>
-                </p>
+    <div class="login-wrapper columns">
+      <div class="column is-8 is-hidden-mobile hero-banner">
+        <section class="hero is-fullheight is-dark">
+          <div class="hero-body">
+            <div class="container section">
+              <div class="has-text-right">
+                <!-- any text -->
               </div>
             </div>
           </div>
-        </div>
+        </section>
       </div>
-    </section>
+      <div class="column is-4">
+        <section class="hero is-fullheight">
+          <div class="hero-heading">
+            <div class="section has-text-centered">
+              <img src="http://bulma.io/images/bulma-logo.png" alt="Bulma logo" width="150px">
+            </div>
+          </div>
+          <div class="hero-body">
+            <div class="container">
+              <div class="columns">
+                <div class="column is-8 is-offset-2">
+                  <h1 class="avatar has-text-centered section">
+                    <img src="https://placehold.it/128x128">
+                  </h1>
+                  <div class="login-form">
+                    <p class="control has-icon has-icon-right">
+                      <input v-model="email" class="input email-input" type="text" placeholder="jsmith@example.org">
+                      <span class="icon user">
+                        <i class="fa fa-user"></i>
+                      </span>
+                    </p>
+                    <p class="control has-icon has-icon-right">
+                      <input v-model="password" class="input password-input" type="password" placeholder="●●●●●●●">
+                      <span class="icon user">
+                        <i class="fa fa-lock"></i>
+                      </span>
+                    </p>
+                    <p class="control login">
+                      <button @click="redirect" class="button is-success is-outlined is-large is-fullwidth">Login</button>
+                    </p>
+                  </div>
+                  <div class="section forgot-password">
+                    <p class="has-text-centered">
+                      <a href="#">Forgot password</a>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
   </div>
-</div>
-
-
-
-</div>
 </template>
 
 <script>
-import {firebaseApp} from '@/firebaseApp';
 export default {
   name: 'login',
   data() {
@@ -115,22 +70,11 @@ export default {
   },
   methods: {
     redirect() {
-      firebaseApp.auth().signInWithEmailAndPassword(this.email, this.password)
-      .then((response) => {
-        console.log(response);
-        let toast = this.$toasted.success("Welcome back, User", {
-          theme: "outline",
-          position: "top-center",
-          duration : 3000
-        });
-      })
-      .catch((error) => {
-        console.log(error);
-        let toast = this.$toasted.error(error.message, {
-          theme: "outline",
-          position: "top-center",
-          duration : 3000
-        });
+      this.$router.push({name: 'Dashboard'})
+      let toast = this.$toasted.success("Welcome back, User", {
+        theme: "outline",
+        position: "top-center",
+        duration : 3000
       });
     }
   }
