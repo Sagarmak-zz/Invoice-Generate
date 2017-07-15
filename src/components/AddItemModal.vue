@@ -24,8 +24,9 @@
                     </div>
                   </div>
                 </div>
-                <a class="icon is-medium">
+                <a @click="showItemModal = true" class="icon is-medium">
                   <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                  <ProductModal v-if="showItemModal" @close="showItemModal = false"></ProductModal>
                 </a>
               </div>
               <div class="column">
@@ -309,11 +310,16 @@
 </template>
 
 <script>
+import ProductModal from '@/components/AddProductModal';
 export default {
   name: 'bill-modal',
+  components: {
+    ProductModal
+  },
   data() {
     return {
       // data: {
+      showItemModal: false,
       srno: null,
       particulars: '',
       hsncode: '',

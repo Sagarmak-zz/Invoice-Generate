@@ -18,10 +18,10 @@
           </div>
           <div class="nav-right is-flex">
             <!-- <a class="nav-item">Logout</a> -->
-            <a class="nav-item">
+            <a @click="changePassword = true" class="nav-item">
               User
               <span class="icon is-small"> <i class="fa fa-caret-down" aria-hidden="true"></i> </span> </a>
-
+              <ChangePasswordModal v-if="changePassword" @close="changePassword = false"></ChangePasswordModal>
               <!-- <router-link class="nav-item" to="">
               <span class="icon is-small"> <i class="fa fa-cog" aria-hidden="true"></i> </span>
               Settings
@@ -38,9 +38,17 @@
 </template>
 
 <script>
+import ChangePasswordModal from '@/components/ChangePasswordModal';
 export default {
   name: 'navbar',
-
+  components: {
+    ChangePasswordModal
+  },
+  data() {
+    return {
+      changePassword: false
+    }
+  }
 }
 </script>
 

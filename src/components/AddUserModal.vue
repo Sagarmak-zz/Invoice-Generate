@@ -32,14 +32,27 @@
                 </div>
               </div>
             </div>
-            <div class="column">
+          </div>
+          <div class="columns">
+            <div class="column gst">
               <div class="field">
                 <label class="label">GST Number</label>
                 <p class="control">
                   <input v-model="gst_no" class="input" name="gst_no" v-validate="'required'" type="text" placeholder="GST Number">
                 </p>
                 <div v-show="errors.has('gst_no')" class="help is-danger">
-                  The Contact Person Name is required.
+                  The GST Number is required.
+                </div>
+              </div>
+            </div>
+            <div class="column email">
+              <div class="field">
+                <label class="label">Email</label>
+                <p class="control">
+                  <input v-model="email" name="billemail" v-validate="'required|email'" type="email" placeholder="Email" class="input">
+                </p>
+                <div class="help is-danger" v-show="errors.has('billemail')">
+                  The Email is required and should be a valid Email address.
                 </div>
               </div>
             </div>
@@ -103,8 +116,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="columns">
             <div class="column">
               <div class="field">
                 <label class="label">Pincode</label>
@@ -113,17 +124,6 @@
                 </p>
                 <div class="help is-danger" v-show="errors.has('billpincode')">
                   The Pincode is required.
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div class="field">
-                <label class="label">Email</label>
-                <p class="control">
-                  <input v-model="billing.email" name="billemail" v-validate="'required|email'" type="email" placeholder="Email" class="input">
-                </p>
-                <div class="help is-danger" v-show="errors.has('billemail')">
-                  The Email is required and should be a valid Email address.
                 </div>
               </div>
             </div>
@@ -189,8 +189,6 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="columns">
             <div class="column">
               <div class="field">
                 <label class="label">Pincode</label>
@@ -198,17 +196,6 @@
                   <input v-model="shipping.pincode" name="shippincode" v-validate="'required'" type="text" placeholder="Pincode" class="input">
                 </p>
                 <div class="help is-danger" v-show="errors.has('shippincode')">
-                  The Email is required and should be a valid Email address.
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div class="field">
-                <label class="label">Email</label>
-                <p class="control">
-                  <input v-model="shipping.email" name="shipemail" v-validate="'required|email'" type="email" placeholder="Email" class="input">
-                </p>
-                <div class="help is-danger" v-show="errors.has('shipemail')">
                   The Email is required and should be a valid Email address.
                 </div>
               </div>
@@ -236,6 +223,7 @@ export default {
       firm_name: '',
       contact_person_name: '',
       gst_no: '',
+      email: '',
       billing: {
         address: '',
         city: '',
@@ -243,7 +231,6 @@ export default {
         pincode: '',
         mobile: null,
         landline: null,
-        email: ''
       },
       shipping: {
         address: '',
@@ -252,7 +239,6 @@ export default {
         pincode: '',
         mobile: null,
         landline: null,
-        email: ''
       },
       checkbox: ''
     };
@@ -278,7 +264,6 @@ export default {
       this.shipping.city = this.billing.city;
       this.shipping.state = this.billing.state;
       this.shipping.pincode = this.billing.pincode;
-      this.shipping.email = this.billing.email;
     }
   },
 }
@@ -296,12 +281,19 @@ export default {
   // .discount {
   //   padding: 1rem;
   // }
+  .column.gst {
+    padding-top: 0;
+  }
+  .column.email {
+    padding-top: 0;
+  }
   .title.billing {
     border-top: solid 1px #ddd;
     border-bottom: solid 1px #ddd;
     padding-left: 1.5rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+    margin-bottom: 0;
   }
   .shipping {
     display: flex;
@@ -313,6 +305,9 @@ export default {
     padding-right: 1.6rem;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+    .title {
+      margin: 0;
+    }
   }
   .columns {
     margin: 0;

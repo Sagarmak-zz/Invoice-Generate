@@ -14,90 +14,32 @@
               <div class="field">
                 <label class="label">Product Name</label>
                 <p class="control">
-                  <input v-model="firm_name" class="input" name="firm_name" v-validate="'required'" type="text" placeholder="Name">
+                  <input v-model="product_name" class="input" name="product_name" v-validate="'required'" type="text" placeholder="Name">
                 </p>
-                <div v-show="errors.has('firm_name')" class="help is-danger">
-                  The Firm Name is required.
+                <div v-show="errors.has('product_name')" class="help is-danger">
+                  The Product Name is required.
                 </div>
               </div>
             </div>
             <div class="column">
               <div class="field">
-                <label class="label">Contact Person Name</label>
+                <label class="label">HSN Code</label>
                 <p class="control">
-                  <input v-model="contact_person_name" class="input" name="cp_name" v-validate="'required'" type="email" placeholder="Contact Person Name">
+                  <input v-model="hsn_code" class="input" name="hsn_code" v-validate="'required'" type="email" placeholder="Contact Person Name">
                 </p>
-                <div v-show="errors.has('cp_name')" class="help is-danger">
-                  The Contact Person Name is required.
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column">
-              <div class="field">
-                <label class="label">Address</label>
-                <p class="control">
-                  <textarea v-model="address" name="address" v-validate="'required'" class="textarea" placeholder="Address"></textarea>
-                </p>
-                <div v-show="errors.has('address')" class="help is-danger">
-                  The Temporary Address is a required field with minimum of 10 letters.
+                <div v-show="errors.has('hsn_code')" class="help is-danger">
+                  The HSN Code is required.
                 </div>
               </div>
             </div>
             <div class="column">
               <div class="field">
-                <label class="label">Contact No(Mobile)</label>
+                <label class="label">Price</label>
                 <p class="control">
-                  <input v-model="mobile" name="mobile_no" v-validate="'required|numeric|min:8'" type="number" placeholder="Contact No" class="input">
+                  <input v-model="price" class="input" name="price" v-validate="'required'" type="text" placeholder="Contact Person Name">
                 </p>
-                <div class="help is-danger" v-show="errors.has('mobile_no')">
-                  The Contact Number field is required and should contain at least 8 numeric values.
-                </div>
-              </div>
-              <div class="field">
-                <label class="label">Contact No(Landline)</label>
-                <p class="control">
-                  <input v-model="landline" name="landline_no" v-validate="'required|numeric|min:8'" type="number" placeholder="Contact No" class="input">
-                </p>
-                <div class="help is-danger" v-show="errors.has('landline_no')">
-                  The Contact Number field is required and should contain at least 8 numeric values.
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="columns">
-            <div class="column">
-              <div class="field">
-                <label class="label">State</label>
-                <p class="control">
-                  <input v-model="state" class="input" name="state" v-validate="'required'" type="text" placeholder="State Dropdown">
-                </p>
-                <div v-show="errors.has('state')" class="help is-danger">
-                  The Firm Name is required.
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div class="field">
-                <label class="label">GST No</label>
-                <p class="control">
-                  <input v-model="gst_no" name="gst_no" v-validate="'required'" type="text" placeholder="GST NO" class="input">
-                </p>
-                <div class="help is-danger" v-show="errors.has('gst_no')">
-                  The Contact Number field is required and should contain at least 8 numeric values.
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div class="field">
-                <label class="label">Email</label>
-                <p class="control">
-                  <input v-model="email" name="email" v-validate="'required|email'" type="email" placeholder="Email" class="input">
-                </p>
-                <div class="help is-danger" v-show="errors.has('email')">
-                  The Email is required and should be a valid Email address.
+                <div v-show="errors.has('price')" class="help is-danger">
+                  The Price is required.
                 </div>
               </div>
             </div>
@@ -160,6 +102,11 @@ export default {
   }
   .modal-card {
     width: 1000px;
+  }
+  .modal-card-body {
+    .columns {
+      // padding-left: 1rem;
+    }
   }
   .modal-card-foot {
     display: flex;
