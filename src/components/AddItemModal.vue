@@ -107,11 +107,12 @@
               </div>
             </div>
           </div>
+
           <div class="discount">
             <div class="modal-head">
               <h3 class="title">Discount</h3>
             </div>
-            <div class="columns">
+            <div class="columns discount-modal">
               <div class="column">
                 <div :class="{'has-error': errors.has('drate') }">
                   <label class="label">Rate</label>
@@ -172,9 +173,19 @@
             <div class="modal-head">
               <h3 class="title">Taxes</h3>
             </div>
-            <div class="columns">
+            <div class="columns tag-title">
               <div class="column">
-                <h3 class="title is-4">CGST</h3>
+                <h3 class="title is-4 has-text-centered">CGST</h3>
+              </div>
+              <div class="column">
+                <h3 class="title is-4  has-text-centered">SGST</h3>
+              </div>
+              <div class="column">
+                <h3 class="title is-4  has-text-centered">IGST</h3>
+              </div>
+            </div>
+            <div class="columns taxes-billing">
+              <div class="column">
                 <div :class="{'has-error': errors.has('cgstRate') }">
                   <label class="label">Rate</label>
                   <div class="field has-addons">
@@ -211,7 +222,6 @@
                 </div>
               </div>
               <div class="column">
-                <h3 class="title is-4">SGST</h3>
                 <div :class="{'has-error': errors.has('sgstRate') }">
                   <label class="label">Rate</label>
                   <div class="field has-addons">
@@ -248,7 +258,6 @@
                 </div>
               </div>
               <div class="column">
-                <h3 class="title is-4">IGST</h3>
                 <div :class="{'has-error': errors.has('igstRate') }">
                   <label class="label">Rate</label>
                   <div class="field has-addons">
@@ -367,11 +376,18 @@ export default {
 <style lang="scss">
 .bill-modal {
   z-index: 1025;
+  .modal-card-body {
+    padding: 0;
+  }
   .column.flex {
     display: flex;
     .flex {
       width: 25rem;
     }
+  }
+  .main-det {
+    padding-left: 1rem;
+    padding-top: 1rem;
   }
   .icon.is-medium {
     margin-top: 2rem;
@@ -382,7 +398,25 @@ export default {
   // .discount {
   //   padding: 1rem;
   // }
+  .discount-modal {
+    padding-left: 1rem;
+    padding-top: 0.5rem;
+    // padding-right: 0;
+    margin: 0;
+    // padding-bottom: 0.5rem;
+    .column {
+      padding-top: 0;
+      padding-bottom: 0;
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+  .taxes-billing {
+    padding-left: 1rem;
+    padding-top: 0.5rem;
+  }
   .modal-head {
+    padding-left: 1rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
     border-top: solid 1px #ddd;
@@ -395,6 +429,15 @@ export default {
   .modal-card-foot {
     display: flex;
     justify-content: space-between;
+  }
+  .tag-title {
+    margin: 0;
+    .column {
+      padding-bottom: 0;
+      .title {
+        border-bottom: solid 1px #ddd;
+      }
+    }
   }
 }
 </style>
