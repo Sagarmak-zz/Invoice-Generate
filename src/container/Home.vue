@@ -45,6 +45,7 @@ export default {
 
 
   .app-main {
+    height: 100%;
     padding-left: 12rem;
     padding-top: 1rem;
     margin-right: 1rem;
