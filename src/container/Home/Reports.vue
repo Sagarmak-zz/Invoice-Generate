@@ -4,7 +4,7 @@
       <div class="head-report">
         <h3 class="title has-text-centered">Reports</h3>
       </div>
-
+      
       <div class="options">
         <div class="columns">
           <div class="column is-3 is-multiline">
@@ -13,7 +13,7 @@
               <p class="control">
                 <span class="select">
                   <select v-model="select">
-                    <!-- <option>Select dropdown</option> -->
+                    <option value=''>Select dropdown</option>
                     <option value="date">Date</option>
                     <option value="invoice_number">Invoice Number</option>
                     <option value="firm_name">Firm Name</option>
@@ -23,13 +23,13 @@
               </p>
             </div>
           </div>
-          <div class="column">
+          <div class="column is-5">
             <div class="date" v-if="select == 'date'">
               <div class="field">
                 <label class="label">Start Date</label>
                 <p class="control">
                   <datepicker v-model="date1" v-validate="'required'" placeholder="Select Start Date"
-                  :config="{ dateFormat: 'Y-m-d', mode: 'range' }" name="date" :class="{'input': true, 'is-danger': errors.has('date') }">
+                  :config="{ dateFormat: 'Y-m-d' }" name="date" :class="{'input': true, 'is-danger': errors.has('date') }">
                 </datepicker>
               </p>
             </div>
@@ -37,7 +37,7 @@
               <label class="label">End Date</label>
               <p class="control">
                 <datepicker v-model="date2" v-validate="'required'" placeholder="Select End Date"
-                :config="{ dateFormat: 'Y-m-d', mode: 'range' }" name="date" :class="{'input': true, 'is-danger': errors.has('date') }">
+                :config="{ dateFormat: 'Y-m-d' }" name="date" :class="{'input': true, 'is-danger': errors.has('date') }">
               </datepicker>
             </p>
           </div>
@@ -50,11 +50,7 @@
               name="inv_num" v-validate="'required'"
               type="text" placeholder="Invoice Number">
             </p>
-            <div v-show="errors.has('inv_num')" class="help is-danger">
-              The Invoice Number is required.
-            </div>
           </div>
-          <button class="button is-primary"> Generate Report </button>
         </div>
         <div class="firm_name" v-if="select == 'firm_name'">
           <div class="form">
@@ -64,11 +60,7 @@
               name="firm_name" v-validate="'required'"
               type="text" placeholder="Firm Name">
             </p>
-            <div v-show="errors.has('firm_name')" class="help is-danger">
-              The Firm Name is required.
-            </div>
           </div>
-          <button class="button is-primary"> Generate Report </button>
         </div>
         <div class="customer_name" v-if="select == 'customer_name'">
           <div class="form">
@@ -78,12 +70,11 @@
               name="cus_name" v-validate="'required'"
               type="text" placeholder="Customer Name">
             </p>
-            <div v-show="errors.has('cus_name')" class="help is-danger">
-              The Customer Name is required.
-            </div>
           </div>
-          <button class="button is-primary"> Generate Report </button>
         </div>
+      </div>
+      <div class="column is-2" v-if="select != ''">
+        <button class="button is-primary generate-report"> Generate Report </button>
       </div>
     </div>
   </div>
@@ -138,24 +129,40 @@ export default {
   .vbta-menu.visible {
     position: relative;
   }
+  .column.is-5 {
+    padding-right: 0;
+    width: 35%;
+  }
   .options {
     padding: 1rem;
     border-bottom: solid 1px #ddd;
+    .generate-report {
+      margin-top: 2rem;
+    }
     .column.is-3.is-multiline {
       padding-right: 0;
-      width: 18%;
+      width: 17%;
       border-right: solid 1px #ddd;
     }
     .date {
+      width: 25rem;
       display: flex;
+      align-items: center;
       justify-content: flex-start;
+      button {
+        margin-top: 2rem;
+      }
+      .field {
+        margin-bottom: 0;
+      }
       .control {
         padding-right: 0.5rem;
-        width: 13rem;
+        // width: 13rem;
         margin: 0;
       }
     }
     .invoice_number, .firm_name, .customer_name {
+      width: 25rem;
       display: flex;
       align-items: center;
       .form {

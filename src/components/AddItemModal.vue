@@ -26,7 +26,7 @@
                 </div>
                 <a @click="showItemModal = true" class="icon is-medium">
                   <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                  <ProductModal v-if="showItemModal" @close="showItemModal = false"></ProductModal>
+                  <AddProductModal v-if="showItemModal"></AddProductModal>
                 </a>
               </div>
               <div class="column">
@@ -310,11 +310,17 @@
 </template>
 
 <script>
-import ProductModal from '@/components/AddProductModal';
+import AddProductModal from '@/components/AddProductModal';
 export default {
   name: 'bill-modal',
   components: {
-    ProductModal
+    AddProductModal
+  },
+  created() {
+    this.$bus.$on('close', () => {
+      console.log('closessss');
+      this.showItemModal = false;
+    });
   },
   data() {
     return {
@@ -422,9 +428,8 @@ export default {
     padding-top: 0.5rem;
   }
   .modal-head {
+    padding: 0.5rem;
     padding-left: 1rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
     border-top: solid 1px #ddd;
     border-bottom: solid 1px #ddd;
     align-items: center;
@@ -439,10 +444,10 @@ export default {
   .tag-title {
     margin: 0;
     .column {
-      padding-bottom: 0;
-      .title {
-        border-bottom: solid 1px #ddd;
-      }
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      border-right: solid 1px #ddd;
+      border-bottom: solid 1px #ddd;
     }
   }
 }
