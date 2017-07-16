@@ -36,28 +36,24 @@
                       <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
                     </tr>
                     <tr>
-                      <tr>
-                        <td> Raj Enterprise</td>
-                        <td> Vikram Sharma </td>
-                        <td> 16, Usha Kiran Appartments, Near Krishna Baug Cross Roads, Maninagar, Ahmedabad, Gujarat
-                        </td>
-                        <td> AAAA0000A1Z5 </td>
-                        <td> 9898766604 - 07922168689 </td>
-                        <td> sagar1309@live.com </td>
-                        <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
-                      </tr>
+                      <td> Raj Enterprise</td>
+                      <td> Vikram Sharma </td>
+                      <td> 16, Usha Kiran Appartments, Near Krishna Baug Cross Roads, Maninagar, Ahmedabad, Gujarat
+                      </td>
+                      <td> AAAA0000A1Z5 </td>
+                      <td> 9898766604 - 07922168689 </td>
+                      <td> sagar1309@live.com </td>
+                      <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
                     </tr>
                     <tr>
-                      <tr>
-                        <td> Raj Enterprise</td>
-                        <td> Vikram Sharma </td>
-                        <td> 16, Usha Kiran Appartments, Near Krishna Baug Cross Roads, Maninagar, Ahmedabad, Gujarat
-                        </td>
-                        <td> AAAA0000A1Z5 </td>
-                        <td> 9898766604 - 07922168689 </td>
-                        <td> sagar1309@live.com </td>
-                        <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
-                      </tr>
+                      <td> Raj Enterprise</td>
+                      <td> Vikram Sharma </td>
+                      <td> 16, Usha Kiran Appartments, Near Krishna Baug Cross Roads, Maninagar, Ahmedabad, Gujarat
+                      </td>
+                      <td> AAAA0000A1Z5 </td>
+                      <td> 9898766604 - 07922168689 </td>
+                      <td> sagar1309@live.com </td>
+                      <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
                     </tr>
                   </tbody>
                 </table>

@@ -4,7 +4,7 @@
       <div class="head-report">
         <h3 class="title has-text-centered">Reports</h3>
       </div>
-      
+
       <div class="options">
         <div class="columns">
           <div class="column is-3 is-multiline">
@@ -79,6 +79,71 @@
     </div>
   </div>
 
+  <div class="reports-body">
+    <div class="tile is-ancestor">
+      <div class="tile is-parent">
+        <article class="tile is-child">
+          <!-- <h4 class="title">Products List</h4> -->
+          <div class="table-responsive">
+            <table class="table is-bordered is-striped is-narrow">
+              <thead>
+                <tr>
+                  <th>SR No</th>
+                  <th>Bill No</th>
+                  <th>Date</th>
+                  <th>Party Name</th>
+                  <th>Bill Amount</th>
+                  <th>CGST</th>
+                  <th>SGST</th>
+                  <th>IGST</th>
+                  <th>Total</th>
+                  <th>GST No</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>SW/17-18/0001</td>
+                  <td>1st April</td>
+                  <td>Raj Enterprise</td>
+                  <td>Rs 30,096.00</td>
+                  <td>Rs 250</td>
+                  <td>Rs 250</td>
+                  <td>Rs 1250</td>
+                  <td>Rs 31,500</td>
+                  <td>ABC123456Z</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>SW/17-18/0001</td>
+                  <td>1st April</td>
+                  <td>Raj Enterprise</td>
+                  <td>Rs 30,096.00</td>
+                  <td>Rs 250</td>
+                  <td>Rs 250</td>
+                  <td>Rs 1250</td>
+                  <td>Rs 31,500</td>
+                  <td>ABC123456Z</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>SW/17-18/0001</td>
+                  <td>1st April</td>
+                  <td>Raj Enterprise</td>
+                  <td>Rs 30,096.00</td>
+                  <td>Rs 250</td>
+                  <td>Rs 250</td>
+                  <td>Rs 1250</td>
+                  <td>Rs 31,500</td>
+                  <td>ABC123456Z</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </article>
+      </div>
+    </div>
+  </div>
 
   <div>
     <pre>
@@ -172,6 +237,12 @@ export default {
         margin-top: 2rem;
       }
     }
+  }
+  .reports-body {
+    padding: 1rem;
+  }
+  .tile.is-parent {
+    padding-bottom: 0;
   }
   .practise {
     padding: 1rem;

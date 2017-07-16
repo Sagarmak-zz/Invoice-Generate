@@ -2,12 +2,16 @@
   <div class="bill">
     <div class="box">
       <div class="head">
-        <h3 class="title">Generate Bill</h3>
+        <h3 class="title has-text-centered">Generate Bill</h3>
       </div>
 
-      <form @submit.prevent="validateBeforeSubmit" v-if="!formSubmitted">
-        <!-- part 1 -->
-        <div class="head-form">
+      <div class="form">
+        <div class="form-head">
+          <h3 class="title">Heading</h3>
+          <button class="button is-primary" @click="head_form = true" v-if="!head_form">Show</button>
+          <button class="button" @click="head_form = false" v-if="head_form">Hide</button>
+        </div>
+        <div class="form-body" v-if="head_form">
           <div class="columns">
             <div class="column">
               <div :class="{'has-error': errors.has('name') }">
@@ -52,7 +56,7 @@
             </div>
           </div>
         </div>
-      </form>
+      </div>
 
       <!-- part-2 -->
       <div class="main-details">
@@ -193,7 +197,8 @@ export default {
       finaligst: 0,
       totalInvoiceAmount: 0,
       length: null,
-      showAddUserModal: false
+      showAddUserModal: false,
+      head_form: false
     }
   },
   methods: {
@@ -246,8 +251,20 @@ export default {
     border-bottom: solid 1px #ddd;
   }
 
-  .head-form {
-    padding: 1rem;
+  .form {
+    .form-head {
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      .title {
+        margin: 0;
+      }
+    }
+    .form-body {
+      padding: 1rem;
+      border-top: solid 1px #ddd;
+    }
   }
 
   .control.is-mobile {
