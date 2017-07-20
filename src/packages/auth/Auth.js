@@ -5,7 +5,13 @@ export default {
   },
   //get token
   getToken() {
-    return window.localStorage.getItem('token');
+    var token = window.localStorage.getItem('token');
+    if(!token) {
+      return null
+    }
+    else {
+      return token;
+    }
   },
   //destroy token
   destroyToken() {
