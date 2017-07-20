@@ -15,9 +15,9 @@
 </template>
 
 <script>
+import Auth from '@/packages/auth/Auth.js';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
-import Auth from '@/packages/auth/Auth.js';
 
 export default {
   name: 'home',

@@ -65,7 +65,6 @@ import Auth from '@/packages/auth/Auth.js';
 export default {
   name: 'login',
 
-
   beforeRouteEnter (to, from, next) {
     // called before the route that renders this component is confirmed.
     // does NOT have access to `this` component instance,
@@ -94,7 +93,6 @@ export default {
       })
       .then((response) => {
         Auth.setToken(response.data.token);
-        console.log('welcome');
         window.location.href='/home';
       })
       .catch((error) => {
