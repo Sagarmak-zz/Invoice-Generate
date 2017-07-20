@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+import Auth from '@/packages/auth/Auth.js';
 export default {
   name: 'login',
   data() {
@@ -70,11 +72,22 @@ export default {
   },
   methods: {
     redirect() {
-      this.$router.push({name: 'Dashboard'})
-      let toast = this.$toasted.success("Welcome back, User", {
-        theme: "outline",
-        position: "top-center",
-        duration : 3000
+      axios.post('http://127.0.0.1:8000/login/', {
+        email: this.email,
+        password: this.password
+      })
+      .then((response) => {
+        Auth.setToken(response.data.token);
+        console.log('welcome');
+        window.location.href='/home';
+      })
+      .catch((error) => {
+        // console.log(error.response.statusText);
+        // let toast = this.$toasted.error(error.response.statusText, {
+        //   theme: "outline",
+        //   position: "bottom-center",
+        //   duration : 3000
+        // });
       });
     }
   }

@@ -57,90 +57,91 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <!-- part-2 -->
-      <div class="main-details">
-        <h3 class="title">Main Details</h3>
-        <a class="button is-primary" @click="showAddItemModal = true">Add</a>
-        <AddItemModal @close="showAddItemModal = false" v-if="showAddItemModal"></AddItemModal>
+    <!-- part-2 -->
+    <div class="main-details">
+      <h3 class="title">Main Details</h3>
+      <a class="button is-primary" @click="showAddItemModal = true">Add</a>
+      <AddItemModal @close="showAddItemModal = false" v-if="showAddItemModal"></AddItemModal>
+    </div>
+
+    <div class="table" v-if="dataIsHere">
+      <!-- part-1 -->
+      <div class="columns box">
+        <div class="column sr-no1">SR</div>
+        <div class="column particulars1">Particulars</div>
+        <div class="column discount1">Discount</div>
+        <div class="column cgst">CGST</div>
+        <div class="column sgst">SGST</div>
+        <div class="column igst">IGST</div>
+        <div class="column edit-delete1"></div>
       </div>
 
-      <div class="table" v-if="dataIsHere">
-        <!-- part-1 -->
-        <div class="columns box">
-          <div class="column sr-no1">SR</div>
-          <div class="column particulars1">Particulars</div>
-          <div class="column discount1">Discount</div>
-          <div class="column cgst">CGST</div>
-          <div class="column sgst">SGST</div>
-          <div class="column igst">IGST</div>
-          <div class="column edit-delete1"></div>
-        </div>
-
-        <div class="columns box">
-          <div class="column sr-no"></div>
-          <div class="column particulars"></div>
-          <div class="column size">Size</div>
-          <div class="column qty">Qty</div>
-          <div class="column rate">Rate</div>
-          <div class="column amount">Amount</div>
-          <div class="column rate">Rate</div>
-          <div class="column amount">Amount</div>
-          <div class="column amount">Total</div>
-          <div class="column rate">Rate</div>
-          <div class="column amount">Amount</div>
-          <div class="column rate">Rate</div>
-          <div class="column amount">Amount</div>
-          <div class="column rate">Rate</div>
-          <div class="column amount">Amount</div>
-          <div class="column edit-delete"></div>
-        </div>
-
-        <div class="columns box" v-for="data,index in dataArr">
-          <div class="column sr-no">{{data.srno}}</div>
-          <div class="column particulars">{{data.particulars}} - {{data.hsncode}}</div>
-          <div class="column size">{{data.size}}</div>
-          <div class="column qty">{{data.quantity}}</div>
-          <div class="column rate">{{data.rate}}</div>
-          <div class="column amount">{{data.amount}}</div>
-          <div class="column rate">{{data.discRate}}</div>
-          <div class="column amount">{{data.discAmount}}</div>
-          <div class="column amount">{{data.discTaxamount}}</div>
-          <div class="column rate">{{data.cgstRate}}</div>
-          <div class="column amount">{{data.cgstAmount}}</div>
-          <div class="column rate">{{data.sgstRate}}</div>
-          <div class="column amount">{{data.sgstAmount}}</div>
-          <div class="column rate">{{data.igstRate}}</div>
-          <div class="column amount">{{data.igstAmount}}</div>
-          <!-- Edit -->
-          <div class="column sr-no edit"><EditBillModal :key="data.srno-1" :data="data"></EditBillModal></div>
-          <!-- Delete -->
-          <div class="column sr-no"><a @click="deleteItem(data.srno-1)" class="icon is-small">
-            <i class="fa fa-times-circle" aria-hidden="true"></i> </a></div>
-
-          </div>
-        </div>
-
-        <div class="additional-details" v-if="dataIsHere">
-          <div class="is-pulled-right">Total Taxable Amount: <strong>&#8377; {{totalTaxableAmount}}</strong></div> <br>
-          <div class="is-pulled-right">CGST: <strong>&#8377; {{finalcgst}}</strong></div> <br>
-          <div class="is-pulled-right">SGST: <strong>&#8377; {{finalsgst}}</strong></div> <br>
-          <div class="is-pulled-right">IGST: <strong>&#8377; {{finaligst}}</strong></div> <br>
-          <div class="is-pulled-right">Total Invoice Value: <strong>&#8377; {{totalInvoiceAmount}}</strong></div>
-        </div>
-
-        <div class="field submit-btn" v-if="dataIsHere">
-          <p>
-            <button @click="validateBeforeSubmit" class="button is-success submit-button">
-              Submit
-            </button>
-            <!-- <pre>
-            {{$dynamicArr}}
-          </pre> -->
-        </p>
+      <div class="columns box">
+        <div class="column sr-no"></div>
+        <div class="column particulars"></div>
+        <div class="column size">Size</div>
+        <div class="column qty">Qty</div>
+        <div class="column rate">Rate</div>
+        <div class="column amount">Amount</div>
+        <div class="column rate">Rate</div>
+        <div class="column amount">Amount</div>
+        <div class="column amount">Total</div>
+        <div class="column rate">Rate</div>
+        <div class="column amount">Amount</div>
+        <div class="column rate">Rate</div>
+        <div class="column amount">Amount</div>
+        <div class="column rate">Rate</div>
+        <div class="column amount">Amount</div>
+        <div class="column edit-delete"></div>
       </div>
+
+      <div class="columns box" v-for="data,index in dataArr">
+        <div class="column sr-no">{{data.srno}}</div>
+        <div class="column particulars">{{data.particulars}} - {{data.hsncode}}</div>
+        <div class="column size">{{data.size}}</div>
+        <div class="column qty">{{data.quantity}}</div>
+        <div class="column rate">{{data.rate}}</div>
+        <div class="column amount">{{data.amount}}</div>
+        <div class="column rate">{{data.discRate}}</div>
+        <div class="column amount">{{data.discAmount}}</div>
+        <div class="column amount">{{data.discTaxamount}}</div>
+        <div class="column rate">{{data.cgstRate}}</div>
+        <div class="column amount">{{data.cgstAmount}}</div>
+        <div class="column rate">{{data.sgstRate}}</div>
+        <div class="column amount">{{data.sgstAmount}}</div>
+        <div class="column rate">{{data.igstRate}}</div>
+        <div class="column amount">{{data.igstAmount}}</div>
+        <!-- Edit -->
+        <div class="column sr-no edit"><EditBillModal :key="data.srno-1" :data="data"></EditBillModal></div>
+        <!-- Delete -->
+        <div class="column sr-no"><a @click="deleteItem(data.srno-1)" class="icon is-small">
+          <i class="fa fa-times-circle" aria-hidden="true"></i> </a></div>
+
+        </div>
+      </div>
+
+      <div class="additional-details" v-if="dataIsHere">
+        <div class="is-pulled-right">Total Taxable Amount: <strong>&#8377; {{totalTaxableAmount}}</strong></div> <br>
+        <div class="is-pulled-right">CGST: <strong>&#8377; {{finalcgst}}</strong></div> <br>
+        <div class="is-pulled-right">SGST: <strong>&#8377; {{finalsgst}}</strong></div> <br>
+        <div class="is-pulled-right">IGST: <strong>&#8377; {{finaligst}}</strong></div> <br>
+        <div class="is-pulled-right">Total Invoice Value: <strong>&#8377; {{totalInvoiceAmount}}</strong></div>
+      </div>
+
+      <div class="field submit-btn" v-if="dataIsHere">
+        <p>
+          <button @click="validateBeforeSubmit" class="button is-success submit-button">
+            Submit
+          </button>
+          <!-- <pre>
+          {{$dynamicArr}}
+        </pre> -->
+      </p>
     </div>
   </div>
+</div>
 </template>
 
 <script>

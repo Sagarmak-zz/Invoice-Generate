@@ -17,6 +17,7 @@
 <script>
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
+import Auth from '@/packages/auth/Auth.js';
 
 export default {
   name: 'home',
@@ -24,14 +25,22 @@ export default {
     Navbar,
     Sidebar
   },
+  created() {
+    let toast = this.$toasted.success('Welcome!', {
+      theme: "outline",
+      position: "top-center",
+      duration : 3000
+    });
+  },
   methods: {
     logout() {
-      this.$router.push({name: 'Login'})
+      Auth.destroyToken();
       let toast = this.$toasted.show("Successfully Logged Out!", {
         theme: "outline",
         position: "top-center",
         duration : 3000
       });
+      this.$router.push({name: 'Login'});
     }
   }
 }

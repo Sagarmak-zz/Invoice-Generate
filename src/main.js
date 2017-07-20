@@ -6,12 +6,14 @@ import VeeValidate from 'vee-validate'
 import Toasted from 'vue-toasted';
 import n2w from 'number-to-words';
 import Autocomplete from 'vue-bulma-typeahead'
+import Auth from '@/packages/auth/Auth.js'
 
 Vue.config.productionTip = false;
-Vue.use(VeeValidate)
-Vue.use(Toasted)
+Vue.use(VeeValidate);
+Vue.use(Toasted);
 Vue.use(n2w);
-Vue.use(Autocomplete)
+Vue.use(Autocomplete);
+Vue.use(Auth);
 Vue.prototype.$bus = new Vue();
 
 /* eslint-disable no-new */
