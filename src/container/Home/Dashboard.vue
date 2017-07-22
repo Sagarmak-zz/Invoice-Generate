@@ -385,20 +385,38 @@
         </div>
       </div>
 
+      <pre>
+
+        {{json}}
+
+      </pre>
 
     </div>
   </div>
 </template>
 
 <script>
-import Chartist from 'vue-bulma-chartist'
+import Chartist from 'vue-bulma-chartist';
+import jwtDecode from 'jwt-decode';
+import Auth from '@/packages/auth/Auth.js';
+import api from '@/api/main';
 export default {
   name: 'dashboard',
   components: {
     Chartist
   },
+  created() {
+    api.userDetails()
+    .then((response) => {
+      this.json = response.data;
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  },
   data () {
     return {
+      json: {},
       //daily
       series: [
         [12, 9, 7, 8, 5],

@@ -34,7 +34,7 @@
                       </span>
                     </p>
                     <p class="control has-icon has-icon-right">
-                      <input v-model="password" class="input password-input" type="password" placeholder="●●●●●●●">
+                      <input @keyup.enter="redirect" v-model="password" class="input password-input" type="password" placeholder="●●●●●●●">
                       <span class="icon user">
                         <i class="fa fa-lock"></i>
                       </span>
@@ -60,8 +60,9 @@
 </template>
 
 <script>
-import axios from 'axios';
 import Auth from '@/packages/auth/Auth.js';
+import api from '@/api/main.js';
+
 export default {
   name: 'login',
 
@@ -87,21 +88,18 @@ export default {
   },
   methods: {
     redirect() {
-      axios.post('http://127.0.0.1:8000/login/', {
-        email: this.email,
-        password: this.password
-      })
+      api.login(this.email, this.password)
       .then((response) => {
         Auth.setToken(response.data.token);
         window.location.href='/home';
       })
       .catch((error) => {
-        // console.log(error.response.statusText);
-        // let toast = this.$toasted.error(error.response.statusText, {
-        //   theme: "outline",
-        //   position: "bottom-center",
-        //   duration : 3000
-        // });
+        console.log(error.response.statusText);
+        let toast = this.$toasted.error(error.response.statusText, {
+          theme: "outline",
+          position: "bottom-center",
+          duration : 3000
+        });
       });
     }
   }

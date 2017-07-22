@@ -1,7 +1,7 @@
 import axios from 'axios';
 import Auth from '../auth/Auth.js';
 // import confrg from 'config';
-import config from '../config.js';
+import config from '@/config.js';
 
 
 let axiosInstance = axios.create({
