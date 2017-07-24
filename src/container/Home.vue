@@ -16,23 +16,48 @@
 
 <script>
 import Auth from '@/packages/auth/Auth.js';
+import api from '@/api/main';
 import Navbar from '@/components/Navbar';
 import Sidebar from '@/components/Sidebar';
 
 export default {
   name: 'home',
-  components: {
-    Navbar,
-    Sidebar
+  data() {
+    return {
+      data: { },
+      username: ''
+    };
   },
   created() {
-    let toast = this.$toasted.success('Welcome!', {
-      theme: "outline",
-      position: "top-center",
-      duration : 3000
-    });
+    this.callUser();
   },
   methods: {
+    callUser() {
+      api.userDetails()
+      .then((response) => {
+        // assign data to data
+        this.data = response.data;
+        this.username = response.data.username;
+        // prints the welcome + username
+        let toast = this.$toasted.success('Welcome, ' + this.username + '!', {
+          theme: "outline",
+          position: "top-center",
+          duration : 3000
+        });
+      })
+      .catch((error) => {
+        console.log('error');
+        console.log(error.response.status);
+        console.log(error.response.statusText);
+        if(error.response.status == 500) {
+          let toast = this.$toasted.error("Please Logout and come back again to continue!", {
+            theme: "outline",
+            position: "top-center",
+            duration : 3000
+          });
+        }
+      })
+    },
     logout() {
       Auth.destroyToken();
       let toast = this.$toasted.show("Successfully Logged Out!", {
@@ -42,7 +67,11 @@ export default {
       });
       this.$router.push({name: 'Login'});
     }
-  }
+  },
+  components: {
+    Navbar,
+    Sidebar
+  },
 }
 </script>
 

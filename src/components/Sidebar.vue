@@ -30,7 +30,6 @@ export default {
 
 <style lang="scss">
 .sidebar {
-
   .app-sidebar {
     position: fixed;
     top: 50px;

@@ -387,7 +387,7 @@
 
       <pre>
 
-        {{json}}
+        <!-- {{json}} -->
 
       </pre>
 
@@ -397,7 +397,6 @@
 
 <script>
 import Chartist from 'vue-bulma-chartist';
-import jwtDecode from 'jwt-decode';
 import Auth from '@/packages/auth/Auth.js';
 import api from '@/api/main';
 export default {
@@ -406,13 +405,6 @@ export default {
     Chartist
   },
   created() {
-    api.userDetails()
-    .then((response) => {
-      this.json = response.data;
-    })
-    .catch((error) => {
-      console.log(error);
-    })
   },
   data () {
     return {
