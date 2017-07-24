@@ -149,7 +149,9 @@
           <div class="items" v-for="state in states">
             <span class="code">{{state.state_code}}</span>
             <span class="name">{{state.state_name}}</span>
-            <a @click="deleteState(state.state_code)" class="icon is-small"> <i class="fa fa-trash-o"></i> </a>
+            <div class="icons">
+              <a @click="deleteState(state.state_code)" class="icon is-small"> <i class="fa fa-trash-o"></i> </a>
+            </div>
           </div>
         </div>
         <div class="foot">
@@ -176,6 +178,7 @@
 import api from '@/api/main';
 import StateDropdown from '@/components/StateDropdown';
 import AdminDetailsUpdateModal from '@/components/AdminDetailsUpdateModal';
+import EditStateBox from '@/components/EditStateBox';
 export default {
   name: 'settings',
   data() {
@@ -195,7 +198,8 @@ export default {
       code: '',
       name: '',
       newStateId: null,
-      showAdminDetailsModal: false
+      showAdminDetailsModal: false,
+      udapteStateModal: false
     };
   },
   created() {
@@ -300,13 +304,30 @@ export default {
         console.log(error);
       })
     },
+    // updateState() {
+    //   api.updateState(code, state_name)
+    //   .then((response) => {
+    //     if(response.status == 200) {
+    //       this.callStates();
+    //       let toast = this.$toasted.success("State Deleted Successfully!", {
+    //         theme: "outline",
+    //         position: "top-center",
+    //         duration : 3000
+    //       });
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //   })
+    // },
     validate() {
       return this.$validator.validateAll();
     },
   },
   components: {
     StateDropdown,
-    AdminDetailsUpdateModal
+    AdminDetailsUpdateModal,
+    EditStateBox
   }
 }
 </script>
@@ -374,6 +395,11 @@ export default {
         width: 6%;
       }
     }
+  }
+
+  .icons {
+    display: flex;
+    align-items: center;
   }
 
   .field.is-grouped {

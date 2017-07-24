@@ -31,22 +31,54 @@ export default {
     });
   },
 
-  //states
-  getState() {
-    return HTTP.get('/getStates');
+  //customer
+  getCustomer() {
+    return HTTP.get('/getCustomer');
   },
 
-  addState(state_code, state_name) {
-    return HTTP.post('/addState', {
-      state_code: state_code,
-      state_name: state_name
-    })
-  },
+  createCustomer(name, person_name, email, gst_number,
+    bill_address, bill_city, bill_state_code, bill_pincode, billing_mobile_number, billing_landline_number,
+    ship_address, ship_city, ship_state_code, ship_pincode, shipping_mobile_number, shipping_landline_number) {
+      return HTTP.post('/createCustomer', {
+        name: name,
+        person_name: person_name,
+        email: email,
+        gst_number: gst_number,
+        bill_address: bill_address,
+        bill_city: bill_city,
+        bill_state_code: bill_state_code,
+        bill_pincode: bill_pincode,
+        ship_address: ship_address,
+        ship_city: ship_city,
+        ship_state_code: ship_state_code,
+        ship_pincode: ship_pincode
+      });
+    },
 
-  deleteState(state_code) {
-    console.log(state_code);
-    // /deleteState/{state_code}
-    return HTTP.delete('/deleteState/' + state_code);
+    //states
+    getState() {
+      return HTTP.get('/getStates');
+    },
+
+    addState(state_code, state_name) {
+      return HTTP.post('/addState', {
+        state_code: state_code,
+        state_name: state_name
+      })
+    },
+
+    updateState(state_code, state_name) {
+      let url = '/updateState' + state_code;
+      return HTTP.patch(url, {
+        state_code: state_code,
+        state_name: state_name
+      })
+    },
+
+    deleteState(state_code) {
+      console.log(state_code);
+      // /deleteState/{state_code}
+      return HTTP.delete('/deleteState/' + state_code);
+    }
+
   }
-
-}

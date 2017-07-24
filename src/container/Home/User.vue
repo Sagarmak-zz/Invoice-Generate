@@ -1,11 +1,11 @@
 <template lang="html">
   <div class="add-user">
     <div class="box">
-      <div class="head-user has-text-centered">
-        <h3 class="button title" @click="showAddUserModal = !showAddUserModal">Users</h3>
-        <!-- <button class="button is-primary is-pulled-right" v-if="!showAddUserModal" @click="showAddUserModal = true">Add</button> -->
+      <div class="head-user">
+        <h3 class="title">Users</h3>
+        <button class="button is-primary is-pulled-right" v-if="!showAddUserModal" @click="showAddUserModal = true">Add</button>
+        <button class="button" v-if="showAddUserModal" @click="showAddUserModal = false">Hide</button>
       </div>
-      <!-- <button class="button" v-if="showAddUserModal" @click="showAddUserModal = false">Hide</button> -->
       <!-- <AddUserModal @close="showAddUserModal = false" v-if="showAddUserModal"></AddUserModal> -->
       <div v-if="showAddUserModal">
         <div class="columns">
@@ -108,7 +108,8 @@
             <div class="field">
               <label class="label">State</label>
               <p class="control">
-                <input v-model="billing.state" class="input" name="billstate" v-validate="'required'" type="text" placeholder="State Dropdown">
+                <!-- <input v-model="billing.state" class="input" name="billstate" v-validate="'required'" type="text" placeholder="State Dropdown"> -->
+                <StateDropdown1></StateDropdown1>
               </p>
               <div v-show="errors.has('billstate')" class="help is-danger">
                 The State is required.
@@ -119,7 +120,7 @@
             <div class="field">
               <label class="label">Pincode</label>
               <p class="control">
-                <input v-model="billing.pincode" name="billpincode" v-validate="'required'" type="text" placeholder="Pincode" class="input">
+                <input v-model="billing.pincode" name="billpincode" v-validate="'required'" type="number" placeholder="Pincode" class="input">
               </p>
               <div class="help is-danger" v-show="errors.has('billpincode')">
                 The Pincode is required.
@@ -181,7 +182,8 @@
             <div class="field">
               <label class="label">State</label>
               <p class="control">
-                <input v-model="shipping.state" class="input" name="shipstate" v-validate="'required'" type="text" placeholder="State Dropdown">
+                <!-- <input v-model="shipping.state" class="input" name="shipstate" v-validate="'required'" type="text" placeholder="State Dropdown"> -->
+                <StateDropdown2></StateDropdown2>
               </p>
               <div v-show="errors.has('shipstate')" class="help is-danger">
                 The State is required.
@@ -192,7 +194,7 @@
             <div class="field">
               <label class="label">Pincode</label>
               <p class="control">
-                <input v-model="shipping.pincode" name="shippincode" v-validate="'required'" type="text" placeholder="Pincode" class="input">
+                <input v-model="shipping.pincode" name="shippincode" v-validate="'required'" type="number" placeholder="Pincode" class="input">
               </p>
               <div class="help is-danger" v-show="errors.has('shippincode')">
                 The Email is required and should be a valid Email address.
@@ -201,7 +203,7 @@
           </div>
         </div>
         <div class="button-form">
-          <a class="button is-primary">Save changes</a>
+          <a @click="validateAndAddCustomer()" class="button is-primary">Save</a>
         </div>
       </div>
 
@@ -214,49 +216,24 @@
                 <table class="table is-bordered is-striped is-narrow">
                   <thead>
                     <tr>
-                      <th>Name</th>
+                      <th>Firm Name</th>
                       <th>Contact Person Name</th>
-                      <th>Address</th>
                       <th>GST</th>
-                      <th>Mobile No-Landline No</th>
                       <th>Email</th>
+                      <th>Address</th>
+                      <th>Mobile No-Landline No</th>
                       <th>Edit</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td> Raj Enterprise</td>
-                      <td> Vikram Sharma </td>
-                      <td> 16, Usha Kiran Appartments, Near Krishna Baug Cross Roads, Maninagar, Ahmedabad, Gujarat
-                      </td>
-                      <td> AAAA0000A1Z5 </td>
-                      <td> 9898766604 - 07922168689 </td>
-                      <td> sagar1309@live.com </td>
+                    <tr v-for="customer in customers">
+                      <td>{{customer.name}}</td>
+                      <td>{{customer.person_name}}</td>
+                      <td>{{customer.gst_number}}</td>
+                      <td>{{customer.email}}</td>
+                      <td>{{customer.billing_address}}</td>
+                      <td> {{customer.billing_mobile_number}} - {{customer.billing_landline_number}} </td>
                       <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
-                    </tr>
-                    <tr>
-                      <tr>
-                        <td> Raj Enterprise</td>
-                        <td> Vikram Sharma </td>
-                        <td> 16, Usha Kiran Appartments, Near Krishna Baug Cross Roads, Maninagar, Ahmedabad, Gujarat
-                        </td>
-                        <td> AAAA0000A1Z5 </td>
-                        <td> 9898766604 - 07922168689 </td>
-                        <td> sagar1309@live.com </td>
-                        <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
-                      </tr>
-                    </tr>
-                    <tr>
-                      <tr>
-                        <td> Raj Enterprise</td>
-                        <td> Vikram Sharma </td>
-                        <td> 16, Usha Kiran Appartments, Near Krishna Baug Cross Roads, Maninagar, Ahmedabad, Gujarat
-                        </td>
-                        <td> AAAA0000A1Z5 </td>
-                        <td> 9898766604 - 07922168689 </td>
-                        <td> sagar1309@live.com </td>
-                        <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
-                      </tr>
                     </tr>
                   </tbody>
                 </table>
@@ -270,11 +247,25 @@
 </template>
 
 <script>
+import api from '@/api/main';
 import AddUserModal from '@/components/AddUserModal';
+import StateDropdown1 from '@/components/StateDropdownCustomer1';
+import StateDropdown2 from '@/components/StateDropdownCustomer2';
 export default {
   name: 'add-user',
   components: {
-    AddUserModal
+    AddUserModal,
+    StateDropdown1,
+    StateDropdown2
+  },
+  created() {
+    this.$bus.$on('state-change1', (data) => {
+      this.billing.state_code = data.state_id;
+    });
+    this.$bus.$on('state-change2', (data) => {
+      this.shipping.state_code = data.state_id;
+    });
+    this.getCustomer();
   },
   data() {
     return {
@@ -286,7 +277,7 @@ export default {
       billing: {
         address: '',
         city: '',
-        state: '',
+        state_code: '',
         pincode: '',
         mobile: null,
         landline: null,
@@ -294,104 +285,167 @@ export default {
       shipping: {
         address: '',
         city: '',
-        state: '',
+        state_code: '',
         pincode: '',
         mobile: null,
         landline: null,
       },
       checkbox: '',
+      customers: []
     };
   },
   methods: {
-    same() {
-      this.shipping.address = this.billing.address;
-      this.shipping.mobile = this.billing.mobile;
-      this.shipping.landline = this.billing.landline;
-      this.shipping.city = this.billing.city;
-      this.shipping.state = this.billing.state;
-      this.shipping.pincode = this.billing.pincode;
+    getCustomer() {
+      api.getCustomer()
+      .then((response) => {
+        this.customers = response.data.Firms;
+        console.log(this.customers);
+      })
+      .catch((error) => {
+        console.log(error);
+      })
     },
-  },
-}
-</script>
+    validateAndAddCustomer() {
+      this.validate()
+      if (!this.errors.any()) {
+        if(this.dataIsHere == false) {
+          let toast = this.$toasted.error('Please fill in the details.', {
+            theme: "outline",
+            position: "bottom-center",
+            duration : 3000
+          });
+        }
+        else {
+          this.submitCustomer();
+        }
+      }
+      else {
+        let toast = this.$toasted.error('Please fill in the details.', {
+          theme: "outline",
+          position: "bottom-center",
+          duration : 3000
+        });
+      }
+    },
+    submitCustomer() {
+      api.createCustomer(this.firm_name, this.contact_person_name, this.email, this.gst_no,
+        this.billing.address, this.billing.city, this.billing.state_code, this.billing.pincode, this.billing.mobile, this.billing.landline,
+        this.shipping.address, this.shipping.city, this.shipping.state_code, this.shipping.pincode, this.shipping.mobile, this.shipping.landline)
+        .then((response) => {
+          if(response.status == 200) {
+            this.getCustomer();
+            let toast = this.$toasted.success("Customer Added Successfully!", {
+              theme: "outline",
+              position: "top-center",
+              duration : 3000
+            });
+            this.showAddUserModal = false;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          let toast = this.$toasted.error(error.response.data.message, {
+            theme: "outline",
+            position: "bottom-center",
+            duration : 3000
+          });
+        })
+      },
+      validate() {
+        return this.$validator.validateAll();
+      },
+      same() {
+        this.shipping.address = this.billing.address;
+        this.shipping.mobile = this.billing.mobile;
+        this.shipping.landline = this.billing.landline;
+        this.shipping.city = this.billing.city;
+        this.shipping.state_code = this.billing.state_code;
+        this.shipping.pincode = this.billing.pincode;
+      },
+    },
+  }
+  </script>
 
-<style lang="scss">
-.add-user {
-  .head-user {
-    border-bottom: solid 1px #ddd;
-    .title {
-      margin: 0;
-      border: none;
+  <style lang="scss">
+  .add-user {
+    .head-user {
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: solid 1px #ddd;
+      .title {
+        margin: 0;
+      }
     }
-  }
-  .reports {
-    // important
-    // border-top: solid 1px #ddd;
-    padding: 1rem;
-    overflow-x:scroll;
-    table-layout: inherit;
-  }
-
-  .column.gst {
-    padding-top: 0;
-  }
-  .column.email {
-    padding-top: 0;
-  }
-  .title.billing {
-    border-top: solid 1px #ddd;
-    border-bottom: solid 1px #ddd;
-    padding-left: 1.5rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    margin-bottom: 0;
-  }
-  .shipping {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-top: solid 1px #ddd;
-    border-bottom: solid 1px #ddd;
-    padding-left: 1.5rem;
-    padding-right: 1.6rem;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    .title {
-      margin: 0;
+    .reports {
+      // important
+      // border-top: solid 1px #ddd;
+      padding: 1rem;
+      overflow-x:scroll;
+      table-layout: inherit;
     }
-  }
 
-  .tile.is-parent {
-    padding-bottom: 0;
-  }
+    .column.gst {
+      padding-top: 0;
+    }
+    .column.email {
+      padding-top: 0;
+    }
+    .title.billing {
+      border-top: solid 1px #ddd;
+      border-bottom: solid 1px #ddd;
+      padding-left: 1.5rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      margin-bottom: 0;
+    }
+    .shipping {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: solid 1px #ddd;
+      border-bottom: solid 1px #ddd;
+      padding-left: 1.5rem;
+      padding-right: 1.6rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      .title {
+        margin: 0;
+      }
+    }
 
-  .columns {
-    margin: 0;
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  .modal-head {
-    padding-bottom: 1rem;
-    border-bottom: solid 1px #ddd;
-  }
-  .modal-card {
-    width: 1000px;
-  }
-  .modal-card-foot {
-    display: flex;
-    justify-content: space-between;
-  }
+    .tile.is-parent {
+      padding-bottom: 0;
+    }
 
-  .box {
-    padding: 0;
-  }
+    .columns {
+      margin: 0;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+    .modal-head {
+      padding-bottom: 1rem;
+      border-bottom: solid 1px #ddd;
+    }
+    .modal-card {
+      width: 1000px;
+    }
+    .modal-card-foot {
+      display: flex;
+      justify-content: space-between;
+    }
 
-  .button-form {
-    border-top: solid 1px #ddd;
-    border-bottom: solid 1px #ddd;
-    padding: 1rem;
-    padding-left: 1.7rem;
-  }
+    .box {
+      padding: 0;
+    }
 
-}
-</style>
+    .button-form {
+      border-top: solid 1px #ddd;
+      border-bottom: solid 1px #ddd;
+      padding: 1rem;
+      padding-left: 1.7rem;
+    }
+
+  }
+  </style>
