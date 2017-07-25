@@ -109,7 +109,7 @@
               <label class="label">State</label>
               <p class="control">
                 <!-- <input v-model="billing.state" class="input" name="billstate" v-validate="'required'" type="text" placeholder="State Dropdown"> -->
-                <StateDropdown1></StateDropdown1>
+                <StateDropdownNewCustomer1></StateDropdownNewCustomer1>
               </p>
               <div v-show="errors.has('billstate')" class="help is-danger">
                 The State is required.
@@ -183,7 +183,7 @@
               <label class="label">State</label>
               <p class="control">
                 <!-- <input v-model="shipping.state" class="input" name="shipstate" v-validate="'required'" type="text" placeholder="State Dropdown"> -->
-                <StateDropdown2></StateDropdown2>
+                <StateDropdownNewCustomer2></StateDropdownNewCustomer2>
               </p>
               <div v-show="errors.has('shipstate')" class="help is-danger">
                 The State is required.
@@ -233,7 +233,11 @@
                       <td>{{customer.email}}</td>
                       <td>{{customer.billing_address}}</td>
                       <td> {{customer.billing_mobile_number}} - {{customer.billing_landline_number}} </td>
-                      <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
+                      <td>
+                        <a class="icon">
+                        <EditCustomerDetailsModal :key="customer.id" :customer="customer"></EditCustomerDetailsModal>
+                        </a>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -249,20 +253,22 @@
 <script>
 import api from '@/api/main';
 import AddUserModal from '@/components/AddUserModal';
-import StateDropdown1 from '@/components/StateDropdownCustomer1';
-import StateDropdown2 from '@/components/StateDropdownCustomer2';
+import StateDropdownNewCustomer1 from '@/components/StateDropdownNewCustomer1';
+import StateDropdownNewCustomer2 from '@/components/StateDropdownNewCustomer2';
+import EditCustomerDetailsModal from '@/components/EditCustomerDetailsModal';
 export default {
   name: 'add-user',
   components: {
     AddUserModal,
-    StateDropdown1,
-    StateDropdown2
+    StateDropdownNewCustomer1,
+    StateDropdownNewCustomer2,
+    EditCustomerDetailsModal
   },
   created() {
-    this.$bus.$on('state-change1', (data) => {
+    this.$bus.$on('state-new-change1', (data) => {
       this.billing.state_code = data.state_id;
     });
-    this.$bus.$on('state-change2', (data) => {
+    this.$bus.$on('state-new-change2', (data) => {
       this.shipping.state_code = data.state_id;
     });
     this.getCustomer();
@@ -270,6 +276,8 @@ export default {
   data() {
     return {
       showAddUserModal: false,
+      editCustomerDetailsModal: false,
+      cusID: null,
       firm_name: '',
       contact_person_name: '',
       gst_no: '',
@@ -277,7 +285,7 @@ export default {
       billing: {
         address: '',
         city: '',
-        state_code: '',
+        state_code: null,
         pincode: '',
         mobile: null,
         landline: null,
@@ -285,7 +293,7 @@ export default {
       shipping: {
         address: '',
         city: '',
-        state_code: '',
+        state_code: null,
         pincode: '',
         mobile: null,
         landline: null,
@@ -299,7 +307,6 @@ export default {
       api.getCustomer()
       .then((response) => {
         this.customers = response.data.Firms;
-        console.log(this.customers);
       })
       .catch((error) => {
         console.log(error);
@@ -360,6 +367,7 @@ export default {
         this.shipping.landline = this.billing.landline;
         this.shipping.city = this.billing.city;
         this.shipping.state_code = this.billing.state_code;
+        this.$bus.$emit('state-change', {state: this.shipping.state_code});
         this.shipping.pincode = this.billing.pincode;
       },
     },

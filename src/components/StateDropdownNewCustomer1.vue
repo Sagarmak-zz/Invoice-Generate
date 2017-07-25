@@ -1,7 +1,7 @@
 <template lang="html">
   <div>
     <span class="select is-fullwidth">
-      <select v-validate="'required|not_in:null'" v-model="state_id = edit_code" @change="stateChange()" name="state">
+      <select v-validate="'required|not_in:null'" v-model="state_id" @change="stateChange()" name="state">
         <option value=null>Select dropdown</option>
         <option v-for="state in states" :value="state.state_code">{{state.state_code}} - {{state.state_name}}</option>
       </select>
@@ -20,21 +20,18 @@ export default {
   created() {
     this.callStates();
     this.code = this.stateCode;
-    this.edit_code = this.edit_ship_state_code;
   },
-  props: ['edit_ship_state_code'],
   data() {
     return {
       state_id: null,
       states: [],
       show: true,
       code: null,
-      edit_code: null
     };
   },
   methods: {
     stateChange() {
-      this.$bus.$emit('state-change2', { state_id: this.state_id });
+      this.$bus.$emit('state-new-change1', { state_id: this.state_id });
     },
     callStates() {
       api.getState()

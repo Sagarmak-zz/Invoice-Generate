@@ -39,6 +39,8 @@ export default {
   createCustomer(name, person_name, email, gst_number,
     bill_address, bill_city, bill_state_code, bill_pincode, billing_mobile_number, billing_landline_number,
     ship_address, ship_city, ship_state_code, ship_pincode, shipping_mobile_number, shipping_landline_number) {
+      // console.log(billing_mobile_number + '-' + billing_landline_number);
+      // console.log(shipping_mobile_number + '-' + shipping_landline_number);
       return HTTP.post('/createCustomer', {
         name: name,
         person_name: person_name,
@@ -48,10 +50,37 @@ export default {
         bill_city: bill_city,
         bill_state_code: bill_state_code,
         bill_pincode: bill_pincode,
+        billing_mobile_number: billing_mobile_number,
+        billing_landline_number: billing_landline_number,
         ship_address: ship_address,
         ship_city: ship_city,
         ship_state_code: ship_state_code,
-        ship_pincode: ship_pincode
+        ship_pincode: ship_pincode,
+        shipping_mobile_number: shipping_mobile_number,
+        shipping_landline_number: shipping_landline_number
+      });
+    },
+
+    updateCustomer(cus_id, name, person_name, gst_number, email,
+      bill_address, bill_city, bill_state_code, bill_pincode, billing_mobile_number, billing_landline_number,
+      ship_address, ship_city, ship_state_code, ship_pincode, shipping_mobile_number, shipping_landline_number) {
+      return HTTP.patch('/updateCustomer/' + cus_id, {
+        name: name,
+        person_name: person_name,
+        gst_number: gst_number,
+        email: email,
+        bill_address: bill_address,
+        bill_city: bill_city,
+        bill_state_code: bill_state_code,
+        bill_pincode: bill_pincode,
+        billing_mobile_number: billing_mobile_number,
+        billing_landline_number: billing_landline_number,
+        ship_address: ship_address,
+        ship_city: ship_city,
+        ship_state_code: ship_state_code,
+        ship_pincode: ship_pincode,
+        shipping_mobile_number: shipping_mobile_number,
+        shipping_landline_number: shipping_landline_number
       });
     },
 
