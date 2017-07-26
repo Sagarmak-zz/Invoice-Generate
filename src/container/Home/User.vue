@@ -211,7 +211,10 @@
         <div class="tile is-ancestor">
           <div class="tile is-parent">
             <article class="tile is-child">
-              <!-- <h4 class="title has-text-centered">Users List</h4> -->
+              <div class="user-head">
+                <h4 class="title">Customers List</h4>
+                <span>Total Customers: <b>{{customers.length}}</b></span>
+              </div>
               <div class="table-responsive">
                 <table class="table is-bordered is-striped is-narrow">
                   <thead>
@@ -235,7 +238,7 @@
                       <td> {{customer.billing_mobile_number}} - {{customer.billing_landline_number}} </td>
                       <td>
                         <a class="icon">
-                        <EditCustomerDetailsModal :key="customer.id" :customer="customer"></EditCustomerDetailsModal>
+                          <EditCustomerDetailsModal :key="customer.id" :customer="customer"></EditCustomerDetailsModal>
                         </a>
                       </td>
                     </tr>
@@ -453,6 +456,16 @@ export default {
       border-bottom: solid 1px #ddd;
       padding: 1rem;
       padding-left: 1.7rem;
+    }
+
+    .user-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      .title {
+        margin: 0;
+      }
     }
 
   }

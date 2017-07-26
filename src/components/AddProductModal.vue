@@ -14,7 +14,7 @@
               <div class="field">
                 <label class="label">Product Name</label>
                 <p class="control">
-                  <input class="input" name="product_name" v-validate="'required'" type="text" placeholder="Name">
+                  <input v-model="product_name" class="input" name="product_name" v-validate="'required'" type="text" placeholder="Name">
                 </p>
                 <div v-show="errors.has('product_name')" class="help is-danger">
                   The Product Name is required.
@@ -25,7 +25,7 @@
               <div class="field">
                 <label class="label">HSN Code</label>
                 <p class="control">
-                  <input class="input" name="hsn_code" v-validate="'required'" type="email" placeholder="Contact Person Name">
+                  <input v-model="hsn_code" class="input" name="hsn_code" v-validate="'required'" type="email" placeholder="Contact Person Name">
                 </p>
                 <div v-show="errors.has('hsn_code')" class="help is-danger">
                   The HSN Code is required.
@@ -36,7 +36,7 @@
               <div class="field">
                 <label class="label">Price</label>
                 <p class="control">
-                  <input class="input" name="price" v-validate="'required'" type="text" placeholder="Contact Person Name">
+                  <input v-model="product_price" class="input" name="price" v-validate="'required'" type="text" placeholder="Contact Person Name">
                 </p>
                 <div v-show="errors.has('price')" class="help is-danger">
                   The Price is required.
@@ -63,7 +63,9 @@ export default {
   },
   data() {
     return {
-
+      product_name: '',
+      hsn_code: '',
+      product_price: null,
     };
   },
   methods: {

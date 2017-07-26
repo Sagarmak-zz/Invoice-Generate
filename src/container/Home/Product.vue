@@ -3,56 +3,73 @@
     <div class="box">
       <div class="head-product">
         <h3 class="title">Add Product</h3>
-        <button class="button is-primary" @click="showAddProductModal = true">Add</button>
-        <AddProductModal @close="showAddProductModal = false" v-if="showAddProductModal"></AddProductModal>
+        <button class="button is-primary" v-if="!showAddProduct" @click="showAddProduct = true">Add</button>
+        <button class="button" v-if="showAddProduct" @click="showAddProduct = false">Hide</button>
+        <!-- <AddProductModal @close="showAddProductModal = false" v-if="showAddProductModal"></AddProductModal> -->
+      </div>
+      <div class="hide-seek-product" v-if="showAddProduct">
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Product Name</label>
+              <p class="control">
+                <input v-model="product_name" class="input" name="product_name" v-validate="'required'" type="text" placeholder="Product Name">
+              </p>
+              <div v-show="errors.has('product_name')" class="help is-danger">
+                The Product Name is required.
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">HSN Code</label>
+              <p class="control">
+                <input v-model="hsn_code" class="input" name="hsn_code" v-validate="'required'" type="email" placeholder="HSN Code">
+              </p>
+              <div v-show="errors.has('hsn_code')" class="help is-danger">
+                The HSN Code is required.
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Price</label>
+              <p class="control">
+                <input @click="validateBeforeSubmit()" v-model="product_price" class="input" name="price" v-validate="'required'" type="text" placeholder="Price">
+              </p>
+              <div v-show="errors.has('price')" class="help is-danger">
+                The Price is required.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="button-form">
+          <a @click="validateBeforeSubmit()" class="button is-primary">Save</a>
+        </div>
       </div>
       <div class="reports">
         <div class="tile is-ancestor">
           <div class="tile is-parent">
             <article class="tile is-child">
-              <h4 class="title">Products List</h4>
+              <div class="product-head">
+                <h4 class="title">Products List</h4>
+                <span>Total Products: <b>{{products.length}}</b></span>
+              </div>
               <div class="table-responsive">
                 <table class="table is-bordered is-striped is-narrow">
                   <thead>
                     <tr>
                       <th>Name</th>
                       <th>HSN Code</th>
-                      <th>Address</th>
-                      <th>GST</th>
-                      <th>Mobile No-Landline No</th>
-                      <th>Email</th>
+                      <th>Rate</th>
                       <th>Edit</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td> Raj Enterprise</td>
-                      <td> Vikram Sharma </td>
-                      <td> 16, Usha Kiran Appartments, Near Krishna Baug Cross Roads, Maninagar, Ahmedabad, Gujarat
-                      </td>
-                      <td> AAAA0000A1Z5 </td>
-                      <td> 9898766604 - 07922168689 </td>
-                      <td> sagar1309@live.com </td>
-                      <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
-                    </tr>
-                    <tr>
-                      <td> Raj Enterprise</td>
-                      <td> Vikram Sharma </td>
-                      <td> 16, Usha Kiran Appartments, Near Krishna Baug Cross Roads, Maninagar, Ahmedabad, Gujarat
-                      </td>
-                      <td> AAAA0000A1Z5 </td>
-                      <td> 9898766604 - 07922168689 </td>
-                      <td> sagar1309@live.com </td>
-                      <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
-                    </tr>
-                    <tr>
-                      <td> Raj Enterprise</td>
-                      <td> Vikram Sharma </td>
-                      <td> 16, Usha Kiran Appartments, Near Krishna Baug Cross Roads, Maninagar, Ahmedabad, Gujarat
-                      </td>
-                      <td> AAAA0000A1Z5 </td>
-                      <td> 9898766604 - 07922168689 </td>
-                      <td> sagar1309@live.com </td>
+                    <tr v-for="product in products">
+                      <td> {{product.product_name}}</td>
+                      <td> {{product.hsn_code}}</td>
+                      <td> {{product.product_price}}</td>
                       <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
                     </tr>
                   </tbody>
@@ -67,6 +84,7 @@
 </template>
 
 <script>
+import api from '@/api/main';
 import AddProductModal from '@/components/AddProductModal';
 export default {
   name: 'add-product',
@@ -77,12 +95,60 @@ export default {
     this.$bus.$on('close', () => {
       this.showAddProductModal = false;
     });
+    this.getProducts();
   },
   data() {
     return {
-      showAddProductModal: false
+      showAddProductModal: false,
+      showAddProduct: false,
+      product_name: '',
+      hsn_code: '',
+      product_price: null,
+      products: []
     };
   },
+  methods: {
+    getProducts() {
+      api.getProducts()
+      .then((response) => {
+        this.products = response.data.products;
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    },
+
+    validateBeforeSubmit() {
+      this.validate()
+      if (!this.errors.any()) {
+        api.addProduct(this.product_name, this.hsn_code, this.product_price)
+        .then((response) => {
+          if(response.status == 200) {
+            this.showAddProduct = false;
+            let toast = this.$toasted.success("Product Added Successfully!", {
+              theme: "outline",
+              position: "top-center",
+              duration : 3000
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      }
+      else {
+        console.log('Validation Failed');
+        let toast = this.$toasted.error('Please fill in the details.', {
+          theme: "outline",
+          position: "bottom-center",
+          duration : 3000
+        });
+      }
+    },
+    validate() {
+      this.$validator.validateAll();
+    }
+  }
 }
 </script>
 
@@ -105,6 +171,28 @@ export default {
     padding: 1rem;
     overflow-x:scroll;
     table-layout: inherit;
+  }
+
+  .hide-seek-product {
+    border-bottom: solid 1px #ddd;
+    .columns {
+      padding: 0.3rem;
+      margin: 0;
+    }
+    .button-form {
+      padding: 1rem;
+      border-top: solid 1px #ddd;
+    }
+  }
+
+  .product-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    .title {
+      margin: 0;
+    }
   }
 }
 </style>

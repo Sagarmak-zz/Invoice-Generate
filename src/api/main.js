@@ -37,10 +37,10 @@ export default {
   },
 
   createCustomer(name, person_name, email, gst_number,
-    bill_address, bill_city, bill_state_code, bill_pincode, billing_mobile_number, billing_landline_number,
-    ship_address, ship_city, ship_state_code, ship_pincode, shipping_mobile_number, shipping_landline_number) {
-      // console.log(billing_mobile_number + '-' + billing_landline_number);
-      // console.log(shipping_mobile_number + '-' + shipping_landline_number);
+    bill_address, bill_city, bill_state_code, bill_pincode, bill_mobile_number, bill_landline_number,
+    ship_address, ship_city, ship_state_code, ship_pincode, ship_mobile_number, ship_landline_number) {
+      console.log(bill_mobile_number + '-' + bill_landline_number);
+      console.log(ship_mobile_number + '-' + ship_landline_number);
       return HTTP.post('/createCustomer', {
         name: name,
         person_name: person_name,
@@ -50,64 +50,78 @@ export default {
         bill_city: bill_city,
         bill_state_code: bill_state_code,
         bill_pincode: bill_pincode,
-        billing_mobile_number: billing_mobile_number,
-        billing_landline_number: billing_landline_number,
+        bill_mobile_number: bill_mobile_number,
+        bill_landline_number: bill_landline_number,
         ship_address: ship_address,
         ship_city: ship_city,
         ship_state_code: ship_state_code,
         ship_pincode: ship_pincode,
-        shipping_mobile_number: shipping_mobile_number,
-        shipping_landline_number: shipping_landline_number
+        ship_mobile_number: ship_mobile_number,
+        ship_landline_number: ship_landline_number
       });
     },
 
     updateCustomer(cus_id, name, person_name, gst_number, email,
       bill_address, bill_city, bill_state_code, bill_pincode, billing_mobile_number, billing_landline_number,
       ship_address, ship_city, ship_state_code, ship_pincode, shipping_mobile_number, shipping_landline_number) {
-      return HTTP.patch('/updateCustomer/' + cus_id, {
-        name: name,
-        person_name: person_name,
-        gst_number: gst_number,
-        email: email,
-        bill_address: bill_address,
-        bill_city: bill_city,
-        bill_state_code: bill_state_code,
-        bill_pincode: bill_pincode,
-        billing_mobile_number: billing_mobile_number,
-        billing_landline_number: billing_landline_number,
-        ship_address: ship_address,
-        ship_city: ship_city,
-        ship_state_code: ship_state_code,
-        ship_pincode: ship_pincode,
-        shipping_mobile_number: shipping_mobile_number,
-        shipping_landline_number: shipping_landline_number
-      });
-    },
+        return HTTP.patch('/updateCustomer/' + cus_id, {
+          name: name,
+          person_name: person_name,
+          gst_number: gst_number,
+          email: email,
+          bill_address: bill_address,
+          bill_city: bill_city,
+          bill_state_code: bill_state_code,
+          bill_pincode: bill_pincode,
+          billing_mobile_number: billing_mobile_number,
+          billing_landline_number: billing_landline_number,
+          ship_address: ship_address,
+          ship_city: ship_city,
+          ship_state_code: ship_state_code,
+          ship_pincode: ship_pincode,
+          shipping_mobile_number: shipping_mobile_number,
+          shipping_landline_number: shipping_landline_number
+        });
+      },
 
-    //states
-    getState() {
-      return HTTP.get('/getStates');
-    },
+      //states
+      getState() {
+        return HTTP.get('/getStates');
+      },
 
-    addState(state_code, state_name) {
-      return HTTP.post('/addState', {
-        state_code: state_code,
-        state_name: state_name
-      })
-    },
+      addState(state_code, state_name) {
+        return HTTP.post('/addState', {
+          state_code: state_code,
+          state_name: state_name
+        })
+      },
 
-    updateState(state_code, state_name) {
-      let url = '/updateState' + state_code;
-      return HTTP.patch(url, {
-        state_code: state_code,
-        state_name: state_name
-      })
-    },
+      updateState(state_code, state_name) {
+        let url = '/updateState' + state_code;
+        return HTTP.patch(url, {
+          state_code: state_code,
+          state_name: state_name
+        })
+      },
 
-    deleteState(state_code) {
-      console.log(state_code);
-      // /deleteState/{state_code}
-      return HTTP.delete('/deleteState/' + state_code);
+      deleteState(state_code) {
+        console.log(state_code);
+        // /deleteState/{state_code}
+        return HTTP.delete('/deleteState/' + state_code);
+      },
+
+
+      //product
+      addProduct(product_name, hsn_code, product_price) {
+        return HTTP.post('/addProduct', {
+          product_name: product_name,
+          hsn_code: hsn_code,
+          product_price: product_price
+        })
+      },
+
+      getProducts() {
+        return HTTP.get('/getProducts');
+      }
+
     }
-
-  }
