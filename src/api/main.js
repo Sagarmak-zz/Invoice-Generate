@@ -15,7 +15,7 @@ export default {
     return HTTP.get('/userDetails');
   },
 
-  updateUserDetails(user_id, username, email, name, gst_number, address, city_name, state_code, pincode, mobile_number, landline_number) {
+  updateUserDetails(user_id, username, email, name, gst_number, address, cityname, state_code, pincode, mobile_number, landline_number) {
     let url = '/userDetails/' + user_id;
     return HTTP.patch(url, {
       username: username,
@@ -23,7 +23,7 @@ export default {
       name: name,
       gst_number: gst_number,
       address: address,
-      city_name: city_name,
+      cityname: cityname,
       state_code: state_code,
       pincode: pincode,
       mobile_number: mobile_number,
@@ -37,48 +37,47 @@ export default {
   },
 
   createCustomer(name, person_name, email, gst_number,
-    bill_address, bill_city, bill_state_code, bill_pincode, bill_mobile_number, bill_landline_number,
-    ship_address, ship_city, ship_state_code, ship_pincode, ship_mobile_number, ship_landline_number) {
-      console.log(bill_mobile_number + '-' + bill_landline_number);
-      console.log(ship_mobile_number + '-' + ship_landline_number);
+    billing_address, billing_city, billing_state_code, billing_pincode, billing_mobile_number, billing_landline_number,
+    shipping_address, shipping_city, shipping_state_code, shipping_pincode, shipping_mobile_number, shipping_landline_number) {
       return HTTP.post('/createCustomer', {
         name: name,
         person_name: person_name,
         email: email,
         gst_number: gst_number,
-        bill_address: bill_address,
-        bill_city: bill_city,
-        bill_state_code: bill_state_code,
-        bill_pincode: bill_pincode,
-        bill_mobile_number: bill_mobile_number,
-        bill_landline_number: bill_landline_number,
-        ship_address: ship_address,
-        ship_city: ship_city,
-        ship_state_code: ship_state_code,
-        ship_pincode: ship_pincode,
-        ship_mobile_number: ship_mobile_number,
-        ship_landline_number: ship_landline_number
+        billing_address: billing_address,
+        billing_city: billing_city,
+        billing_state_code: billing_state_code,
+        billing_pincode: billing_pincode,
+        billing_mobile_number: billing_mobile_number,
+        billing_landline_number: billing_landline_number,
+        shipping_address: shipping_address,
+        shipping_city: shipping_city,
+        shipping_state_code: shipping_state_code,
+        shipping_pincode: shipping_pincode,
+        shipping_mobile_number: shipping_mobile_number,
+        shipping_landline_number: shipping_landline_number
       });
     },
 
     updateCustomer(cus_id, name, person_name, gst_number, email,
-      bill_address, bill_city, bill_state_code, bill_pincode, billing_mobile_number, billing_landline_number,
-      ship_address, ship_city, ship_state_code, ship_pincode, shipping_mobile_number, shipping_landline_number) {
+      billing_address, billing_city, billing_state_code, billing_pincode, billing_mobile_number, billing_landline_number,
+      shipping_address, shipping_city, shipping_state_code, shipping_pincode, shipping_mobile_number, shipping_landline_number) {
+        console.log(billing_city);
         return HTTP.patch('/updateCustomer/' + cus_id, {
           name: name,
           person_name: person_name,
           gst_number: gst_number,
           email: email,
-          bill_address: bill_address,
-          bill_city: bill_city,
-          bill_state_code: bill_state_code,
-          bill_pincode: bill_pincode,
+          billing_address: billing_address,
+          billing_city: billing_city,
+          billing_state_code: billing_state_code,
+          billing_pincode: billing_pincode,
           billing_mobile_number: billing_mobile_number,
           billing_landline_number: billing_landline_number,
-          ship_address: ship_address,
-          ship_city: ship_city,
-          ship_state_code: ship_state_code,
-          ship_pincode: ship_pincode,
+          shipping_address: shipping_address,
+          shipping_city: shipping_city,
+          shipping_state_code: shipping_state_code,
+          shipping_pincode: shipping_pincode,
           shipping_mobile_number: shipping_mobile_number,
           shipping_landline_number: shipping_landline_number
         });

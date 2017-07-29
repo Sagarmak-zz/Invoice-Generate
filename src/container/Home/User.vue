@@ -207,7 +207,7 @@
         </div>
       </div>
 
-      <div class="reports">
+      <div class="reports" v-if="!noData">
         <div class="tile is-ancestor">
           <div class="tile is-parent">
             <article class="tile is-child">
@@ -248,6 +248,9 @@
             </article>
           </div>
         </div>
+      </div>
+      <div class="noData" v-if="noData">
+        <h1 class="title">No Data at the Moment.</h1>
       </div>
     </div>
   </div>
@@ -302,14 +305,21 @@ export default {
         landline: null,
       },
       checkbox: '',
-      customers: []
+      customers: [],
+      noData: false
     };
   },
   methods: {
     getCustomer() {
       api.getCustomer()
       .then((response) => {
-        this.customers = response.data.Firms;
+        if(response.data.message == "No data found") {
+          this.noData = true;
+        }
+        else {
+          this.customers = response.data.Firms;
+          this.noData = false;
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -466,6 +476,10 @@ export default {
       .title {
         margin: 0;
       }
+    }
+
+    .noData {
+      padding: 1rem;
     }
 
   }

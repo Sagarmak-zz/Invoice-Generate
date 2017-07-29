@@ -133,7 +133,7 @@
           </pre> -->
         </section>
         <footer class="modal-card-foot">
-          <a class="button is-success" @click="validateAndUpdateDetails()">Save changes</a>
+          <a class="button is-success" @click="validateAndUpdateDetails()">Update</a>
           <a class="button" @click="$emit('close')">Cancel</a>
         </footer>
       </div>

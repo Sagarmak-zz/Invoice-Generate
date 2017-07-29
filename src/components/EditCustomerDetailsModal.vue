@@ -204,7 +204,7 @@
               </div>
             </div>
           </div>
-          <pre>{{$data}}</pre>
+          <!-- <pre>{{$data}}</pre> -->
         </section>
         <footer class="modal-card-foot">
           <a class="button is-success" @click="validateAndUpdateDetails()">Save changes</a>
@@ -307,6 +307,7 @@ export default {
         this.billing.address, this.billing.city, this.billing.state_code, this.billing.pincode, this.billing.mobile, this.billing.landline,
         this.shipping.address, this.shipping.city, this.shipping.state_code, this.shipping.pincode, this.shipping.mobile, this.shipping.landline)
         .then((response) => {
+          this.hidden = true;
           console.log(response);
         })
         .catch((error) => {

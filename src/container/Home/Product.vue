@@ -35,7 +35,7 @@
             <div class="field">
               <label class="label">Price</label>
               <p class="control">
-                <input @click="validateBeforeSubmit()" v-model="product_price" class="input" name="price" v-validate="'required'" type="text" placeholder="Price">
+                <input @keyup.enter="validateBeforeSubmit()" v-model="product_price" class="input" name="price" v-validate="'required'" type="text" placeholder="Price">
               </p>
               <div v-show="errors.has('price')" class="help is-danger">
                 The Price is required.
@@ -47,7 +47,7 @@
           <a @click="validateBeforeSubmit()" class="button is-primary">Save</a>
         </div>
       </div>
-      <div class="reports">
+      <div class="reports" v-if="!noData">
         <div class="tile is-ancestor">
           <div class="tile is-parent">
             <article class="tile is-child">
@@ -66,11 +66,15 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="product in products">
+                    <tr v-for="product,index in products">
                       <td> {{product.product_name}}</td>
                       <td> {{product.hsn_code}}</td>
                       <td> {{product.product_price}}</td>
-                      <td> <a class="icon is-small"> <i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a></td>
+                      <td>
+                        <a class="icon">
+                          <EditProductModal :key="index" :product="product"></EditProductModal>
+                        </a>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -79,6 +83,9 @@
           </div>
         </div>
       </div>
+      <div class="noData" v-if="noData">
+        <h1 class="title">No Data at the Moment.</h1>
+      </div>
     </div>
   </div>
 </template>
@@ -86,10 +93,12 @@
 <script>
 import api from '@/api/main';
 import AddProductModal from '@/components/AddProductModal';
+import EditProductModal from '@/components/EditProductModal';
 export default {
   name: 'add-product',
   components: {
-    AddProductModal
+    AddProductModal,
+    EditProductModal
   },
   created() {
     this.$bus.$on('close', () => {
@@ -104,14 +113,22 @@ export default {
       product_name: '',
       hsn_code: '',
       product_price: null,
-      products: []
+      products: [],
+      showEditProductModal: false,
+      noData: false
     };
   },
   methods: {
     getProducts() {
       api.getProducts()
       .then((response) => {
-        this.products = response.data.products;
+        if(response.data.products) {
+          this.products = response.data.products;
+          this.noData = false;
+        }
+        else {
+          this.noData = true;
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -125,6 +142,7 @@ export default {
         .then((response) => {
           if(response.status == 200) {
             this.showAddProduct = false;
+            this.getProducts();
             let toast = this.$toasted.success("Product Added Successfully!", {
               theme: "outline",
               position: "top-center",
@@ -193,6 +211,10 @@ export default {
     .title {
       margin: 0;
     }
+  }
+
+  .noData {
+    padding: 1rem;
   }
 }
 </style>

@@ -21,7 +21,11 @@ export default {
     this.callStates();
     this.code = this.stateCode;
   },
-  props: ['stateCode'],
+  props: {
+    stateCode: {
+      required: true
+    }
+  },
   data() {
     return {
       state_id: null,
