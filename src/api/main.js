@@ -62,7 +62,6 @@ export default {
     updateCustomer(cus_id, name, person_name, gst_number, email,
       billing_address, billing_city, billing_state_code, billing_pincode, billing_mobile_number, billing_landline_number,
       shipping_address, shipping_city, shipping_state_code, shipping_pincode, shipping_mobile_number, shipping_landline_number) {
-        console.log(billing_city);
         return HTTP.patch('/updateCustomer/' + cus_id, {
           name: name,
           person_name: person_name,
@@ -81,6 +80,10 @@ export default {
           shipping_mobile_number: shipping_mobile_number,
           shipping_landline_number: shipping_landline_number
         });
+      },
+
+      listCustomer() {
+        return HTTP.get('/listCustomer');
       },
 
       //states
@@ -104,7 +107,6 @@ export default {
       },
 
       deleteState(state_code) {
-        console.log(state_code);
         // /deleteState/{state_code}
         return HTTP.delete('/deleteState/' + state_code);
       },

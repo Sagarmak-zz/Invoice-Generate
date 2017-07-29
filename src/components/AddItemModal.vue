@@ -15,9 +15,10 @@
                   <div :class="{'has-error': errors.has('particular') }">
                     <label class="label">Particulars</label>
                     <p class="control">
-                      <input v-model="particulars" :class="{'input': true, 'is-danger': errors.has('particular') }"
+                      <ProductsNameDropdown></ProductsNameDropdown>
+                      <!-- <input v-model="particulars" :class="{'input': true, 'is-danger': errors.has('particular') }"
                       name="particular" v-validate="'required'"
-                      type="text" placeholder="Particulars Dropdown">
+                      type="text" placeholder="Particulars Dropdown"> -->
                     </p>
                     <div v-show="errors.has('particular')" class="help is-danger">
                       The Particulars is required.
@@ -61,7 +62,7 @@
                 <div :class="{'has-error': errors.has('qty') }">
                   <label class="label">Quantity</label>
                   <p class="control">
-                    <input v-model="quantity" :class="{'input': true, 'is-danger': errors.has('qty') }"
+                    <input v-model="quantitys" :class="{'input': true, 'is-danger': errors.has('qty') }"
                     name="qty" v-validate="'required'"
                     type="number" placeholder="Quantity">
                   </p>
@@ -296,6 +297,9 @@
               </div>
             </div>
           </div>
+          <pre>
+            {{$data}}
+          </pre>
         </section>
         <footer class="modal-card-foot">
           <div class="">
@@ -311,15 +315,25 @@
 
 <script>
 import AddProductModal from '@/components/AddProductModal';
+import ProductsNameDropdown from '@/components/ProductsNameDropdown';
 export default {
   name: 'bill-modal',
+  props: ['cgst', 'sgst', 'igst'],
   components: {
-    AddProductModal
+    AddProductModal,
+    ProductsNameDropdown
   },
   created() {
+    this.cgstRate = this.cgst;
+    this.sgstRate = this.sgst;
+    this.igstRate = this.igst;
     this.$bus.$on('close', () => {
-      console.log('closessss');
       this.showItemModal = false;
+    });
+    this.$bus.$on('product_name_change', (data) => {
+      this.product = data.product.id;
+      this.hsncode = data.product.hsn_code;
+      this.rate = data.product.product_price;
     });
   },
   data() {
@@ -327,10 +341,10 @@ export default {
       // data: {
       showItemModal: false,
       srno: null,
-      particulars: '',
+      product: null,
       hsncode: '',
       size: '',
-      quantity: null,
+      quantitys: null,
       rate: null,
       amount: null,
       discRate: 0,
@@ -342,6 +356,14 @@ export default {
       sgstAmount: 0,
       igstRate: 0,
       igstAmount: 0,
+      bill_detail: {
+        product_id: null,
+        quantity: null,
+        price: null,
+        size: '',
+        discount_percentage: null,
+        discount_amount: null
+      }
       // }
     };
   },
@@ -349,11 +371,23 @@ export default {
     validateAndUpdateAdminDetails() {
       this.validate()
       if (!this.errors.any()) {
-        this.$bus.$emit('sendItemData', {data: this.$data });
+        this.submitData();
       }
       else {
         //print some error message
       }
+    },
+    submitData() {
+      this.bill_detail.product_id = this.product;
+      this.bill_detail.quantity = this.quantitys;
+      this.bill_detail.price = this.rate;
+      this.bill_detail.size = this.size;
+      this.bill_detail.discount_percentage = this.discRate;
+      this.bill_detail.discount_amount = this.discAmount;
+      this.$bus.$emit('sendItemData', {
+        data: this.$data ,
+        bill_detail: this.bill_detail
+      });
     },
     validate() {
       return this.$validator.validateAll();
@@ -361,7 +395,7 @@ export default {
   },
   computed: {
     amountComputed() {
-      return this.amount = this.quantity * this.rate;
+      return this.amount = this.quantitys * this.rate;
     },
     discountAmount() {
       return this.discAmount = (this.discRate / 100) * this.amount;
@@ -433,6 +467,7 @@ export default {
     border-top: solid 1px #ddd;
     border-bottom: solid 1px #ddd;
     align-items: center;
+    background: whitesmoke;
   }
   .modal-card {
     width: 1000px;

@@ -5,7 +5,7 @@
     </div>
     <sidebar></sidebar>
     <div class="app-main">
-      <router-view></router-view>
+      <router-view :admin_state="admin_state"></router-view>
     </div>
     <!--
     //col2
@@ -25,7 +25,8 @@ export default {
   data() {
     return {
       data: { },
-      username: ''
+      username: '',
+      admin_state: null
     };
   },
   created() {
@@ -37,6 +38,7 @@ export default {
       .then((response) => {
         // assign data to data
         this.data = response.data;
+        this.admin_state = this.data.state_code;
         this.username = response.data.username;
         // prints the welcome + username
         let toast = this.$toasted.success('Welcome, ' + this.username + '!', {

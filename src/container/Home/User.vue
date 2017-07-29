@@ -420,6 +420,7 @@ export default {
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
       margin-bottom: 0;
+      background: whitesmoke;
     }
     .shipping {
       display: flex;
@@ -431,6 +432,7 @@ export default {
       padding-right: 1.6rem;
       padding-top: 0.5rem;
       padding-bottom: 0.5rem;
+      background: whitesmoke;
       .title {
         margin: 0;
       }
