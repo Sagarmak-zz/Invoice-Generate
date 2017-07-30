@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="bill">
-    <div class="box">
+    <div class="box bill-wala-box">
       <div class="head">
         <h3 class="title">Generate Bill</h3>
       </div>
@@ -57,80 +57,87 @@
     </div>
     <!-- box ends -->
 
-    <!-- <ProductsNameDropdown></ProductsNameDropdown> -->
-    <!-- <FirmNameDropdown></FirmNameDropdown> -->
-
-
-    <div class="table" v-if="dataIsHere">
-      <!-- part-1 -->
-      <div class="columns box">
-        <div class="column sr-no1">SR</div>
-        <div class="column particulars1">Particulars</div>
-        <div class="column discount1">Discount</div>
-        <div class="column cgst">CGST</div>
-        <div class="column sgst">SGST</div>
-        <div class="column igst">IGST</div>
-        <div class="column edit-delete1"></div>
-      </div>
-
-      <div class="columns box">
-        <div class="column sr-no"></div>
-        <div class="column particulars"></div>
-        <div class="column size">Size</div>
-        <div class="column qty">Qty</div>
-        <div class="column rate">Rate</div>
-        <div class="column amount">Amount</div>
-        <div class="column rate">Rate</div>
-        <div class="column amount">Amount</div>
-        <div class="column amount">Total</div>
-        <div class="column rate">Rate</div>
-        <div class="column amount">Amount</div>
-        <div class="column rate">Rate</div>
-        <div class="column amount">Amount</div>
-        <div class="column rate">Rate</div>
-        <div class="column amount">Amount</div>
-        <div class="column edit-delete"></div>
-      </div>
-
-      <div class="columns box" v-for="data,index in dataArr">
-        <div class="column sr-no">{{data.srno}}</div>
-        <div class="column particulars">{{data.particulars}} - {{data.hsncode}}</div>
-        <div class="column size">{{data.size}}</div>
-        <div class="column qty">{{data.quantity}}</div>
-        <div class="column rate">{{data.rate}}</div>
-        <div class="column amount">{{data.amount}}</div>
-        <div class="column rate">{{data.discRate}}</div>
-        <div class="column amount">{{data.discAmount}}</div>
-        <div class="column amount">{{data.discTaxamount}}</div>
-        <div class="column rate">{{data.cgstRate}}</div>
-        <div class="column amount">{{data.cgstAmount}}</div>
-        <div class="column rate">{{data.sgstRate}}</div>
-        <div class="column amount">{{data.sgstAmount}}</div>
-        <div class="column rate">{{data.igstRate}}</div>
-        <div class="column amount">{{data.igstAmount}}</div>
-        <!-- Edit -->
-        <div class="column sr-no edit"><EditBillModal :key="data.srno-1" :data="data"></EditBillModal></div>
-        <!-- Delete -->
-        <div class="column sr-no"><a @click="deleteItem(data.srno-1)" class="icon is-small">
-          <i class="fa fa-times-circle" aria-hidden="true"></i> </a></div>
-
+    <div class="box" v-if="dataIsHere">
+      <!-- table -->
+      <div class="tile is-ancestor">
+        <div class="tile is-parent">
+          <article class="tile is-child">
+            <div class="table-responsive">
+              <table class="table is-bordered is-striped is-narrow">
+                <thead>
+                  <tr>
+                    <th>SR</th>
+                    <th colspan="5">Particulars</th>
+                    <th colspan="3">Discount</th>
+                    <th colspan="2">CGST</th>
+                    <th colspan="2">SGST</th>
+                    <th colspan="2">IGST</th>
+                    <th>Edit</th>
+                  </tr>
+                </thead>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Size</th>
+                    <th>Qty</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>Total</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th>Rate</th>
+                    <th>Amount</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="data,index in dataArr">
+                    <td>{{data.srno}}</td>
+                    <td>{{data.particulars}} - {{data.hsncode}}</td>
+                    <td>{{data.size}}</td>
+                    <td>{{data.quantitys}}</td>
+                    <td>{{data.rate}}</td>
+                    <td>{{data.amount}}</td>
+                    <td>{{data.discRate}}</td>
+                    <td>{{data.discAmount}}</td>
+                    <td>{{data.discTaxamount}}</td>
+                    <td>{{data.cgstRate}}</td>
+                    <td>{{data.cgstAmount}}</td>
+                    <td>{{data.sgstRate}}</td>
+                    <td>{{data.sgstAmount}}</td>
+                    <td>{{data.igstRate}}</td>
+                    <td>{{data.igstAmount}}</td>
+                    <td><a @click="deleteItem(data.srno-1)" class="icon is-small">
+                      <i class="fa fa-times-circle" aria-hidden="true"></i> </a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
         </div>
-      </div>
+        <!-- table ends -->
 
-      <div class="additional-details" v-if="dataIsHere">
-        <div class="is-pulled-right">Total Taxable Amount: <strong>&#8377; {{totalTaxableAmount}}</strong></div> <br>
-        <div class="is-pulled-right">CGST: <strong>&#8377; {{finalcgst}}</strong></div> <br>
-        <div class="is-pulled-right">SGST: <strong>&#8377; {{finalsgst}}</strong></div> <br>
-        <div class="is-pulled-right">IGST: <strong>&#8377; {{finaligst}}</strong></div> <br>
-        <div class="is-pulled-right">Total Invoice Value: <strong>&#8377; {{totalInvoiceAmount}}</strong></div>
-      </div>
+        <div class="additional-details" v-if="dataIsHere">
+          <div class="is-pulled-right">Total Taxable Amount: <strong>&#8377; {{totalTaxableAmount}}</strong></div> <br>
+          <div class="is-pulled-right">CGST: <strong>&#8377; {{finalcgst}}</strong></div> <br>
+          <div class="is-pulled-right">SGST: <strong>&#8377; {{finalsgst}}</strong></div> <br>
+          <div class="is-pulled-right">IGST: <strong>&#8377; {{finaligst}}</strong></div> <br>
+          <div class="is-pulled-right">Total Invoice Value: <strong>&#8377; {{totalInvoiceAmount}}</strong></div>
+        </div>
 
-      <div class="field submit-btn" v-if="dataIsHere">
-        <p>
-          <button @click="validateBeforeSubmit" class="button is-success submit-button">
-            Submit
-          </button>
-        </p>
+        <div class="field submit-btn" v-if="dataIsHere">
+          <p>
+            <button @click="validateBeforeSubmit" class="button is-success submit-button">
+              Submit
+            </button>
+          </p>
+        </div>
       </div>
       <pre>
         {{$data}}
@@ -160,7 +167,7 @@ export default {
     EditBillModal,
     AddUserModal,
     FirmNameDropdown,
-    ProductsNameDropdown
+    ProductsNameDropdown,
   },
   created() {
     this.decodeToken();
@@ -218,12 +225,12 @@ export default {
     // firm_id  //done
     // invoice number //left
     // taxable_amount  =  totalTaxableAmount //done
-    // sgst_percentage
-    // sgst_amount
-    // cgst_percentage
-    // cgst_amount
-    // igst_percentage
-    // igst_amount
+    // sgst_percentage //done
+    // sgst_amount //done
+    // cgst_percentage //done
+    // cgst_amount //done
+    // igst_percentage //done
+    // igst_amount //done
     // total_payable_amount  =  totalInvoiceAmount //done
     // bill_detail: [  //done
     //   {
@@ -307,218 +314,249 @@ export default {
       return this.$validator.validateAll();
     },
     submitForm() {
-      //send to another page, with nice invoice template and hit print
-      // window.print();
-    },
-    calculateAmount() {
-      for (var i = 0; i < this.dataArr.length; i++) {
-        this.totalTaxableAmount += this.dataArr[this.length-1].discTaxamount;
-        this.finalcgst += this.dataArr[this.length-1].cgstAmount;
-        this.cgst_amount = this.finalcgst;
-        this.finalsgst += this.dataArr[this.length-1].sgstAmount;
-        this.sgst_amount = this.finalsgst;
-        this.finaligst += this.dataArr[this.length-1].igstAmount;
-        this.igst_amount = this.finaligst;
-        this.totalInvoiceAmount = this.totalTaxableAmount + this.finalcgst + this.finalsgst + this.finaligst;
-        break;
+      //api call to submit the bill
+      // user_id, firm_id, invoice_no, taxable_amount,
+      //   sgst_percentage, sgst_amount, cgst_percentage, cgst_amount, igst_percentage, igst_amount,
+      // total_payable_amount, created_at(date), bill_detail
+      console.log(this.user_id+ '-' + this.firm_id+ '-' + this.invNum+ '-' + this.totalTaxableAmount+ '-' +
+        this.sgst_percentage+ '-' + this.sgst_amount+ '-' + this.cgst_percentage+ '-' + this.cgst_amount+ '-' + this.igst_percentage+ '-' + this.igst_amount+ '-' +
+        this.totalInvoiceAmount+ '-' + this.date+ '-' + this.bill_detail);
+      api.createBill(this.user_id, this.firm_id, this.invNum, this.totalTaxableAmount,
+        this.sgst_percentage, this.sgst_amount, this.cgst_percentage, this.cgst_amount, this.igst_percentage, this.igst_amount,
+        this.totalInvoiceAmount, this.date, this.bill_detail)
+        .then(response => {
+          console.log(response);
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        //send to another page, with nice invoice template and hit print
+        // window.print();
+
+      },
+      calculateAmount() {
+        for (var i = 0; i < this.dataArr.length; i++) {
+          this.totalTaxableAmount += this.dataArr[this.length-1].discTaxamount;
+          this.finalcgst += this.dataArr[this.length-1].cgstAmount;
+          this.cgst_amount = this.finalcgst;
+          this.finalsgst += this.dataArr[this.length-1].sgstAmount;
+          this.sgst_amount = this.finalsgst;
+          this.finaligst += this.dataArr[this.length-1].igstAmount;
+          this.igst_amount = this.finaligst;
+          this.totalInvoiceAmount = this.totalTaxableAmount + this.finalcgst + this.finalsgst + this.finaligst;
+          break;
+        }
+      },
+
+      deleteItem(indexNo) {
+        console.log(this.dataArr.splice(indexNo, 1));
       }
     },
+  }
+  </script>
 
-    deleteItem(indexNo) {
-      console.log(this.dataArr.splice(indexNo, 1));
+  <style lang="scss">
+  .bill {
+    .box {
+      padding: 0;
     }
-  },
-}
-</script>
 
-<style lang="scss">
-.bill {
-  .box {
-    padding: 0;
-  }
+    .bill-wala-box {
+      margin-bottom: 0;
+    }
 
-  .head {
-    padding: 1rem;
-    border-bottom: solid 1px #ddd;
-  }
-
-  .form {
-    .form-head {
+    .head {
       padding: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .title {
-        margin: 0;
-      }
+      border-bottom: solid 1px #ddd;
     }
-    .form-body {
-      padding: 0.4rem;
-      border-top: solid 1px #ddd;
-      .columns {
-        margin: 0;
-        .customer-name {
-          padding-top: 0;
+
+    .form {
+      .form-head {
+        padding: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .title {
+          margin: 0;
+        }
+      }
+      .form-body {
+        padding: 0.4rem;
+        border-top: solid 1px #ddd;
+        .columns {
+          margin: 0;
+          .customer-name {
+            padding-top: 0;
+          }
         }
       }
     }
-  }
 
-  .control.is-mobile {
-    display: flex;
-    max-width: 52%;
-    .icon.is-medium {
-      padding-left: 0.5rem;
-      padding-top: 0.3rem;
+    .control.is-mobile {
+      display: flex;
+      max-width: 52%;
+      .icon.is-medium {
+        padding-left: 0.5rem;
+        padding-top: 0.3rem;
+      }
     }
-  }
 
-  .control.is-mobile.srno {
-    max-width: 49%;
-  }
+    .control.is-mobile.srno {
+      max-width: 49%;
+    }
 
-  .main-details {
-    padding: 1rem;
-    border-top: solid 1px #ddd;
-    border-bottom: solid 1px #ddd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .title {
+    .main-details {
+      padding: 1rem;
+      border-top: solid 1px #ddd;
+      border-bottom: solid 1px #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      .title {
+        margin: 0;
+      }
+      // padding: 1rem;
+    }
+
+    .sr-no1 {
+      border-left: solid 1px #ddd;
+      max-width: 2.1rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      border-top: solid 1px #ddd;
+      text-align:center;
+      padding-left: 0.4rem;
+    }
+    .particulars1 {
+      max-width: 26rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      border-top: solid 1px #ddd;
+      text-align:center;
+    }
+    .numbers {
+      max-width: 5rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      border-top: solid 1px #ddd;
+    }
+    .discount1 {
+      max-width: 13rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      border-top: solid 1px #ddd;
+      text-align:center;
+    }
+    .cgst {
+      max-width: 8rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      border-top: solid 1px #ddd;
+      text-align:center;
+    }
+    .sgst {
+      max-width: 8rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      border-top: solid 1px #ddd;
+      text-align:center;
+    }
+    .igst {
+      max-width: 8rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      border-top: solid 1px #ddd;
+      text-align:center;
+    }
+    .size {
+      max-width: 6rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      text-align:center;
+    }
+    .sr-no {
+      border-left: solid 1px #ddd;
+      max-width: 2.1rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      text-align:center;
+      padding-left: 0.6rem;
+    }
+    .sr-no.edit {
+      z-index: 1026;
+    }
+    .particulars {
+      max-width: 15rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      text-align:center;
+    }
+    .qty {
+      max-width: 3rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      text-align:center;
+    }
+    .rate {
+      max-width: 3rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      text-align:center;
+    }
+    .amount {
+      max-width: 5rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      text-align:center;
+    }
+    .total {
+      max-width: 5rem;
+      border-bottom: solid 1px #ddd;
+      border-right: solid 1px #ddd;
+      text-align:center;
+    }
+    .edit-delete1 {
+      max-width: 3rem;
+    }
+    .edit-delete {
+      max-width: 4.2rem;
+    }
+
+    .columns {
+      max-width: 100%;
+    }
+
+    .box {
+      border-radius: 0;
+    }
+
+    .table {
+      padding: 1rem;
+      padding-top: 2rem;
+    }
+
+    .additional-details {
+      border-top: solid 1px #ddd;
+      display: flow-root;
+      .is-pulled-right {
+        margin-right: 1rem;
+      }
+    }
+
+    .submit-btn {
+      padding: 1rem;
+      border-top: solid 1px #ddd;
+    }
+
+    .tile.is-ancestor {
       margin: 0;
+      .tile.is-parent {
+        // padding-bottom: 0;
+        .table.is-bordered.is-striped.is-narrow {
+          margin-bottom: 0;
+        }
+      }
     }
-    // padding: 1rem;
-  }
 
-  .sr-no1 {
-    border-left: solid 1px #ddd;
-    max-width: 2.1rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    text-align:center;
-    padding-left: 0.4rem;
   }
-  .particulars1 {
-    max-width: 26rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    text-align:center;
-  }
-  .numbers {
-    max-width: 5rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-  }
-  .discount1 {
-    max-width: 13rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    text-align:center;
-  }
-  .cgst {
-    max-width: 8rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    text-align:center;
-  }
-  .sgst {
-    max-width: 8rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    text-align:center;
-  }
-  .igst {
-    max-width: 8rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    text-align:center;
-  }
-  .size {
-    max-width: 6rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align:center;
-  }
-  .sr-no {
-    border-left: solid 1px #ddd;
-    max-width: 2.1rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align:center;
-    padding-left: 0.6rem;
-  }
-  .sr-no.edit {
-    z-index: 1026;
-  }
-  .particulars {
-    max-width: 15rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align:center;
-  }
-  .qty {
-    max-width: 3rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align:center;
-  }
-  .rate {
-    max-width: 3rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align:center;
-  }
-  .amount {
-    max-width: 5rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align:center;
-  }
-  .total {
-    max-width: 5rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align:center;
-  }
-  .edit-delete1 {
-    max-width: 3rem;
-  }
-  .edit-delete {
-    max-width: 4.2rem;
-  }
-
-  .columns {
-    max-width: 100%;
-  }
-
-  .box {
-    border-radius: 0;
-  }
-
-  .table {
-    padding: 1rem;
-    padding-top: 2rem;
-  }
-
-  .additional-details {
-    border-top: solid 1px #ddd;
-    display: flow-root;
-    .is-pulled-right {
-      margin-right: 1rem;
-    }
-  }
-
-  .submit-btn {
-    padding: 1rem;
-    border-top: solid 1px #ddd;
-  }
-
-}
-</style>
+  </style>

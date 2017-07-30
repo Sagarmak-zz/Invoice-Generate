@@ -10,6 +10,30 @@ export default {
     });
   },
 
+  //bill
+
+  createBill(user_id, firm_id, invoice_no, taxable_amount,
+    sgst_percentage, sgst_amount, cgst_percentage, cgst_amount, igst_percentage, igst_amount,
+  total_payable_amount, created_at, bill_detail)  {
+    return HTTP.post('/createBill', {
+      user_id: user_id,
+      firm_id: firm_id,
+      invoice_no: invoice_no,
+      taxable_amount: taxable_amount,
+      sgst_percentage: sgst_percentage,
+      sgst_amount: sgst_amount,
+      cgst_percentage: cgst_percentage,
+      cgst_amount: cgst_amount,
+      igst_percentage: igst_percentage,
+      igst_amount: igst_amount,
+      total_payable_amount: total_payable_amount,
+      created_at: created_at,
+      bill_detail: bill_detail
+    });
+  },
+
+
+
   //admin Details
   userDetails() {
     return HTTP.get('/userDetails');
