@@ -207,7 +207,7 @@
           <!-- <pre>{{$data}}</pre> -->
         </section>
         <footer class="modal-card-foot">
-          <a class="button is-success" @click="validateAndUpdateDetails()">Save changes</a>
+          <a class="button is-success" @click="validateAndUpdateDetails()">Update</a>
           <a class="button" @click="hidden=!hidden">Cancel</a>
         </footer>
       </div>
@@ -307,6 +307,11 @@ export default {
         this.billing.address, this.billing.city, this.billing.state_code, this.billing.pincode, this.billing.mobile, this.billing.landline,
         this.shipping.address, this.shipping.city, this.shipping.state_code, this.shipping.pincode, this.shipping.mobile, this.shipping.landline)
         .then((response) => {
+          let toast = this.$toasted.success("Customer Updated Successfully!", {
+            theme: "outline",
+            position: "top-center",
+            duration : 3000
+          });
           this.hidden = true;
           console.log(response);
         })

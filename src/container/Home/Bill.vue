@@ -66,7 +66,7 @@
               <table class="table is-bordered is-striped is-narrow">
                 <thead>
                   <tr>
-                    <th>SR</th>
+                    <!-- <th>SR</th> -->
                     <th colspan="5">Particulars</th>
                     <th colspan="3">Discount</th>
                     <th colspan="2">CGST</th>
@@ -77,8 +77,8 @@
                 </thead>
                 <thead>
                   <tr>
-                    <th></th>
-                    <th></th>
+                    <!-- <th></th> -->
+                    <th>Name</th>
                     <th>Size</th>
                     <th>Qty</th>
                     <th>Rate</th>
@@ -97,8 +97,8 @@
                 </thead>
                 <tbody>
                   <tr v-for="data,index in dataArr">
-                    <td>{{data.srno}}</td>
-                    <td>{{data.particulars}} - {{data.hsncode}}</td>
+                    <!-- <td>{{data.srno}}</td> -->
+                    <td>{{data.product_name}} - {{data.hsncode}}</td>
                     <td>{{data.size}}</td>
                     <td>{{data.quantitys}}</td>
                     <td>{{data.rate}}</td>
@@ -107,11 +107,11 @@
                     <td>{{data.discAmount}}</td>
                     <td>{{data.discTaxamount}}</td>
                     <td>{{data.cgstRate}}</td>
-                    <td>{{data.cgstAmount}}</td>
+                    <td>{{data.cgstAmount.toFixed(2)}}</td>
                     <td>{{data.sgstRate}}</td>
-                    <td>{{data.sgstAmount}}</td>
+                    <td>{{data.sgstAmount.toFixed(2)}}</td>
                     <td>{{data.igstRate}}</td>
-                    <td>{{data.igstAmount}}</td>
+                    <td>{{data.igstAmount.toFixed(2)}}</td>
                     <td><a @click="deleteItem(data.srno-1)" class="icon is-small">
                       <i class="fa fa-times-circle" aria-hidden="true"></i> </a></td>
                     </tr>
@@ -125,9 +125,9 @@
 
         <div class="additional-details" v-if="dataIsHere">
           <div class="is-pulled-right">Total Taxable Amount: <strong>&#8377; {{totalTaxableAmount}}</strong></div> <br>
-          <div class="is-pulled-right">CGST: <strong>&#8377; {{finalcgst}}</strong></div> <br>
-          <div class="is-pulled-right">SGST: <strong>&#8377; {{finalsgst}}</strong></div> <br>
-          <div class="is-pulled-right">IGST: <strong>&#8377; {{finaligst}}</strong></div> <br>
+          <div class="is-pulled-right">CGST: <strong>&#8377; {{finalcgst.toFixed(2)}}</strong></div> <br>
+          <div class="is-pulled-right">SGST: <strong>&#8377; {{finalsgst.toFixed(2)}}</strong></div> <br>
+          <div class="is-pulled-right">IGST: <strong>&#8377; {{finaligst.toFixed(2)}}</strong></div> <br>
           <div class="is-pulled-right">Total Invoice Value: <strong>&#8377; {{totalInvoiceAmount}}</strong></div>
         </div>
 
@@ -140,10 +140,10 @@
         </div>
       </div>
       <!-- <pre>
-        {{$data}}
-      </pre> -->
-    </div>
+      {{$data.bill_detail}}
+    </pre> -->
   </div>
+</div>
 </template>
 
 <script>
@@ -179,10 +179,9 @@ export default {
     var converter = require('number-to-words');
     // console.log(converter.toWords(42654));
     this.$bus.$on('sendItemData', (response) => {
-      console.log(response);
       this.dataIsHere = true;
       this.showAddItemModal = false;
-      response.data.srno = this.dataArr.length + 1;
+      // response.data.srno = this.dataArr.length + 1;
       this.dataArr.push(response.data);
       this.bill_detail.push(response.bill_detail);
       this.length = this.dataArr.length;
@@ -279,14 +278,24 @@ export default {
       this.$validator.validateAll();
       if (!this.errors.any()) {
         if(this.dataIsHere == false) {
-          alert('No');
+          console.log('Validation Failed');
+          let toast = this.$toasted.error('Please fill in the details.', {
+            theme: "outline",
+            position: "bottom-center",
+            duration : 3000
+          });
         }
         else {
           this.submitForm();
         }
       }
       else {
-        alert('No');
+        console.log('Validation Failed');
+        let toast = this.$toasted.error('Please fill in the details.', {
+          theme: "outline",
+          position: "bottom-center",
+          duration : 3000
+        });
       }
     },
     validate() {
@@ -298,238 +307,251 @@ export default {
         this.sgst_percentage, this.sgst_amount, this.cgst_percentage, this.cgst_amount, this.igst_percentage, this.igst_amount,
         this.totalInvoiceAmount, this.date, this.bill_detail)
         .then(response => {
-          console.log(response);
+          let toast = this.$toasted.success("Bill Creation Successful!", {
+            theme: "outline",
+            position: "top-center",
+            duration : 3000
+          });
+          this.$router.push({ name: 'History' });
         })
         .catch(error => {
           console.log(error);
         })
-        //send to another page, with nice invoice template and hit print
-        // window.print();
+      //send to another page, with nice invoice template and hit print
+      // window.print();
 
-      },
-      calculateAmount() {
-        for (var i = 0; i < this.dataArr.length; i++) {
-          this.totalTaxableAmount += this.dataArr[this.length-1].discTaxamount;
-          this.finalcgst += this.dataArr[this.length-1].cgstAmount;
-          this.cgst_amount = this.finalcgst;
-          this.finalsgst += this.dataArr[this.length-1].sgstAmount;
-          this.sgst_amount = this.finalsgst;
-          this.finaligst += this.dataArr[this.length-1].igstAmount;
-          this.igst_amount = this.finaligst;
-          this.totalInvoiceAmount = this.totalTaxableAmount + this.finalcgst + this.finalsgst + this.finaligst;
-          break;
-        }
-      },
-
-      deleteItem(indexNo) {
-        console.log(this.dataArr.splice(indexNo, 1));
+    },
+    calculateAmount() {
+      for (var i = 0; i < this.dataArr.length; i++) {
+        this.totalTaxableAmount += this.dataArr[this.length-1].discTaxamount;
+        this.finalcgst += this.dataArr[this.length-1].cgstAmount;
+        this.cgst_amount = this.finalcgst;
+        this.finalsgst += this.dataArr[this.length-1].sgstAmount;
+        this.sgst_amount = this.finalsgst;
+        this.finaligst += this.dataArr[this.length-1].igstAmount;
+        this.igst_amount = this.finaligst.toFixed(2);
+        this.totalInvoiceAmount = this.totalTaxableAmount + this.finalcgst + this.finalsgst + this.finaligst;
+        this.totalInvoiceAmount = this.totalInvoiceAmount.toFixed(2);
+        break;
       }
     },
+
+    deleteItem(indexNo) {
+      console.log(this.dataArr.splice(indexNo, 1));
+      console.log(this.bill_detail.splice(indexNo, 1));
+    }
+  },
+}
+</script>
+
+<style lang="scss">
+.bill {
+  .box {
+    padding: 0;
   }
-  </script>
 
-  <style lang="scss">
-  .bill {
-    .box {
-      padding: 0;
-    }
+  .bill-wala-box {
+    margin-bottom: 0;
+  }
 
-    .bill-wala-box {
-      margin-bottom: 0;
-    }
+  .head {
+    padding: 1rem;
+    border-bottom: solid 1px #ddd;
+  }
 
-    .head {
+  .form {
+    .form-head {
       padding: 1rem;
-      border-bottom: solid 1px #ddd;
-    }
-
-    .form {
-      .form-head {
-        padding: 1rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        .title {
-          margin: 0;
-        }
-      }
-      .form-body {
-        padding: 0.4rem;
-        border-top: solid 1px #ddd;
-        .columns {
-          margin: 0;
-          .customer-name {
-            padding-top: 0;
-          }
-        }
-      }
-    }
-
-    .control.is-mobile {
       display: flex;
-      max-width: 52%;
-      .icon.is-medium {
-        padding-left: 0.5rem;
-        padding-top: 0.3rem;
-      }
-    }
-
-    .control.is-mobile.srno {
-      max-width: 49%;
-    }
-
-    .main-details {
-      padding: 1rem;
-      border-top: solid 1px #ddd;
-      border-bottom: solid 1px #ddd;
-      display: flex;
-      justify-content: space-between;
       align-items: center;
+      justify-content: space-between;
       .title {
         margin: 0;
       }
-      // padding: 1rem;
     }
-
-    .sr-no1 {
-      border-left: solid 1px #ddd;
-      max-width: 2.1rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
+    .form-body {
+      padding: 0.4rem;
       border-top: solid 1px #ddd;
-      text-align:center;
-      padding-left: 0.4rem;
-    }
-    .particulars1 {
-      max-width: 26rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      border-top: solid 1px #ddd;
-      text-align:center;
-    }
-    .numbers {
-      max-width: 5rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      border-top: solid 1px #ddd;
-    }
-    .discount1 {
-      max-width: 13rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      border-top: solid 1px #ddd;
-      text-align:center;
-    }
-    .cgst {
-      max-width: 8rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      border-top: solid 1px #ddd;
-      text-align:center;
-    }
-    .sgst {
-      max-width: 8rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      border-top: solid 1px #ddd;
-      text-align:center;
-    }
-    .igst {
-      max-width: 8rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      border-top: solid 1px #ddd;
-      text-align:center;
-    }
-    .size {
-      max-width: 6rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      text-align:center;
-    }
-    .sr-no {
-      border-left: solid 1px #ddd;
-      max-width: 2.1rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      text-align:center;
-      padding-left: 0.6rem;
-    }
-    .sr-no.edit {
-      z-index: 1026;
-    }
-    .particulars {
-      max-width: 15rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      text-align:center;
-    }
-    .qty {
-      max-width: 3rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      text-align:center;
-    }
-    .rate {
-      max-width: 3rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      text-align:center;
-    }
-    .amount {
-      max-width: 5rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      text-align:center;
-    }
-    .total {
-      max-width: 5rem;
-      border-bottom: solid 1px #ddd;
-      border-right: solid 1px #ddd;
-      text-align:center;
-    }
-    .edit-delete1 {
-      max-width: 3rem;
-    }
-    .edit-delete {
-      max-width: 4.2rem;
-    }
-
-    .columns {
-      max-width: 100%;
-    }
-
-    .box {
-      border-radius: 0;
-    }
-
-    .table {
-      padding: 1rem;
-      padding-top: 2rem;
-    }
-
-    .additional-details {
-      border-top: solid 1px #ddd;
-      display: flow-root;
-      .is-pulled-right {
-        margin-right: 1rem;
-      }
-    }
-
-    .submit-btn {
-      padding: 1rem;
-      border-top: solid 1px #ddd;
-    }
-
-    .tile.is-ancestor {
-      margin: 0;
-      .tile.is-parent {
-        // padding-bottom: 0;
-        .table.is-bordered.is-striped.is-narrow {
-          margin-bottom: 0;
+      .columns {
+        margin: 0;
+        .customer-name {
+          padding-top: 0;
         }
       }
     }
-
   }
-  </style>
+
+  .control.is-mobile {
+    display: flex;
+    max-width: 52%;
+    .icon.is-medium {
+      padding-left: 0.5rem;
+      padding-top: 0.3rem;
+    }
+  }
+
+  .control.is-mobile.srno {
+    max-width: 49%;
+  }
+
+  .main-details {
+    padding: 1rem;
+    border-top: solid 1px #ddd;
+    border-bottom: solid 1px #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+      margin: 0;
+    }
+    // padding: 1rem;
+  }
+
+  .sr-no1 {
+    border-left: solid 1px #ddd;
+    max-width: 2.1rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    text-align:center;
+    padding-left: 0.4rem;
+  }
+  .particulars1 {
+    max-width: 26rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    text-align:center;
+  }
+  .numbers {
+    max-width: 5rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+  }
+  .discount1 {
+    max-width: 13rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    text-align:center;
+  }
+  .cgst {
+    max-width: 8rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    text-align:center;
+  }
+  .sgst {
+    max-width: 8rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    text-align:center;
+  }
+  .igst {
+    max-width: 8rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    border-top: solid 1px #ddd;
+    text-align:center;
+  }
+  .size {
+    max-width: 6rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
+  }
+  .sr-no {
+    border-left: solid 1px #ddd;
+    max-width: 2.1rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
+    padding-left: 0.6rem;
+  }
+  .sr-no.edit {
+    z-index: 1026;
+  }
+  .particulars {
+    max-width: 15rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
+  }
+  .qty {
+    max-width: 3rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
+  }
+  .rate {
+    max-width: 3rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
+  }
+  .amount {
+    max-width: 5rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
+  }
+  .total {
+    max-width: 5rem;
+    border-bottom: solid 1px #ddd;
+    border-right: solid 1px #ddd;
+    text-align:center;
+  }
+  .edit-delete1 {
+    max-width: 3rem;
+  }
+  .edit-delete {
+    max-width: 4.2rem;
+  }
+
+  .columns {
+    max-width: 100%;
+  }
+
+  .box {
+    border-radius: 0;
+  }
+
+  .table {
+    padding: 1rem;
+    padding-top: 2rem;
+  }
+
+  .additional-details {
+    border-top: solid 1px #ddd;
+    display: flow-root;
+    .is-pulled-right {
+      margin-right: 1rem;
+    }
+  }
+
+  .submit-btn {
+    padding: 1rem;
+    border-top: solid 1px #ddd;
+  }
+
+  .tile.is-ancestor {
+    margin: 0;
+    .tile.is-parent {
+      // padding-bottom: 0;
+      .table.is-bordered.is-striped.is-narrow {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  thead {
+    tr {
+      align-items: center;
+    }
+  }
+
+}
+</style>

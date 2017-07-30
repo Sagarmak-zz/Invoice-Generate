@@ -6,11 +6,12 @@
       </div>
       <!-- <div class="reports-body">
     </div> -->
-    <div class="columns need-padding" v-if="!noData">
-      <div class="column" v-for="bill in bills">
+    <div class="columns is-multiline need-padding" v-if="!noData">
+      <div class="column is-one-third" v-for="bill in bills">
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
+              <!-- | orderBy sortKey reverse -->
               {{bill.firm_name}}
               {{bill.invoice_no}}
             </p>
@@ -24,6 +25,8 @@
                 <span>IGST <b>&#8377;{{bill.igst_amount}}</b></span> <br>
               </div>
               <span>Total Amount: <b>&#8377;{{bill.total_payable_amount}}</b></span>
+              <br>
+              <small>{{moment(bill.created_at.date).format('ddd, MMMM Do YYYY')}}</small>
             </div>
           </div>
           <footer class="card-footer">
@@ -36,9 +39,9 @@
     <div class="noData" v-if="noData">
       <span class="title">No Bills at the moment</span>
     </div>
-    <pre>
+    <!-- <pre>
       {{bills}}
-    </pre>
+    </pre> -->
   </div>
 </div>
 </template>

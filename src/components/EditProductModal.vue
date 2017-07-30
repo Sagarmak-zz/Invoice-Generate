@@ -6,7 +6,7 @@
       <div class="modal-background"></div>
       <div class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Add Item</p>
+          <p class="modal-card-title">Edit Item</p>
           <button class="delete" @click="hidden=!hidden"></button>
         </header>
         <section class="modal-card-body">
@@ -58,11 +58,13 @@
 </template>
 
 <script>
+import api from '@/api/main';
 export default {
   name: 'edit-product-modal',
   props: ['product'],
   created() {
     this.product_old = this.product;
+    this.product_id = this.product.id;
   },
   data() {
     return {
@@ -70,27 +72,29 @@ export default {
       product_name: '',
       hsn_code: '',
       product_price: null,
-      product_old: ''
+      product_old: '',
+      product_id: null
     };
   },
   methods: {
     validateAndUpdate() {
       this.validate()
       if (!this.errors.any()) {
-        // api.updateProduct(this.product_name, this.hsn_code, this.product_price)
-        // .then((response) => {
-        //   if(response.status == 200) {
-        //     this.showAddProduct = false;
-        //     let toast = this.$toasted.success("Product Updated Successfully!", {
-        //       theme: "outline",
-        //       position: "top-center",
-        //       duration : 3000
-        //     });
-        //   }
-        // })
-        // .catch((error) => {
-        //   console.log(error);
-        // })
+        api.updateProduct(this.product_id, this.product_name, this.hsn_code, this.product_price)
+        .then((response) => {
+          if(response.status == 200) {
+            this.showAddProduct = false;
+            let toast = this.$toasted.success("Product Updated Successfully!", {
+              theme: "outline",
+              position: "top-center",
+              duration : 3000
+            });
+            this.hidden = true;
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
       }
       else {
         console.log('Validation Failed');

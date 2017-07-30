@@ -150,6 +150,14 @@ export default {
 
       getProducts() {
         return HTTP.get('/getProducts');
+      },
+
+      updateProduct(product_id, product_name, hsn_code, product_price) {
+        return HTTP.patch('/updateProduct/' + product_id, {
+          product_name: product_name,
+          hsn_code: hsn_code,
+          product_price: product_price
+        });
       }
 
     }

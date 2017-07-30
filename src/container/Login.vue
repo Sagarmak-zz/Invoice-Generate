@@ -165,7 +165,7 @@ export default {
     background: url('https://unsplash.it/2000/1000');
     background-position: center;
     background-size: cover;
-    background-blend-mode: screen;
+    background-blend-mode: normal;
   }
   .hero-banner {
     padding-right: 0;

@@ -59,7 +59,7 @@
                 <div :class="{'has-error': errors.has('qty') }">
                   <label class="label">Quantity</label>
                   <p class="control">
-                    <input v-model="quantitys" :class="{'input': true, 'is-danger': errors.has('qty') }"
+                    <input @keyup.enter="validateAndAddItemDetails" v-model="quantitys" :class="{'input': true, 'is-danger': errors.has('qty') }"
                     name="qty" v-validate="'required'"
                     type="number" placeholder="Quantity">
                   </p>
@@ -117,7 +117,7 @@
                   <label class="label">Rate</label>
                   <div class="field has-addons">
                     <p class="control">
-                      <input v-model="discRate" :class="{'input': true, 'is-danger': errors.has('drate') }"
+                      <input @keyup.enter="validateAndAddItemDetails" v-model="discRate" :class="{'input': true, 'is-danger': errors.has('drate') }"
                       name="drate" v-validate="'required'"
                       type="number" placeholder="Rate">
                     </p>
@@ -297,10 +297,11 @@
         </section>
         <footer class="modal-card-foot">
           <div class="">
-            <a class="button is-success" @click="validateAndUpdateAdminDetails">Save changes</a>
+            <a class="button is-success" @click="validateAndAddItemDetails">Save changes</a>
             <a class="button" v-on:click="$emit('close')">Cancel</a>
           </div>
-          <h1 class="title is-4 is-pulled-right	is-right"><strong>Item Amount: &#8377;{{payableAmount}}</strong></h1>
+          <h1 class="title is-4 is-pulled-right	is-right"><strong>Item Amount:
+            &#8377;{{payableAmount}}</strong></h1>
         </footer>
       </div>
     </div>
@@ -325,6 +326,7 @@ export default {
       this.showItemModal = false;
     });
     this.$bus.$on('product_name_change', (data) => {
+      this.product_name = data.product.product_name;
       this.product = data.product.id;
       this.hsncode = data.product.hsn_code;
       this.rate = data.product.product_price;
@@ -336,6 +338,7 @@ export default {
       showItemModal: false,
       srno: null,
       product: null,
+      product_name: '',
       hsncode: '',
       size: '',
       quantitys: null,
@@ -362,7 +365,7 @@ export default {
     };
   },
   methods: {
-    validateAndUpdateAdminDetails() {
+    validateAndAddItemDetails() {
       this.validate()
       if (!this.errors.any()) {
         this.submitData();
@@ -380,7 +383,7 @@ export default {
       this.bill_detail.discount_amount = this.discAmount;
       this.$bus.$emit('sendItemData', {
         data: this.$data ,
-        bill_detail: this.bill_detail
+        bill_detail: this.bill_detail,
       });
     },
     validate() {
