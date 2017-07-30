@@ -4,206 +4,76 @@
       <div class="history-head">
         <h3 class="title has-text-centered">History</h3>
       </div>
-      <div class="reports-body">
-        <div class="tile is-ancestor">
-          <div class="tile is-parent">
-            <article class="tile is-child">
-              <!-- <h4 class="title">Products List</h4> -->
-              <div class="table-responsive">
-                <table class="table is-bordered is-striped is-narrow">
-                  <thead>
-                    <tr>
-                      <th>SR No</th>
-                      <th>Particulars</th>
-                      <th>Size</th>
-                      <th>Qty</th>
-                      <th>Rate</th>
-                      <th>Amount</th>
-                      <th>Discount</th>
-                      <th>CGST</th>
-                      <th>SGST</th>
-                      <th>IGST</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>1</td>
-                      <td>SW/17-18/0001</td>
-                      <td>1st April</td>
-                      <td>Raj Enterprise</td>
-                      <td>Rs 30,096.00</td>
-                      <td>Rs 250</td>
-                      <td>Rs 250</td>
-                      <td>Rs 1250</td>
-                      <td>Rs 31,500</td>
-                      <td>ABC123456Z</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>SW/17-18/0001</td>
-                      <td>1st April</td>
-                      <td>Raj Enterprise</td>
-                      <td>Rs 30,096.00</td>
-                      <td>Rs 250</td>
-                      <td>Rs 250</td>
-                      <td>Rs 1250</td>
-                      <td>Rs 31,500</td>
-                      <td>ABC123456Z</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>SW/17-18/0001</td>
-                      <td>1st April</td>
-                      <td>Raj Enterprise</td>
-                      <td>Rs 30,096.00</td>
-                      <td>Rs 250</td>
-                      <td>Rs 250</td>
-                      <td>Rs 1250</td>
-                      <td>Rs 31,500</td>
-                      <td>ABC123456Z</td>
-                    </tr>
-                  </tbody>
-                </table>
+      <!-- <div class="reports-body">
+    </div> -->
+    <div class="columns need-padding" v-if="!noData">
+      <div class="column" v-for="bill in bills">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title">
+              {{bill.firm_name}}
+              {{bill.invoice_no}}
+            </p>
+          </header>
+          <div class="card-content">
+            <div class="content">
+              <span>Taxable Amount: <b>&#8377;{{bill.taxable_amount}}</b></span> <br>
+              <div class="taxes">
+                <span>SGST <b>&#8377;{{bill.sgst_amount}}</b></span>
+                <span>CGST <b>&#8377;{{bill.cgst_amount}}</b></span>
+                <span>IGST <b>&#8377;{{bill.igst_amount}}</b></span> <br>
               </div>
-            </article>
-          </div>
-        </div>
-      </div>
-      <div class="body">
-        <div class="body-head">
-          <h1 class="title is-3">Party Name - Invoice Number - Invoice Date</h1>
-          <button class="button is-primary">View</button>
-        </div>
-        <div class="columns body-titles">
-          <div class="column sr-no">SR NO</div>
-          <div class="column particulars">Particulars</div>
-          <div class="column size">Size</div>
-          <div class="column qty">Qty</div>
-          <div class="column rate">Rate</div>
-          <div class="column amount">Amount</div>
-          <div class="column amount">Discount Amount</div>
-          <div class="column amount">CGST Amount</div>
-          <div class="column amount">SGST Amount</div>
-          <div class="column amount">IGST Amount</div>
-        </div>
-        <div class="body-data">
-          <div class="columns">
-            <div class="column sr-no">1</div>
-            <div class="column particulars">PC Pknit</div>
-            <div class="column size">L-XL-XXL</div>
-            <div class="column qty">500</div>
-            <div class="column rate">80</div>
-            <div class="column amount">40000</div>
-            <div class="column amount">1200 (3)</div>
-            <div class="column amount">970</div>
-            <div class="column amount">970</div>
-            <div class="column amount">1940</div>
-          </div>
-          <div class="columns">
-            <div class="column sr-no">2</div>
-            <div class="column particulars">PC Pknit</div>
-            <div class="column size">L-XL-XXL</div>
-            <div class="column qty">100</div>
-            <div class="column rate">90</div>
-            <div class="column amount">9000</div>
-            <div class="column amount">180 (2)</div>
-            <div class="column amount">441</div>
-            <div class="column amount">441</div>
-            <div class="column amount">882</div>
-          </div>
-        </div>
-        <div class="body-amount"><span class="is-pulled-right">Total Amount Payable 53264</span></div>
-      </div>
-      <div class="columns">
-        <div class="column">
-          <div class="card">
-            <header class="card-header">
-              <p class="card-header-title">
-                Component
-              </p>
-              <a class="card-header-icon">
-                <span class="icon">
-                  <i class="fa fa-angle-down"></i>
-                </span>
-              </a>
-            </header>
-            <div class="card-content">
-              <div class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                <a>@bulmaio</a>. <a>#css</a> <a>#responsive</a>
-                <br>
-                <small>11:09 PM - 1 Jan 2016</small>
-              </div>
+              <span>Total Amount: <b>&#8377;{{bill.total_payable_amount}}</b></span>
             </div>
-            <footer class="card-footer">
-              <a class="card-footer-item">Save</a>
-              <a class="card-footer-item">Edit</a>
-              <a class="card-footer-item">Delete</a>
-            </footer>
           </div>
-        </div>
-        <div class="column">
-          <div class="card">
-            <header class="card-header">
-              <p class="card-header-title">
-                Component
-              </p>
-              <a class="card-header-icon">
-                <span class="icon">
-                  <i class="fa fa-angle-down"></i>
-                </span>
-              </a>
-            </header>
-            <div class="card-content">
-              <div class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                <a>@bulmaio</a>. <a>#css</a> <a>#responsive</a>
-                <br>
-                <small>11:09 PM - 1 Jan 2016</small>
-              </div>
-            </div>
-            <footer class="card-footer">
-              <a class="card-footer-item">Save</a>
-              <a class="card-footer-item">Edit</a>
-              <a class="card-footer-item">Delete</a>
-            </footer>
-          </div>
-        </div>
-        <div class="column">
-          <div class="card">
-            <header class="card-header">
-              <p class="card-header-title">
-                Component
-              </p>
-              <a class="card-header-icon">
-                <span class="icon">
-                  <i class="fa fa-angle-down"></i>
-                </span>
-              </a>
-            </header>
-            <div class="card-content">
-              <div class="content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-                <a>@bulmaio</a>. <a>#css</a> <a>#responsive</a>
-                <br>
-                <small>11:09 PM - 1 Jan 2016</small>
-              </div>
-            </div>
-            <footer class="card-footer">
-              <a class="card-footer-item">Save</a>
-              <a class="card-footer-item">Edit</a>
-              <a class="card-footer-item">Delete</a>
-            </footer>
-          </div>
+          <footer class="card-footer">
+            <a class="card-footer-item">View</a>
+            <a class="card-footer-item">Delete</a>
+          </footer>
         </div>
       </div>
     </div>
+    <div class="noData" v-if="noData">
+      <span class="title">No Bills at the moment</span>
+    </div>
+    <pre>
+      {{bills}}
+    </pre>
   </div>
+</div>
 </template>
 
 <script>
+import api from '@/api/main';
 export default {
-  name: 'history'
+  name: 'history',
+  data() {
+    return {
+      bills: [],
+      noData: false
+    };
+  },
+  created() {
+    this.getBill();
+  },
+  methods: {
+    getBill() {
+      api.getBill()
+      .then(response => {
+        console.log(response);
+        if(response.data.message == "No data found") {
+          this.noData = true;
+        }
+        else {
+          this.noData = false;
+          this.bills = response.data;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    },
+  },
 }
 </script>
 
@@ -251,6 +121,24 @@ export default {
     padding-right: 1rem;
     padding-top: 1rem;
     border-top: solid 1px #ddd;
+  }
+
+  .need-padding {
+    padding: 1rem;
+  }
+
+  .noData {
+    padding: 1rem;
+  }
+
+  .card-header-title {
+    background: lightskyblue
+  }
+
+  .taxes {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
   }
 }
 </style>

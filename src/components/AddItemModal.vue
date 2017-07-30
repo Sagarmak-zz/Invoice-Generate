@@ -16,9 +16,6 @@
                     <label class="label">Particulars</label>
                     <p class="control">
                       <ProductsNameDropdown></ProductsNameDropdown>
-                      <!-- <input v-model="particulars" :class="{'input': true, 'is-danger': errors.has('particular') }"
-                      name="particular" v-validate="'required'"
-                      type="text" placeholder="Particulars Dropdown"> -->
                     </p>
                     <div v-show="errors.has('particular')" class="help is-danger">
                       The Particulars is required.
@@ -297,9 +294,6 @@
               </div>
             </div>
           </div>
-          <pre>
-            {{$data}}
-          </pre>
         </section>
         <footer class="modal-card-foot">
           <div class="">

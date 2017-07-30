@@ -11,7 +11,6 @@ export default {
   },
 
   //bill
-
   createBill(user_id, firm_id, invoice_no, taxable_amount,
     sgst_percentage, sgst_amount, cgst_percentage, cgst_amount, igst_percentage, igst_amount,
   total_payable_amount, created_at, bill_detail)  {
@@ -30,6 +29,10 @@ export default {
       created_at: created_at,
       bill_detail: bill_detail
     });
+  },
+
+  getBill() {
+    return HTTP.get('/getBill');
   },
 
 

@@ -139,9 +139,9 @@
           </p>
         </div>
       </div>
-      <pre>
+      <!-- <pre>
         {{$data}}
-      </pre>
+      </pre> -->
     </div>
   </div>
 </template>
@@ -221,27 +221,6 @@ export default {
     // bill2.srno = this.dataArr.length + 1;
     // this.dataArr.push(bill2);
     // this.calculateAmount();
-    // user_id  //done
-    // firm_id  //done
-    // invoice number //left
-    // taxable_amount  =  totalTaxableAmount //done
-    // sgst_percentage //done
-    // sgst_amount //done
-    // cgst_percentage //done
-    // cgst_amount //done
-    // igst_percentage //done
-    // igst_amount //done
-    // total_payable_amount  =  totalInvoiceAmount //done
-    // bill_detail: [  //done
-    //   {
-    //     product_id
-    //     quantity
-    //     size
-    //     price
-    //     discount_percentage
-    //     discount_amount
-    //   }
-    // ]
 
   },
   data() {
@@ -315,12 +294,6 @@ export default {
     },
     submitForm() {
       //api call to submit the bill
-      // user_id, firm_id, invoice_no, taxable_amount,
-      //   sgst_percentage, sgst_amount, cgst_percentage, cgst_amount, igst_percentage, igst_amount,
-      // total_payable_amount, created_at(date), bill_detail
-      console.log(this.user_id+ '-' + this.firm_id+ '-' + this.invNum+ '-' + this.totalTaxableAmount+ '-' +
-        this.sgst_percentage+ '-' + this.sgst_amount+ '-' + this.cgst_percentage+ '-' + this.cgst_amount+ '-' + this.igst_percentage+ '-' + this.igst_amount+ '-' +
-        this.totalInvoiceAmount+ '-' + this.date+ '-' + this.bill_detail);
       api.createBill(this.user_id, this.firm_id, this.invNum, this.totalTaxableAmount,
         this.sgst_percentage, this.sgst_amount, this.cgst_percentage, this.cgst_amount, this.igst_percentage, this.igst_amount,
         this.totalInvoiceAmount, this.date, this.bill_detail)
