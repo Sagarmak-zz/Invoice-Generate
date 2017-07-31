@@ -9,7 +9,9 @@
         </header>
         <section class="modal-card-body">
           <div class="main-det">
+
             <div class="columns">
+              <!-- ProductName Dropdown -->
               <div class="column flex">
                 <div class="flex">
                   <div :class="{'has-error': errors.has('particular') }">
@@ -22,11 +24,8 @@
                     </div>
                   </div>
                 </div>
-                <a @click="showItemModal = true" class="icon is-medium">
-                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                  <AddProductModal v-if="showItemModal"></AddProductModal>
-                </a>
               </div>
+              <!-- HSN Code -->
               <div class="column">
                 <div :class="{'has-error': errors.has('hsn') }">
                   <label class="label">HSN Code</label>
@@ -40,8 +39,11 @@
                   </div>
                 </div>
               </div>
+
             </div>
+
             <div class="columns">
+              <!-- Size -->
               <div class="column">
                 <div :class="{'has-error': errors.has('size') }">
                   <label class="label">Size</label>
@@ -55,6 +57,7 @@
                   </div>
                 </div>
               </div>
+              <!-- Quantity -->
               <div class="column">
                 <div :class="{'has-error': errors.has('qty') }">
                   <label class="label">Quantity</label>
@@ -68,6 +71,7 @@
                   </div>
                 </div>
               </div>
+              <!-- Rate -->
               <div class="column">
                 <div :class="{'has-error': errors.has('rate') }">
                   <label class="label">Rate</label>
@@ -86,6 +90,7 @@
                   </div>
                 </div>
               </div>
+              <!-- Amount -->
               <div class="column">
                 <div :class="{'has-error': errors.has('amount') }">
                   <label class="label">Amount</label>
@@ -104,13 +109,16 @@
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
 
           <div class="discount">
+
             <div class="modal-head">
               <h3 class="title">Discount</h3>
             </div>
+            <!-- Discount Rate -->
             <div class="columns discount-modal">
               <div class="column">
                 <div :class="{'has-error': errors.has('drate') }">
@@ -130,6 +138,7 @@
                   </div>
                 </div>
               </div>
+              <!-- Discount Amount -->
               <div class="column">
                 <div :class="{'has-error': errors.has('damount') }">
                   <label class="label">Amount</label>
@@ -148,6 +157,7 @@
                   </div>
                 </div>
               </div>
+              <!-- Taxable Amount -->
               <div class="column">
                 <div :class="{'has-error': errors.has('tamount') }">
                   <label class="label">Taxable Amount</label>
@@ -166,8 +176,10 @@
                   </div>
                 </div>
               </div>
+
             </div>
           </div>
+
           <div class="gst">
             <div class="modal-head">
               <h3 class="title">Taxes</h3>
@@ -293,6 +305,9 @@
                 </div>
               </div>
             </div>
+            <pre>
+              {{$data}}
+            </pre>
           </div>
         </section>
         <footer class="modal-card-foot">
@@ -301,7 +316,7 @@
             <a class="button" v-on:click="$emit('close')">Cancel</a>
           </div>
           <h1 class="title is-4 is-pulled-right	is-right"><strong>Item Amount:
-            &#8377;{{payableAmount}}</strong></h1>
+            &#8377;{{payableAmount.toFixed(0)}}</strong></h1>
         </footer>
       </div>
     </div>
@@ -309,22 +324,17 @@
 </template>
 
 <script>
-import AddProductModal from '@/components/AddProductModal';
 import ProductsNameDropdown from '@/components/ProductsNameDropdown';
 export default {
   name: 'bill-modal',
   props: ['cgst', 'sgst', 'igst'],
   components: {
-    AddProductModal,
     ProductsNameDropdown
   },
   created() {
     this.cgstRate = this.cgst;
     this.sgstRate = this.sgst;
     this.igstRate = this.igst;
-    this.$bus.$on('close', () => {
-      this.showItemModal = false;
-    });
     this.$bus.$on('product_name_change', (data) => {
       this.product_name = data.product.product_name;
       this.product = data.product.id;
@@ -335,7 +345,6 @@ export default {
   data() {
     return {
       // data: {
-      showItemModal: false,
       srno: null,
       product: null,
       product_name: '',
@@ -392,7 +401,7 @@ export default {
   },
   computed: {
     amountComputed() {
-      return this.amount = this.quantitys * this.rate;
+      return this.quantitys * this.rate;
     },
     discountAmount() {
       return this.discAmount = (this.discRate / 100) * this.amount;
@@ -425,7 +434,7 @@ export default {
   .column.flex {
     display: flex;
     .flex {
-      width: 25rem;
+      width: 28.7rem;
     }
   }
   .main-det {

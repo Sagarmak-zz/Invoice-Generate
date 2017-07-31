@@ -46,6 +46,12 @@ let router = new Router({
           path: '/history',
           name: 'History',
           component: require('@/container/Home/History'),
+          meta: { requiresAuth: true },
+        },
+        {
+          path: '/template/:id',
+          name: 'BillTemplate',
+          component: require('@/container/Home/Billtemplate'),
           meta: { requiresAuth: true }
         },
         {

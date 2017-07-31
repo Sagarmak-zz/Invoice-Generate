@@ -94,12 +94,23 @@ export default {
         window.location.href='/home';
       })
       .catch((error) => {
-        console.log(error.response.statusText);
-        let toast = this.$toasted.error(error.response.statusText, {
-          theme: "outline",
-          position: "bottom-center",
-          duration : 3000
-        });
+        console.log(error);
+        if(error == "Error: Network Error") {
+          let toast = this.$toasted.error(error, {
+            theme: "outline",
+            position: "bottom-center",
+            duration : 3000
+          });
+        }
+        else if(error.response.status == 401) {
+          let toast = this.$toasted.error(error.response.statusText, {
+            theme: "outline",
+            position: "bottom-center",
+            duration : 3000
+          });
+        }
+
+
       });
     }
   }

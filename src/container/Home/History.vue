@@ -2,16 +2,16 @@
   <div class="history">
     <div class="box">
       <div class="history-head">
-        <h3 class="title has-text-centered">History</h3>
+        <h3 class="title">History</h3>
       </div>
       <!-- <div class="reports-body">
     </div> -->
     <div class="columns is-multiline need-padding" v-if="!noData">
-      <div class="column is-one-third" v-for="bill in bills">
+      <div class="column is-one-third" v-for="bill in orderedBills">
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
-              <!-- | orderBy sortKey reverse -->
+              {{bill.id}}
               {{bill.firm_name}}
               {{bill.invoice_no}}
             </p>
@@ -26,12 +26,13 @@
               </div>
               <span>Total Amount: <b>&#8377;{{bill.total_payable_amount}}</b></span>
               <br>
-              <small>{{moment(bill.created_at.date).format('ddd, MMMM Do YYYY')}}</small>
+              <small>{{moment(bill.created_at.date).format('D/MM/YYYY')}}</small>
             </div>
           </div>
           <footer class="card-footer">
-            <a class="card-footer-item">View</a>
+            <router-link :to="{ name:'BillTemplate', params: { id: bill.id } }" class="card-footer-item">View</router-link>
             <a class="card-footer-item">Delete</a>
+            <!-- <BillsViewModal :key="bill.id" :id="bill.id"></BillsViewModal> -->
           </footer>
         </div>
       </div>
@@ -48,12 +49,14 @@
 
 <script>
 import api from '@/api/main';
+import BillsViewModal from '@/components/BillsViewModal';
 export default {
   name: 'history',
   data() {
     return {
       bills: [],
-      noData: false
+      noData: false,
+      showBillViewData: false,
     };
   },
   created() {
@@ -77,6 +80,15 @@ export default {
       })
     },
   },
+
+  computed: {
+    orderedBills() {
+      return this.bills.reverse();
+    }
+  },
+  components: {
+    // BillsViewModal
+  }
 }
 </script>
 

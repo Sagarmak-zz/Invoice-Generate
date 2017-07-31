@@ -104,8 +104,8 @@
                     <td>{{data.rate}}</td>
                     <td>{{data.amount}}</td>
                     <td>{{data.discRate}}</td>
-                    <td>{{data.discAmount}}</td>
-                    <td>{{data.discTaxamount}}</td>
+                    <td>{{data.discAmount.toFixed(2)}}</td>
+                    <td>{{data.discTaxamount.toFixed(2)}}</td>
                     <td>{{data.cgstRate}}</td>
                     <td>{{data.cgstAmount.toFixed(2)}}</td>
                     <td>{{data.sgstRate}}</td>
@@ -177,7 +177,7 @@ export default {
     this.today = this.getYear + '-' + this.getMonth + '-' + this.getDate;
     this.date = this.today;
     var converter = require('number-to-words');
-    // console.log(converter.toWords(42654));
+    console.log(converter.toWords(42654));
     this.$bus.$on('sendItemData', (response) => {
       this.dataIsHere = true;
       this.showAddItemModal = false;
@@ -185,15 +185,6 @@ export default {
       this.dataArr.push(response.data);
       this.bill_detail.push(response.bill_detail);
       this.length = this.dataArr.length;
-      //bill_detail
-      this.bill_detail_front.product_id = response.data.product_id;
-      this.bill_detail_front.quantity = response.data.quantity;
-      this.bill_detail_front.price = response.data.rate;
-      this.bill_detail_front.size = response.data.size;
-      this.bill_detail_front.discount_percentage = response.data.discRate;
-      this.bill_detail_front.discount_amount = response.data.discAmount;
-      //bill_detail
-      // this.bill_detail.push(this.bill_detail_front);
       this.calculateAmount();
     });
     // firm_id
@@ -213,13 +204,6 @@ export default {
         this.igst_percentage = 5;
       }
     });
-    // this.dataIsHere = true;
-    // this.showAddItemModal = false;
-    // bill.srno = this.dataArr.length + 1;
-    // this.dataArr.push(bill);
-    // bill2.srno = this.dataArr.length + 1;
-    // this.dataArr.push(bill2);
-    // this.calculateAmount();
 
   },
   data() {
@@ -339,6 +323,7 @@ export default {
     deleteItem(indexNo) {
       console.log(this.dataArr.splice(indexNo, 1));
       console.log(this.bill_detail.splice(indexNo, 1));
+      this.calculateAmount();
     }
   },
 }
@@ -551,6 +536,10 @@ export default {
     tr {
       align-items: center;
     }
+  }
+
+  th, td{
+    text-align: center;
   }
 
 }
