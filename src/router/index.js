@@ -68,6 +68,12 @@ let router = new Router({
         },
       ]
     }, //Home ends*
+    {
+      path: '/sample',
+      name: 'Sample',
+      component: require('@/container/Sample'),
+      meta: { requiresAuth: true }
+    },
   ]
 });
 

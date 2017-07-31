@@ -1,13 +1,6 @@
 <template lang="html">
-  <div class="bill-template">
+  <div class="sample">
     <div class="box">
-      <div class="template-head">
-        <div class="template-head-header">
-          <router-link :to="{name:'History'}" class="icon"><i class="fa fa-arrow-left" aria-hidden="true"></i></router-link>
-          <h1 class="title">Bill Template</h1>
-        </div>
-        <router-link :to="{ name: 'Sample' }" href="printTemplate.html" class="button is-primary" @click="print">Print</router-link>
-      </div>
 
       <div class="template-body-main">
         <!-- seller -->
@@ -220,52 +213,37 @@
 
     </div>
   </div>
-</div>
 </template>
 
 <script>
 export default {
-  name: 'bill-template',
-  data() {
-    return {
-
-    };
-  },
-  methods: {
-    print() {
-      // window.print();
-    }
-  }
+  name: 'sample',
 }
 </script>
 
 <style lang="scss">
-.bill-template {
+.sample {
+  // font-size: 10px;
+  font: -webkit-small-control;
   .box {
     padding: 0;
   }
 
-  .template-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    border-bottom: solid 1px #ddd;
-    .template-head-header {
-      display: flex;
-      align-items: center;
-    }
-    .title {
-      padding-left: 0.5rem;
-    }
-  }
-
   .template-body-main {
     padding: 2rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
     .flex-head-items {
       display: flex;
       justify-content: space-between;
       border-bottom: solid 2px #ddd;
+      .tile.is-ancestor {
+        .table-responsive {
+          .table.is-bordered.is-striped.is-narrow {
+            margin-bottom: 1rem;
+          }
+        }
+      }
     }
   }
 
@@ -284,14 +262,14 @@ export default {
     }
     .invoice-head {
       color: grey;
-      font-weight: 700;
+      font-weight: 500;
       font-size: -webkit-xxx-large;
     }
     .invoice-details {
-      font-size: 1.2rem;
+      font-size: 0.8rem;
     }
     .invoice-details-copy {
-      font-size: 1rem;
+      font-size: 0.8rem;
     }
   }
 
@@ -308,8 +286,14 @@ export default {
       border-bottom: solid 2px #ddd;
       display: flex;
       justify-content: space-between;
+      .tile.is-ancestor {
+        margin-bottom: 0;
+      }
       .tile.is-parent {
         padding-bottom: 0;
+        .table.is-bordered.is-striped.is-narrow {
+          margin-bottom: 1rem;
+        }
       }
     }
     .right-side {
@@ -319,6 +303,7 @@ export default {
 
   .template-body-items {
     padding: 2rem;
+    padding-top: 1rem;
     border-bottom: solid 2px #ddd;
     th, td{
       text-align: center;
@@ -332,14 +317,10 @@ export default {
         margin: 0;
       }
     }
+
     .bottom-details {
-      display: flex;
-      justify-content: space-between;
       .part-one {
-        width: 45rem;
-        bottom: 0;
-        margin-top: 13%;
-        border: solid 1px #ddd;
+
         // margin: auto;
       }
       .table-responsive {
@@ -369,6 +350,5 @@ export default {
       }
     }
   }
-
 }
 </style>
