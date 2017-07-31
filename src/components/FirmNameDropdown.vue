@@ -51,6 +51,8 @@ export default {
 
 <style lang="scss">
 .firm-name-dropdown {
-
+  .select.is-fullwidth {
+    width: 26rem;
+  }
 }
 </style>

@@ -2,7 +2,7 @@
   <div class="products-name-dropdown">
     <div class="" v-if="!message">
 
-      <span class="select is-fullwidth">
+      <span :class="{'has-error': errors.has('products'), 'select is-fullwidth': true }">
         <select v-model="product" v-validate="'required|not_in:null'" @change="productChange()" name="products">
           <option value=null>Select dropdown</option>
           <option v-for="pro in products" :value="pro">{{pro.product_name}}</option>

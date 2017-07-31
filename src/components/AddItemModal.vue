@@ -14,14 +14,11 @@
               <!-- ProductName Dropdown -->
               <div class="column flex">
                 <div class="flex">
-                  <div :class="{'has-error': errors.has('particular') }">
+                  <div :class="{'has-error': errors.has('products') }">
                     <label class="label">Particulars</label>
                     <p class="control">
                       <ProductsNameDropdown></ProductsNameDropdown>
                     </p>
-                    <div v-show="errors.has('particular')" class="help is-danger">
-                      The Particulars is required.
-                    </div>
                   </div>
                 </div>
               </div>

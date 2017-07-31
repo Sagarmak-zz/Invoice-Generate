@@ -286,6 +286,9 @@ export default {
       return this.$validator.validateAll();
     },
     submitForm() {
+      // user_id, firm_id, invoice_no, taxable_amount,
+      //   sgst_percentage, sgst_amount, cgst_percentage, cgst_amount, igst_percentage, igst_amount,
+      // total_payable_amount, created_at, bill_detail
       //api call to submit the bill
       api.createBill(this.user_id, this.firm_id, this.invNum, this.totalTaxableAmount,
         this.sgst_percentage, this.sgst_amount, this.cgst_percentage, this.cgst_amount, this.igst_percentage, this.igst_amount,
