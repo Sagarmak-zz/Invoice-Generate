@@ -93,10 +93,8 @@
                     <tr>
                       <th>SR</th>
                       <th colspan="5">Particulars</th>
-                      <th colspan="3">Discount</th>
-                      <th colspan="2">CGST</th>
-                      <th colspan="2">SGST</th>
-                      <th colspan="2">IGST</th>
+                      <th colspan="2">Discount</th>
+                      <th>Taxable Amount</th>
                     </tr>
                   </thead>
                   <thead>
@@ -109,13 +107,7 @@
                       <th>Amount</th>
                       <th>Rate</th>
                       <th>Amount</th>
-                      <th>Total</th>
-                      <th>Rate</th>
-                      <th>Amount</th>
-                      <th>Rate</th>
-                      <th>Amount</th>
-                      <th>Rate</th>
-                      <th>Amount</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -129,12 +121,6 @@
                       <td>5</td>
                       <td>250</td>
                       <td>4750</td>
-                      <td>2.5</td>
-                      <td>118.75</td>
-                      <td>2.5</td>
-                      <td>118.75</td>
-                      <td>0</td>
-                      <td>0</td>
                     </tr>
                     <tr>
                       <td>1</td>
@@ -146,12 +132,6 @@
                       <td>5</td>
                       <td>250</td>
                       <td>4750</td>
-                      <td>2.5</td>
-                      <td>118.75</td>
-                      <td>2.5</td>
-                      <td>118.75</td>
-                      <td>0</td>
-                      <td>0</td>
                     </tr>
                     <tr>
                       <td>1</td>
@@ -163,12 +143,6 @@
                       <td>5</td>
                       <td>250</td>
                       <td>4750</td>
-                      <td>2.5</td>
-                      <td>118.75</td>
-                      <td>2.5</td>
-                      <td>118.75</td>
-                      <td>0</td>
-                      <td>0</td>
                     </tr>
                   </tbody>
                 </table>

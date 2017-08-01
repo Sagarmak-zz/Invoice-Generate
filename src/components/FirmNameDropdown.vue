@@ -6,8 +6,8 @@
         <option v-for="firm in firms" :value="firm">{{firm.firm_name}}</option>
       </select>
     </span>
-    <div class="help is-danger" v-show="errors.has('state')">
-      {{errors.first('state')}}
+    <div class="help is-danger" v-show="errors.has('customer')">
+      {{errors.first('customer')}}
     </div>
   </div>
 </template>

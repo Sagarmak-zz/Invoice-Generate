@@ -61,7 +61,7 @@
                 <div class="table-responsive right-side">
                   <table class="table is-bordered is-striped is-narrow">
                     <tbody>
-                      <tr> <th>Agent:</th> <td>Dummy Name</td> </tr>
+                      <!-- <tr> <th>Agent:</th> <td>Dummy Name</td> </tr> -->
                       <tr> <th>Phone:</th> <td>079-22168689</td> </tr>
                       <tr> <th>Email:</th> <td>siddharthawear2858@gmail.com</td> </tr>
                     </tbody>
@@ -86,10 +86,8 @@
                     <tr>
                       <th>SR</th>
                       <th colspan="5">Particulars</th>
-                      <th colspan="3">Discount</th>
-                      <th colspan="2">CGST</th>
-                      <th colspan="2">SGST</th>
-                      <th colspan="2">IGST</th>
+                      <th colspan="2">Discount</th>
+                      <th>Taxable Amount</th>
                     </tr>
                   </thead>
                   <thead>
@@ -102,13 +100,7 @@
                       <th>Amount</th>
                       <th>Rate</th>
                       <th>Amount</th>
-                      <th>Total</th>
-                      <th>Rate</th>
-                      <th>Amount</th>
-                      <th>Rate</th>
-                      <th>Amount</th>
-                      <th>Rate</th>
-                      <th>Amount</th>
+                      <th></th>
                     </tr>
                   </thead>
                   <tbody>
@@ -122,12 +114,6 @@
                       <td>5</td>
                       <td>250</td>
                       <td>4750</td>
-                      <td>2.5</td>
-                      <td>118.75</td>
-                      <td>2.5</td>
-                      <td>118.75</td>
-                      <td>0</td>
-                      <td>0</td>
                     </tr>
                     <tr>
                       <td>1</td>
@@ -139,12 +125,6 @@
                       <td>5</td>
                       <td>250</td>
                       <td>4750</td>
-                      <td>2.5</td>
-                      <td>118.75</td>
-                      <td>2.5</td>
-                      <td>118.75</td>
-                      <td>0</td>
-                      <td>0</td>
                     </tr>
                     <tr>
                       <td>1</td>
@@ -156,13 +136,30 @@
                       <td>5</td>
                       <td>250</td>
                       <td>4750</td>
-                      <td>2.5</td>
-                      <td>118.75</td>
-                      <td>2.5</td>
-                      <td>118.75</td>
-                      <td>0</td>
-                      <td>0</td>
                     </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>HoneyComb T-Shirt - 12345 </td>
+                      <td>L-XXL</td>
+                      <td>50</td>
+                      <td>100</td>
+                      <td>5000</td>
+                      <td>5</td>
+                      <td>250</td>
+                      <td>4750</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>HoneyComb T-Shirt - 12345 </td>
+                      <td>L-XXL</td>
+                      <td>50</td>
+                      <td>100</td>
+                      <td>5000</td>
+                      <td>5</td>
+                      <td>250</td>
+                      <td>4750</td>
+                    </tr>
+
                   </tbody>
                 </table>
               </div>
@@ -170,35 +167,35 @@
           </div>
         </div>
         <div class="bottom-details">
-          <div class="part-one has-text-centered">
-            <strong>Amount: forty-two thousand, six hundred fifty-four</strong>
-          </div>
-          <div class="tile is-ancestor part-two">
-            <div class="tile is-parent">
-              <article class="tile is-child">
-                <div class="table-responsive">
-                  <table class="table is-bordered is-striped is-narrow">
-                    <tbody>
-                      <tr> <td>Total Taxable Amount: </td> <th>&#8377; 4750</th> </tr>
-                      <tr> <td>CGST: </td> <th>&#8377; 118.75</th> </tr>
-                      <tr> <td>SGST: </td> <th>&#8377; 118.75</th> </tr>
-                      <tr> <td>IGST: </td> <th>&#8377; 0</th> </tr>
-                      <tr> <td>Total Invoice Value: </td> <th>&#8377; 4980</th> </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </article>
-            </div>
+          <!-- <div class="part-one has-text-centered">
+          <strong>Amount: forty-two thousand, six hundred fifty-four</strong>
+        </div> -->
+        <div class="tile is-ancestor part-two">
+          <div class="tile is-parent">
+            <article class="tile is-child">
+              <div class="table-responsive">
+                <table class="table is-bordered is-striped is-narrow">
+                  <tbody>
+                    <tr> <td>Total Taxable Amount: </td> <th>&#8377; 4750</th> </tr>
+                    <tr> <td>CGST: </td> <th>&#8377; 118.75</th> </tr>
+                    <tr> <td>SGST: </td> <th>&#8377; 118.75</th> </tr>
+                    <tr> <td>IGST: </td> <th>&#8377; 0</th> </tr>
+                    <tr> <td>Total Invoice Value: </td> <th>&#8377; 4980</th> </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
           </div>
         </div>
       </div>
-      <!-- table -->
+    </div>
+    <!-- table -->
 
-      <!-- bottom -->
-      <div class="template-bottom">
-        <div class="part-one">
-          <span><b>N.B.</b></span>
-          <p><b>(1)</b> Interest will be charged @ 18% from the date of bill <b>(2)</b> The Payment
+    <!-- bottom -->
+    <div class="template-bottom footer">
+      <div class="part-one">
+        <span><b>N.B.</b></span>
+        <p><b>(1)</b> Interest will be charged @ 18% from the date of bill <b>(2)</b> The Payment
           of this bill should be made by demand draft of our name duly crossed  by
           payee's A/c. only <b>(3)</b> Goods are sent on your account & risk and according
           to the rules of the Gujarat Garment Manufacturer Association(GGMA).</p>
@@ -331,11 +328,15 @@ export default {
   }
 
   .template-bottom {
+    // position: relative;
+    // margin-top: 15rem;
+    // position: fixed;
     padding: 2rem;
     display: flex;
     justify-content: space-between;
+    align-items: flex-end;
     .part-one {
-      max-width: 33rem;
+      max-width: 23rem;
       .spacing {
         padding-top: 1.5rem;
       }
@@ -346,7 +347,7 @@ export default {
       }
       .take-me-to-the-bottom {
         bottom: 0;
-        margin-top: 75%;
+        margin-top: 65%;
       }
     }
   }

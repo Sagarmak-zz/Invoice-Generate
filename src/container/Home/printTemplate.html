@@ -1,402 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<title></title>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<style> .box { 
-			padding: 0; 
-			} 
-			.template-head { 
-				display: flex; 
-				justify-content: space-between; 
-				align-items: center; 
-				padding: 1rem;
-				border-bottom: solid 1px #ddd; 
-				.template-head-header { 
-					display: flex; 
-					align-items: center; 
-				} 
-				.title { 
-					padding-left: 0.5rem; 
-				} 
-			} 
-
-			.template-body-main { 
-				padding: 2rem; 
-				.flex-head-items { 
-					display: flex; 
-					justify-content: space-between; 
-					border-bottom: solid 2px #ddd; 
-				} 
-			} 
-			
-			.seller { 
-				.title.is-2 { 
-					font-weight: bold; 
-					margin: 0; 
-					padding-bottom: 0.5rem; 
-					background: whitesmoke; 
-				} 
-			}
-
-			.invoice { 
-				p { 
-					text-align: center; 
-					} 
-					.invoice-head { 
-						color: grey; 
-						font-weight: 700; 
-						font-size: -webkit-xxx-large; 
-					} 
-					.invoice-details { 
-						font-size: 1.2rem; 
-					} 
-					.invoice-details-copy { 
-						font-size: 1rem; 
-					} 
-				} 
-				
-				 .buyer { 
-					 padding: 2rem; 
-					 padding-top: 0; 
-					 padding-bottom: 0; 
-					 .part-table { 
-						 border-bottom: solid 2px #ddd; 
-						 display: flex; 
-						 justify-content: space-between; 
-						 .tile.is-parent { 
-							 padding-bottom: 0; 
-						} 
-					} 
-					.right-side { 
-						float: right; 
-					} 
-				} 
-				
-				.template-body-items { 
-					padding: 2rem; 
-					border-bottom: solid 2px #ddd; 
-					th, td { 
-						text-align: center; 
-					} 
-					.tile.is-ancestor { 
-						margin-bottom: 0; 
-					} 
-					.tile.is-parent { 
-						padding-bottom: 0; 
-						.table.is-bordered.is-striped.is-narrow { 
-							margin: 0; 
-						} 
-					} 
-					.bottom-details { 
-						display: flex; 
-						justify-content: space-between; 
-						.part-one { 
-							width: 45rem; 
-							bottom: 0; 
-							margin-top: 13%; 
-							border: solid 1px #ddd;  
-						} 
-						.table-responsive { 
-							width: fit-content; 
-							float: right; 
-						} 
-					} 
-				} 
-				
-				.template-bottom { 
-					padding: 2rem; 
-					display: flex; 
-					justify-content: space-between; 
-					.part-one { 
-						max-width: 33rem; 
-						.spacing { 
-							padding-top: 1.5rem; 
-						} 
-					} 
-					.part-two { 
-						p { 
-							font-weight: 700; 
-						} 
-						.take-me-to-the-bottom { 
-							bottom: 0; 
-							margin-top: 75%; 
-						} 
-					} 
-				}
-
-		</style>
-	</head>
-	<body>
-<div class="bill-template">
-  <div class="box">
-
-	<div class="template-body-main">
-	  <!-- seller -->
-	  <div class="flex-head-items">
-		<div class="seller">
-		  <h1 class="title is-2 has-text-centered">Siddhartha Wear</h1>
-		  <div class="tile is-ancestor">
-			<div class="tile is-parent">
-			  <article class="tile is-child">
-				<div class="table-responsive">
-				  <table class="table is-bordered is-striped is-narrow">
-					<tbody>
-					  <tr>
-						<th>GST NO:</th>
-						<td>24ACDPM5595M1Z3</td>
-					  </tr>
-					  <tr>
-						<th>Address:</th>
-						<td>2858, 2nd Floor, Opp. Anand Sweets,</td>
-					  </tr>
-					  <tr>
-						<td colspan="2">Kalupur Kotni Rang, Ahmedabad, Gujarat, 380001</td>
-					  </tr>
-					  <tr>
-						<th>Phone:</th>
-						<td>079-22168689</td>
-					  </tr>
-					  <tr>
-						<th>Email:</th>
-						<td>siddharthawear2858@gmail.com</td>
-					  </tr>
-					</tbody>
-				  </table>
-				</div>
-			  </article>
-			</div>
-		  </div>
-		</div>
-		<div class="invoice">
-		  <p class="invoice-details-copy"><b>Customer Copy</b></p>
-		  <span class="invoice-head">INVOICE</span>
-		  <p class="invoice-details"><b>Invoice No: 12345</b></p>
-		  <p class="invoice-details"><b>Date: 13/09/1993</b></p>
-		  <p class="invoice-details"><b>State Code: 24</b></p>
-		</div>
-	  </div>
-	</div>
-	<!-- seller -->
-	<!-- buyer -->
-	<div class="buyer">
-	  <div class="part-table">
-
-		<div class="tile is-ancestor">
-		  <div class="tile is-parent">
-			<article class="tile is-child">
-			  <div class="table-responsive">
-				<table class="table is-bordered is-striped is-narrow">
-				  <tbody>
-					<tr>
-					  <th>M/S:</th>
-					  <td>Shanti Textile</td>
-					</tr>
-					<tr>
-					  <th>GST NO:</th>
-					  <td>24ACDPM5595M1Z3</td>
-					</tr>
-					<tr>
-					  <th>Address:</th>
-					  <td>2858, 2nd Floor, Opp. Anand Sweets,</td>
-					</tr>
-					<tr>
-					  <td colspan="2">Kalupur Kotni Rang, Ahmedabad, Gujarat, 380001</td>
-					</tr>
-				  </tbody>
-				</table>
-			  </div>
-			</article>
-		  </div>
-		</div>
-		<div class="tile is-ancestor">
-		  <div class="tile is-parent">
-			<article class="tile is-child">
-			  <div class="table-responsive right-side">
-				<table class="table is-bordered is-striped is-narrow">
-				  <tbody>
-					<tr>
-					  <th>Agent:</th>
-					  <td>Dummy Name</td>
-					</tr>
-					<tr>
-					  <th>Phone:</th>
-					  <td>079-22168689</td>
-					</tr>
-					<tr>
-					  <th>Email:</th>
-					  <td>siddharthawear2858@gmail.com</td>
-					</tr>
-				  </tbody>
-				</table>
-			  </div>
-			</article>
-		  </div>
-		</div>
-	  </div>
-	</div>
-	<!-- buyer -->
-
-	<!-- table -->
-	<div class="template-body-items">
-
-	  <div class="tile is-ancestor">
-		<div class="tile is-parent">
-		  <article class="tile is-child">
-			<div class="table-responsive">
-			  <table class="table is-bordered is-striped is-narrow">
-				<thead>
-				  <tr>
-					<th>SR</th>
-					<th colspan="5">Particulars</th>
-					<th colspan="3">Discount</th>
-					<th colspan="2">CGST</th>
-					<th colspan="2">SGST</th>
-					<th colspan="2">IGST</th>
-				  </tr>
-				</thead>
-				<thead>
-				  <tr>
-					<th></th>
-					<th>Name</th>
-					<th>Size</th>
-					<th>Qty</th>
-					<th>Rate</th>
-					<th>Amount</th>
-					<th>Rate</th>
-					<th>Amount</th>
-					<th>Total</th>
-					<th>Rate</th>
-					<th>Amount</th>
-					<th>Rate</th>
-					<th>Amount</th>
-					<th>Rate</th>
-					<th>Amount</th>
-				  </tr>
-				</thead>
-				<tbody>
-				  <tr>
-					<td>1</td>
-					<td>HoneyComb T-Shirt - 12345 </td>
-					<td>L-XXL</td>
-					<td>50</td>
-					<td>100</td>
-					<td>5000</td>
-					<td>5</td>
-					<td>250</td>
-					<td>4750</td>
-					<td>2.5</td>
-					<td>118.75</td>
-					<td>2.5</td>
-					<td>118.75</td>
-					<td>0</td>
-					<td>0</td>
-				  </tr>
-				  <tr>
-					<td>1</td>
-					<td>HoneyComb T-Shirt - 12345 </td>
-					<td>L-XXL</td>
-					<td>50</td>
-					<td>100</td>
-					<td>5000</td>
-					<td>5</td>
-					<td>250</td>
-					<td>4750</td>
-					<td>2.5</td>
-					<td>118.75</td>
-					<td>2.5</td>
-					<td>118.75</td>
-					<td>0</td>
-					<td>0</td>
-				  </tr>
-				  <tr>
-					<td>1</td>
-					<td>HoneyComb T-Shirt - 12345 </td>
-					<td>L-XXL</td>
-					<td>50</td>
-					<td>100</td>
-					<td>5000</td>
-					<td>5</td>
-					<td>250</td>
-					<td>4750</td>
-					<td>2.5</td>
-					<td>118.75</td>
-					<td>2.5</td>
-					<td>118.75</td>
-					<td>0</td>
-					<td>0</td>
-				  </tr>
-				</tbody>
-			  </table>
-			</div>
-		  </article>
-		</div>
-	  </div>
-	  <div class="bottom-details">
-		<div class="part-one has-text-centered">
-		  <strong>Amount: forty-two thousand, six hundred fifty-four</strong>
-		</div>
-		<div class="tile is-ancestor part-two">
-		  <div class="tile is-parent">
-			<article class="tile is-child">
-			  <div class="table-responsive">
-				<table class="table is-bordered is-striped is-narrow">
-				  <tbody>
-					<tr>
-					  <td>Total Taxable Amount: </td>
-					  <th>&#8377; 4750</th>
-					</tr>
-					<tr>
-					  <td>CGST: </td>
-					  <th>&#8377; 118.75</th>
-					</tr>
-					<tr>
-					  <td>SGST: </td>
-					  <th>&#8377; 118.75</th>
-					</tr>
-					<tr>
-					  <td>IGST: </td>
-					  <th>&#8377; 0</th>
-					</tr>
-					<tr>
-					  <td>Total Invoice Value: </td>
-					  <th>&#8377; 4980</th>
-					</tr>
-				  </tbody>
-				</table>
-			  </div>
-			</article>
-		  </div>
-		</div>
-	  </div>
-	</div>
-	<!-- table -->
-
-	<!-- bottom -->
-	<div class="template-bottom">
-	  <div class="part-one">
-		<!-- <span><b>N.B.</b></span><br>
-		  <p><b>(1)</b> Interest will be charged @ 18% from the date of bill <b>(2)</b> The Payment <br>
-		  of this bill should be made by demand draft of our name duly crossed  by <br>
-		  payee's A/c. only <b>(3)</b> Goods are sent on your account & risk and according <br>
-		  to the rules of the Gujarat Garment Manufacturer Association(GGMA). <br> <br></p>
-		  <span>Subject to Ahmedabad Jurisdiction</span> -->
-		<span><b>N.B.</b></span>
-		<p><b>(1)</b> Interest will be charged @ 18% from the date of bill <b>(2)</b> The Payment of this bill should be made
-		  by demand draft of our name duly crossed by payee's A/c. only <b>(3)</b> Goods are sent on your account & risk
-		  and according to the rules of the Gujarat Garment Manufacturer Association(GGMA).</p>
-		<p class="spacing">Subject to Ahmedabad Jurisdiction</p>
-	  </div>
-	  <div class="part-two">
-		<p>For, Siddhartha Wear</p>
-		<p class="take-me-to-the-bottom">Authorised Signature</p>
-	  </div>
-	</div>
-	<!-- bottom -->
-
-  </div>
-</div>
-
-	</body>
+<html>
+    <head>
+        <meta charset=utf-8 />
+        <title>Header & Footer</title>
+        <style type="text/css">
+            body {
+                background: #eaeaed;
+                -webkit-print-color-adjust: exact;
+            }
+            .my-footer{
+                background: #2db34a;
+                bottom: 0;
+                left: 0;
+                position: fixed;
+                right: 0;
+            }
+            .my-header {
+                background: red;
+                top: 0;
+                left: 0;
+                position: fixed;
+                right: 0;
+            }
+        </style>
+    </head> 
+    <body>
+        <div>
+            <div class="my-header">Fixed Header</div>
+            <div class="my-footer">Fixed Footer</div>
+            <table>
+                <thead>
+                    <tr><th>TH 1</th><th>TH 2</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>TD 1</td><td>TD 2</td></tr>
+                    <tr><td>TD 1</td><td>TD 2</td></tr>
+                    <tr><td>TD 1</td><td>TD 2</td></tr>
+                    <tr><td>TD 1</td><td>TD 2</td></tr>
+                    <tr><td>TD 1</td><td>TD 2</td></tr>
+                    <tr><td>TD 1</td><td>TD 2</td></tr>
+                    <tr><td>TD 1</td><td>TD 2</td></tr>
+                    <tr><td>TD 1</td><td>TD 2</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
 </html>
