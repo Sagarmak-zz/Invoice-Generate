@@ -441,9 +441,5 @@
         }
       }
     }
-    #header, #footer {
-   visibility: hidden !important;
-   display: none !important;
-}
   }
   </style>

@@ -1,16 +1,12 @@
 <template lang="html">
   <div class="products-name-dropdown">
     <div class="" v-if="!message">
-
-      <span :class="{'has-error': errors.has('products'), 'select is-fullwidth': true }">
+      <span :class="{'select is-fullwidth': true, 'is-danger': errors.has('products') }">
         <select v-model="product" v-validate="'required|not_in:null'" @change="productChange()" name="products">
           <option value=null>Select dropdown</option>
           <option v-for="pro in products" :value="pro">{{pro.product_name}}</option>
         </select>
       </span>
-      <div class="help is-danger" v-show="errors.has('products')">
-        {{errors.first('products')}}
-      </div>
     </div>
     <div class="box" v-if="message == 'No Products'">
       No Products
@@ -27,7 +23,7 @@ export default {
   },
   data() {
     return {
-      product: '',
+      product: null,
       product_id: null,
       products: [],
       show: true,

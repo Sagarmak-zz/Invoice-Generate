@@ -24,7 +24,7 @@
                 <label class="label">Invoice Number</label>
                 <p class="control">
                   <input v-model="item.invoice_no" :class="{'input': true, 'is-danger': errors.has('invoice_no') }"
-                  name="invoice_no" v-validate="'required'"
+                  name="invoice_no" v-validate="'required'" @keyup.enter="callMainDetailsAdd()"
                   type="text" placeholder="Invoice Number">
                 </p>
                 <div v-show="errors.has('invoice_no')" class="help is-danger">

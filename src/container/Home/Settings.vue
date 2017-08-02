@@ -6,172 +6,163 @@
         <button @click="showAdminDetailsModal = true" class="button is-primary">Edit</button>
         <AdminDetailsUpdateModal v-if="showAdminDetailsModal" @close="showAdminDetailsModal = false" :data="data"></AdminDetailsUpdateModal>
       </div>
-      <div class="content">
 
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <p>Admin Name</p>
-          </div>
-          <div class="field-body">
-            <div>
-              <p class="control ">
-                {{ data.username }}
+      <div class="form">
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Admin Name</label>
+              <p class="control">
+                <input v-model="admin_name = data.username" class="input" name="admin_name" v-validate="'required'" type="text" placeholder="Admin Name">
               </p>
+              <div v-show="errors.has('admin_name')" class="help is-danger">
+                The Admin Name is required.
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Firm Name</label>
+              <p class="control">
+                <input v-model="firm_name = data.firm_name" class="input" name="firm_name" v-validate="'required'" type="text" placeholder="Firm Name">
+              </p>
+              <div v-show="errors.has('firm_name')" class="help is-danger">
+                The Firm Name is required.
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <p>Firm Name</p>
-          </div>
-          <div class="field-body">
-            <div>
-              <p class="control ">
-                {{ data.firm_name }}
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">GST Number</label>
+              <p class="control">
+                <input v-model="gst_no = data.gst_number" class="input" name="gst_no" v-validate="'required'" type="text" placeholder="GST Number">
               </p>
+              <div v-show="errors.has('gst_no')" class="help is-danger">
+                The GST Number is required.
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Email</label>
+              <p class="control">
+                <input v-model="email = data.email" name="billemail" v-validate="'required|email'" type="email" placeholder="Email" class="input">
+              </p>
+              <div class="help is-danger" v-show="errors.has('billemail')">
+                The Email is required and should be a valid Email address.
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <p>Admin Email</p>
-          </div>
-          <div class="field-body">
-            <div>
-              <p class="control ">
-                {{ data.email }}
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Address</label>
+              <p class="control">
+                <textarea v-model="address = data.address" name="billaddress" v-validate="'required'" class="textarea" placeholder="Address"></textarea>
               </p>
+              <div v-show="errors.has('billaddress')" class="help is-danger">
+                The Address is a required field..
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field mobile">
+              <label class="label">Contact No(Mobile)</label>
+              <p class="control">
+                <input v-model="mobile = data.mobile_number" name="mobile" v-validate="'required|numeric|min:8'" type="number" placeholder="Contact No" class="input">
+              </p>
+              <div class="help is-danger" v-show="errors.has('mobile')">
+                The Contact Number field is required and should contain at least 8 numeric values.
+              </div>
+            </div>
+            <div class="field">
+              <label class="label">Contact No(Landline)</label>
+              <p class="control">
+                <input v-model="landline = data.landline_number" name="landline" v-validate="'required|numeric|min:8'" type="number" placeholder="Contact No" class="input">
+              </p>
+              <div class="help is-danger" v-show="errors.has('landline')">
+                The Contact Number field is required and should contain at least 8 numeric values.
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <p>GST Number</p>
-          </div>
-          <div class="field-body">
-            <div>
-              <p class="control ">
-                {{ data.gst_number }}
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">City</label>
+              <p class="control">
+                <input v-model="city = data.cityname" class="input" name="billcity" v-validate="'required'" type="text" placeholder="City">
               </p>
+              <div v-show="errors.has('billcity')" class="help is-danger">
+                The City Name is required.
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">State</label>
+              <p class="control">
+                <input type="hidden" v-model="state_code = data.state_code">
+                <StateDropdown :stateCode="state_code"></StateDropdown>
+              </p>
+              <div v-show="errors.has('billstate')" class="help is-danger">
+                The State is required.
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Pincode</label>
+              <p class="control">
+                <input v-model="pincode = data.pincode" name="billpincode" v-validate="'required|numeric'" type="text" placeholder="Pincode" class="input">
+              </p>
+              <div class="help is-danger" v-show="errors.has('billpincode')">
+                The Pincode is required and should be a numeric code.
+              </div>
             </div>
           </div>
         </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <p>Address</p>
-          </div>
-          <div class="field-body">
-            <div>
-              <p class="control ">
-                {{ data.address }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <p>City</p>
-          </div>
-          <div class="field-body">
-            <div>
-              <p class="control ">
-                {{ data.cityname }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <p>State</p>
-          </div>
-          <div class="field-body">
-            <div>
-              <p class="control ">
-                <span v-if="state.state_code == data.state_code" v-for="state in states">{{state.state_code}} - {{state.state_name}}</span>
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <p>Pincode</p>
-          </div>
-          <div class="field-body">
-            <div>
-              <p class="control ">
-                {{ data.pincode }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <p>Mobile Number</p>
-          </div>
-          <div class="field-body">
-            <div>
-              <p class="control ">
-                {{ data.mobile_number }}
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="field is-horizontal">
-          <div class="field-label">
-            <p>Landline Number</p>
-          </div>
-          <div class="field-body">
-            <div>
-              <p class="control ">
-                {{ data.landline_number }}
-              </p>
-            </div>
-          </div>
-        </div>
-
       </div>
-    </div>
-    <div class="state">
-      <div class="box">
-        <div class="state-head title">
-          Manage States
-        </div>
-        <div class="state-body">
-          <div class="items" v-for="state in states">
-            <span class="code">{{state.state_code}}</span>
-            <span class="name">{{state.state_name}}</span>
-            <div class="icons">
-              <a @click="deleteState(state.state_code)" class="icon is-small"> <i class="fa fa-trash-o"></i> </a>
-            </div>
+      <!-- <pre>
+      {{data}}
+    </pre> -->
+
+  </div>
+  <div class="state">
+    <div class="box">
+      <div class="state-head title">
+        Manage States
+      </div>
+      <div class="state-body">
+        <div class="items" v-for="state in states">
+          <span class="code">{{state.state_code}}</span>
+          <span class="name">{{state.state_name}}</span>
+          <div class="icons">
+            <a @click="deleteState(state.state_code)" class="icon is-small"> <i class="fa fa-trash-o"></i> </a>
           </div>
         </div>
-        <div class="foot">
-          <div class="field is-grouped">
-            <p class="control code">
-              <input v-validate="'required|numeric'" v-model="code" name="code" :class="{'input': true, 'is-danger': errors.has('code') }" type="text" placeholder="Code">
-            </p>
-            <p class="control">
-              <input @keyup.enter="validateAndAddState()" v-validate="'required'" v-model="name" name="name" :class="{'input': true, 'is-danger': errors.has('name') }" type="text" placeholder="Name">
-            </p>
-            <p class="control">
-              <a @click="validateAndAddState()" class="button is-success">
-                Add State
-              </a>
-            </p>
-          </div>
+      </div>
+      <div class="foot">
+        <div class="field is-grouped">
+          <p class="control code">
+            <input v-validate="'required|numeric'" name="code" :class="{'input': true, 'is-danger': errors.has('code') }" type="text" placeholder="Code">
+          </p>
+          <p class="control">
+            <input @keyup.enter="validateAndAddState()" v-validate="'required'" name="name" :class="{'input': true, 'is-danger': errors.has('name') }" type="text" placeholder="Name">
+          </p>
+          <p class="control">
+            <a @click="validateAndAddState()" class="button is-success">
+              Add State
+            </a>
+          </p>
         </div>
       </div>
     </div>
   </div>
+</div>
 </template>
 
 <script>
@@ -359,17 +350,7 @@ export default {
     padding: 1rem;
   }
 
-  .field
-  {
-    border-bottom: solid 1px #ddd;
-    margin-bottom: 1rem;
-    padding-bottom: 1rem;
-    .field-label
-    {
-      text-align: left;
-      font-weight: bold;
-    }
-  }
+
 
   .state {
     .state-head {

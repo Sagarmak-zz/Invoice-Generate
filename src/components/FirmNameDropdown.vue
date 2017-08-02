@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="firm-name-dropdown">
-    <span class="select is-fullwidth">
+    <span :class="{'select is-fullwidth': true, 'is-danger': errors.has('customer') }">
       <select v-validate="'required|not_in:null'" v-model="firm" @change="stateChange()" name="customer">
         <option value=null>Select dropdown</option>
         <option v-for="firm in firms" :value="firm">{{firm.firm_name}}</option>
@@ -21,7 +21,7 @@ export default {
   },
   data() {
     return {
-      firm: '',
+      firm: null,
       firm_id: null,
       firms: [],
       show: true,

@@ -8,16 +8,22 @@
     </div> -->
     <div class="columns is-multiline need-padding" v-if="!noData">
       <div class="column is-one-third" v-for="bill in orderedBills">
+
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
-              {{bill.id}}
-              {{bill.firm_name}}
-              {{bill.invoice_no}}
+              <span>
+                <!-- {{bill.id}} -->
+                <span>To,</span>
+                <span>{{bill.firm_name}}</span>
+                <span></span>
+              </span>
+              <span class="tag is-info is-pulled-right">{{bill.invoice_no}}</span>
             </p>
           </header>
           <div class="card-content">
             <div class="content">
+              <small>Date Created: <b>{{moment(bill.created_at.date).format('D/MM/YYYY')}}</b></small><br>
               <span>Taxable Amount: <b>&#8377;{{bill.taxable_amount}}</b></span> <br>
               <div class="taxes">
                 <span>SGST <b>&#8377;{{bill.sgst_amount}}</b></span>
@@ -25,8 +31,6 @@
                 <span>IGST <b>&#8377;{{bill.igst_amount}}</b></span> <br>
               </div>
               <span>Total Amount: <b>&#8377;{{bill.total_payable_amount}}</b></span>
-              <br>
-              <small>{{moment(bill.created_at.date).format('D/MM/YYYY')}}</small>
             </div>
           </div>
           <footer class="card-footer">
@@ -41,9 +45,9 @@
       <span class="title">No Bills at the moment</span>
     </div>
     <!-- <pre>
-      {{bills}}
-    </pre> -->
-  </div>
+    {{bills}}
+  </pre> -->
+</div>
 </div>
 </template>
 
@@ -147,7 +151,9 @@ export default {
   }
 
   .card-header-title {
-    background: lightskyblue
+    background: lightskyblue;
+    display: flex;
+    justify-content: space-between;
   }
 
   .taxes {
