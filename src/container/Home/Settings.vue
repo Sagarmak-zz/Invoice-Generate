@@ -8,7 +8,6 @@
       </div>
 
       <div class="form">
-        {{$data.data}}
         <div class="columns">
           <div class="column">
             <div class="field">

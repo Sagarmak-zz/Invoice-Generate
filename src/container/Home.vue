@@ -44,7 +44,8 @@ export default {
         let toast = this.$toasted.success('Welcome, ' + this.username + '!', {
           theme: "outline",
           position: "top-center",
-          duration : 3000
+          duration : 3000,
+          icon : 'star'
         });
       })
       .catch((error) => {
@@ -55,7 +56,8 @@ export default {
           let toast = this.$toasted.error("Please Logout and come back again to continue!", {
             theme: "outline",
             position: "top-center",
-            duration : 3000
+            duration : 3000,
+            icon : 'sync'
           });
         }
       })
@@ -65,7 +67,8 @@ export default {
       let toast = this.$toasted.show("Successfully Logged Out!", {
         theme: "outline",
         position: "top-center",
-        duration : 3000
+        duration : 3000,
+        icon : 'sync'
       });
       this.$router.push({name: 'Login'});
     }

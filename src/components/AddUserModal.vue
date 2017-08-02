@@ -253,7 +253,8 @@ export default {
         let toast = this.$toasted.error("Please fill in all the details first!", {
           theme: "outline",
           position: "top-center",
-          duration : 3000
+          duration : 3000,
+          icon: 'assignment'
         })
       }
     },

@@ -13,7 +13,6 @@
           <header class="card-header">
             <p class="card-header-title">
               <span>
-                <!-- {{bill.id}} -->
                 <span>To,</span>
                 <span>{{bill.firm_name}}</span>
                 <span></span>
@@ -34,7 +33,7 @@
             </div>
           </div>
           <footer class="card-footer">
-            <router-link :to="{ name:'BillTemplate', params: { id: bill.id } }" class="card-footer-item">View</router-link>
+            <router-link :to="{ name:'BillTemplate', params: { invoice_no: bill.invoice_no } }" class="card-footer-item">View</router-link>
             <a class="card-footer-item">Delete</a>
             <!-- <BillsViewModal :key="bill.id" :id="bill.id"></BillsViewModal> -->
           </footer>

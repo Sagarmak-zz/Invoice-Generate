@@ -2,7 +2,7 @@
   <div class="reports">
     <div class="box">
       <div class="head-report">
-        <h3 class="title has-text-centered">Reports</h3>
+        <h3 class="title">Reports</h3>
       </div>
 
       <div class="options">
@@ -28,18 +28,21 @@
               <div class="field">
                 <label class="label">Start Date</label>
                 <p class="control">
-                  <datepicker v-model="date1" v-validate="'required'" placeholder="Select Start Date"
-                  :config="{ dateFormat: 'Y-m-d' }" name="date" :class="{'input': true, 'is-danger': errors.has('date') }">
+                  <datepicker v-model="start_date" v-validate="'required'" placeholder="Select End Date"
+                  :config="{ dateFormat: 'Y-m-d' }" name="start_date" :class="{'input': true, 'is-danger': errors.has('start_date') }">
                 </datepicker>
               </p>
             </div>
             <div class="field">
               <label class="label">End Date</label>
               <p class="control">
-                <datepicker v-model="date2" v-validate="'required'" placeholder="Select End Date"
-                :config="{ dateFormat: 'Y-m-d' }" name="date" :class="{'input': true, 'is-danger': errors.has('date') }">
+                <datepicker v-model="end_date" v-validate="'required'" placeholder="Select End Date"
+                :config="{ dateFormat: 'Y-m-d' }" name="end_date" :class="{'input': true, 'is-danger': errors.has('end_date') }">
               </datepicker>
             </p>
+          </div>
+          <div class="field" v-if="select != ''">
+            <button @click="generateDateReport()" class="button is-primary generate-report"> Generate Report </button>
           </div>
         </div>
         <div class="invoice_number" v-if="select == 'invoice_number'">
@@ -73,112 +76,131 @@
           </div>
         </div>
       </div>
-      <div class="column is-2" v-if="select != ''">
-        <button class="button is-primary generate-report"> Generate Report </button>
-      </div>
     </div>
   </div>
 
   <div class="reports-body">
-    <div class="tile is-ancestor">
-      <div class="tile is-parent">
-        <article class="tile is-child">
-          <!-- <h4 class="title">Products List</h4> -->
-          <div class="table-responsive">
-            <table class="table is-bordered is-striped is-narrow">
-              <thead>
-                <tr>
-                  <th>SR No</th>
-                  <th>Bill No</th>
-                  <th>Date</th>
-                  <th>Party Name</th>
-                  <th>Bill Amount</th>
-                  <th>CGST</th>
-                  <th>SGST</th>
-                  <th>IGST</th>
-                  <th>Total</th>
-                  <th>GST No</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>SW/17-18/0001</td>
-                  <td>1st April</td>
-                  <td>Raj Enterprise</td>
-                  <td>Rs 30,096.00</td>
-                  <td>Rs 250</td>
-                  <td>Rs 250</td>
-                  <td>Rs 1250</td>
-                  <td>Rs 31,500</td>
-                  <td>ABC123456Z</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>SW/17-18/0001</td>
-                  <td>1st April</td>
-                  <td>Raj Enterprise</td>
-                  <td>Rs 30,096.00</td>
-                  <td>Rs 250</td>
-                  <td>Rs 250</td>
-                  <td>Rs 1250</td>
-                  <td>Rs 31,500</td>
-                  <td>ABC123456Z</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>SW/17-18/0001</td>
-                  <td>1st April</td>
-                  <td>Raj Enterprise</td>
-                  <td>Rs 30,096.00</td>
-                  <td>Rs 250</td>
-                  <td>Rs 250</td>
-                  <td>Rs 1250</td>
-                  <td>Rs 31,500</td>
-                  <td>ABC123456Z</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </article>
+    <div v-if="!noData">
+      <h1 class="title" v-if="select == 'date'">Dates Between {{start_date}} and {{end_date}}</h1>
+      <div class="tile is-ancestor">
+        <div class="tile is-parent">
+          <article class="tile is-child">
+            <div class="table-responsive">
+              <table class="table is-bordered is-striped is-narrow">
+                <thead>
+                  <tr>
+                    <th>SR No</th>
+                    <th>Bill No</th>
+                    <th>Date</th>
+                    <th>Party Name</th>
+                    <th>Bill Amount</th>
+                    <th>SGST</th>
+                    <th>CGST</th>
+                    <th>IGST</th>
+                    <th>Total</th>
+                    <th>GST No</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="d,index in data">
+                    <td>{{index+1}}</td>
+                    <td>{{d.invoice_no}}</td>
+                    <td>{{moment(d.created_at.date).format('D/MM/YYYY')}}</td>
+                    <td>{{d.firm_name}}</td>
+                    <td>Rs {{d.taxable_amount}}</td>
+                    <td>Rs {{d.cgst_amount}}</td>
+                    <td>Rs {{d.sgst_amount}}</td>
+                    <td>Rs {{d.igst_amount}}</td>
+                    <td>Rs {{d.total_payable_amount}}</td>
+                    <td>ABC123456Z</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
       </div>
+      <!-- <pre>{{$data.data}}</pre> -->
+    </div>
+    <div v-if="noData">
+      <span class="title">No Data present at the Moment!</span>
     </div>
   </div>
 
   <div>
-    <pre>
-      {{$data.value}}
-    </pre>
   </div>
 </div>
 </div>
 </template>
 
 <script>
+import api from '@/api/main';
 import Datepicker from 'vue-bulma-datepicker';
 export default {
   name: 'reports',
-  components: {
-    Datepicker
+  created() {
+
   },
   data () {
     return {
       select: '',
-      date1: '',
-      date2: '',
+      start_date: '',
+      end_date: '',
       invNum: '',
       firm_name: '',
       customer_name: '',
+      noData: true,
+      data: [],
     }
   },
   methods: {
+    generateDateReport() {
+      this.$validator.validateAll()
+      if (!this.errors.any()) {
+        this.date();
+      }
+      else {
+        let toast = this.$toasted.error('Please fill in the Dates first.', {
+          theme: "outline",
+          position: "bottom-center",
+          duration : 3000
+        });
+      }
+    },
+    date() {
+      api.betweenDate(this.start_date, this.end_date)
+      .then(response => {
+        console.log(response);
+        if(response.data.length == 0) {
+          //no data present
+          this.noData = true;
+        }
+        else {
+          //data present
+          this.data = response.data;
+          this.noData = false;
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    },
+
     onSelect (value) {
       this.value = value
     },
     onChange (value) {
       this.value = value
     }
-  }
+  },
+  computed: {
+    sortDateWise() {
+      return this.bills.reverse();
+    }
+  },
+  components: {
+    Datepicker
+  },
 }
 </script>
 
@@ -210,7 +232,7 @@ export default {
       border-right: solid 1px #ddd;
     }
     .date {
-      width: 25rem;
+      width: 30rem;
       display: flex;
       align-items: center;
       justify-content: flex-start;

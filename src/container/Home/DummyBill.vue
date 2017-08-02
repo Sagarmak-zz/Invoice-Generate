@@ -49,7 +49,7 @@
       <!-- part-2 -->
       <div class="main-details">
         <h3 class="title">Main Details</h3>
-        <a class="button is-primary" v-if="hideInputs" @click="callMainDetailsAdd()">Add</a>
+        <a class="button is-primary" v-if="hideInputs" @click="callMainDetailsAdd()">Edit Taxes</a>
         <a class="button" v-if="!hideInputs" @click="hideInputs=!hideInputs">Hide</a>
       </div>
     </div>
@@ -63,26 +63,211 @@
             <div class="table-responsive">
               <table class="table is-bordered is-striped is-narrow">
                 <thead>
+                  <!-- <tr>
+                  <th colspan="5">Particulars</th>
+                  <th colspan="3">Discount</th>
+                </tr>
+              </thead> -->
+              <!-- <thead>
+              <tr>
+              <th>Name</th>
+              <th>Size</th>
+              <th>Quantity</th>
+              <th>Rate</th>
+              <th>Amount</th>
+              <th>Rate</th>
+              <th>Amount</th>
+              <th>Total</th>
+            </tr> -->
+            <!-- <tr>
+            <th><ProductsNameDropdown></ProductsNameDropdown></th>
+            <th>
+            <div :class="{'has-error': errors.has('size') }">
+            <p class="control">
+            <input v-model="item.size" :class="{'input': true, 'is-danger': errors.has('size') }"
+            name="size" v-validate="'required'"
+            type="text" placeholder="Size">
+          </p>
+        </div>
+      </th>
+      <th>
+      <div :class="{'has-error': errors.has('qty') }">
+      <p class="control">
+      <input @keyup.enter="addItemData" v-model="item.quantity" :class="{'input': true, 'is-danger': errors.has('qty') }"
+      name="qty" v-validate="'required'"
+      type="number" placeholder="Quantity">
+    </p>
+  </div>
+</th>
+<th>
+<div :class="{'has-error': errors.has('price') }">
+<div class="field has-addons">
+<p class="control">
+<a class="button is-static"> &#8377; </a>
+</p>
+<p class="control">
+<input v-model="item.product.price" :class="{'input': true, 'is-danger': errors.has('price') }"
+name="price" v-validate="'required'"
+type="number" placeholder="Rate">
+</p>
+</div>
+</div>
+</th>
+<th> &#8377; {{item.amount = item.quantity * item.product.price}}</th>
+<th>
+<div :class="{'has-error': errors.has('discount_percentage') }">
+<div class="field has-addons">
+<p class="control">
+<input @keyup.enter="addItemData" v-model="item.discount_percentage" :class="{'input': true, 'is-danger': errors.has('discount_percentage') }"
+name="discount_percentage" v-validate="'required'"
+type="number" placeholder="Rate">
+</p>
+<p class="control">
+<a class="button is-static"> % </a>
+</p>
+</div>
+</div>
+</th>
+<th class="show">&#8377; {{item.discount_amount = item.amount * (item.discount_percentage / 100)}}</th>
+<th class="taxAmount">&#8377; {{item.taxable_amount = item.amount - item.discount_amount}}</th>
+</tr> -->
+<tr>
+  <th colspan="2">CGST</th>
+  <th colspan="2">SGST</th>
+  <th colspan="2">IGST</th>
+  <th></th>
+</tr>
+<tr>
+  <th>Rate</th>
+  <th>Amount</th>
+  <th>Rate</th>
+  <th>Amount</th>
+  <th>Rate</th>
+  <th>Amount</th>
+  <th>Total</th>
+</tr>
+<tr>
+  <th>
+    <div :class="{'has-error': errors.has('cgstRate') }">
+      <div class="field has-addons">
+        <p class="control">
+          <input v-model="item.cgst_percentage" :class="{'input': true, 'is-danger': errors.has('cgstRate') }"
+          name="cgstRate" v-validate="'required'"
+          type="number" placeholder="Rate">
+        </p>
+        <p class="control">
+          <a class="button is-static"> % </a>
+        </p>
+      </div>
+    </div>
+  </th>
+  <th>&#8377; {{item.cgst_amount = (this.item.cgst_percentage / 100) * this.item.taxable_amount}}</th>
+  <th>
+    <div :class="{'has-error': errors.has('sgstRate') }">
+      <div class="field has-addons">
+        <p class="control">
+          <input v-model="item.sgst_percentage" :class="{'input': true, 'is-danger': errors.has('sgstRate') }"
+          name="sgstRate" v-validate="'required'"
+          type="number" placeholder="Rate">
+        </p>
+        <p class="control">
+          <a class="button is-static"> % </a>
+        </p>
+      </div>
+    </div>
+  </th>
+  <th>&#8377; {{item.sgst_amount = (this.item.sgst_percentage / 100) * this.item.taxable_amount}}</th>
+  <th>
+    <div :class="{'has-error': errors.has('igstRate') }">
+      <div class="field has-addons">
+        <p class="control">
+          <input v-model='item.igst_percentage' :class="{'input': true, 'is-danger': errors.has('igstRate') }"
+          name="igstRate" v-validate="'required'"
+          type="number" placeholder="Rate">
+        </p>
+        <p class="control">
+          <a class="button is-static"> % </a>
+        </p>
+      </div>
+    </div>
+  </th>
+  <th>&#8377; {{item.igst_amount = (this.item.igst_percentage / 100) * this.item.taxable_amount}}</th>
+  <th>
+    &#8377; {{item.total_payable_amount = item.taxable_amount + item.cgst_amount + item.sgst_amount + item.igst_amount}}
+  </th>
+</tr>
+</thead>
+</table>
+</div>
+</article>
+</div>
+</div>
+
+</form>
+
+<div class="item-details">
+  <div class="box">
+    <!-- table -->
+    <div class="upper">
+      <div class="tile is-ancestor">
+        <div class="tile is-parent">
+          <article class="tile is-child">
+            <div class="table-responsive">
+              <table class="table is-bordered is-striped is-narrow">
+                <thead>
                   <tr>
-                    <!-- <th>SR</th> -->
+                    <th>SR</th>
                     <th colspan="5">Particulars</th>
                     <th colspan="3">Discount</th>
+                    <th>CGST ({{item.cgst_percentage}}%)</th>
+                    <th>SGST ({{item.sgst_percentage}}%)</th>
+                    <th>IGST ({{item.igst_percentage}}%)</th>
+                    <th>Total</th>
                   </tr>
                 </thead>
                 <thead>
                   <tr>
+                    <th><a v-if="hideInputs2" @click="hideInputs2 = false" class="icon is-small"> <i class="fa fa-plus-circle" aria-hidden="true"></i> </a></th>
                     <th>Name</th>
                     <th>Size</th>
-                    <th>Quantity</th>
+                    <th>Qty</th>
                     <th>Rate</th>
-                    <th>Amount</th>
+                    <th>Amt</th>
                     <th>Rate</th>
-                    <th>Amount</th>
+                    <th>Amt</th>
                     <th>Total</th>
+                    <th>Amt</th>
+                    <th>Amt</th>
+                    <th>Amt</th>
+                    <th></th>
                   </tr>
-                  <tr>
-                    <th><ProductsNameDropdown></ProductsNameDropdown></th>
+                </thead>
+                <tbody>
+                  <tr v-for="it,index in items">
+                    <td></td>
+                    <td>{{it.product_name}}</td>
+                    <td>{{it.size}}</td>
+                    <td>{{it.quantity}}</td>
+                    <td>{{it.price}}</td>
+                    <td>{{it.amount}}</td>
+                    <td>{{it.discount_percentage}}</td>
+                    <td>{{it.discount_amount}}</td>
+                    <td>{{it.taxable_amount}}</td>
+                    <td>{{it.cgst_amount}}</td>
+                    <td>{{it.sgst_amount}}</td>
+                    <td>{{it.igst_amount}}</td>
+                    <td><a class="icon" @click="removeItem(it, index)">
+                      <i class="fa fa-times" aria-hidden="true"></i>
+                    </a></td>
+                  </tr>
+                </tbody>
+                <thead>
+                  <tr v-if="!hideInputs2">
                     <th>
+                      <a @click="hideInputs2 = true" class="icon is-small"> <i class="fa fa-minus" aria-hidden="true"></i> </a>
+                    </th>
+                    <th class="name"><ProductsNameDropdown></ProductsNameDropdown></th>
+                    <th class="size">
                       <div :class="{'has-error': errors.has('size') }">
                         <p class="control">
                           <input v-model="item.size" :class="{'input': true, 'is-danger': errors.has('size') }"
@@ -91,7 +276,7 @@
                         </p>
                       </div>
                     </th>
-                    <th>
+                    <th class="quantity">
                       <div :class="{'has-error': errors.has('qty') }">
                         <p class="control">
                           <input @keyup.enter="addItemData" v-model="item.quantity" :class="{'input': true, 'is-danger': errors.has('qty') }"
@@ -100,12 +285,9 @@
                         </p>
                       </div>
                     </th>
-                    <th>
+                    <th class="rate">
                       <div :class="{'has-error': errors.has('price') }">
                         <div class="field has-addons">
-                          <p class="control">
-                            <a class="button is-static"> &#8377; </a>
-                          </p>
                           <p class="control">
                             <input v-model="item.product.price" :class="{'input': true, 'is-danger': errors.has('price') }"
                             name="price" v-validate="'required'"
@@ -114,8 +296,8 @@
                         </div>
                       </div>
                     </th>
-                    <th> &#8377; {{item.amount = item.quantity * item.product.price}}</th>
-                    <th>
+                    <th class="amount"> &#8377; {{item.amount = item.quantity * item.product.price}}</th>
+                    <th class="discPerc">
                       <div :class="{'has-error': errors.has('discount_percentage') }">
                         <div class="field has-addons">
                           <p class="control">
@@ -123,190 +305,79 @@
                             name="discount_percentage" v-validate="'required'"
                             type="number" placeholder="Rate">
                           </p>
-                          <p class="control">
-                            <a class="button is-static"> % </a>
-                          </p>
-                        </div>
+                          <!-- <p class="control">
+                          <a class="button is-static"> % </a>
+                        </p> -->
                       </div>
-                    </th>
-                    <th class="show">&#8377; {{item.discount_amount = item.amount * (item.discount_percentage / 100)}}</th>
-                    <th class="taxAmount">&#8377; {{item.taxable_amount = item.amount - item.discount_amount}}</th>
+                    </div>
+                  </th>
+                  <th class="discAmount">&#8377; {{item.discount_amount = item.amount * (item.discount_percentage / 100)}}</th>
+                  <th class="taxAmount">&#8377; {{item.taxable_amount = item.amount - item.discount_amount}}</th>
+                  <th>&#8377; {{item.cgst_amount = (this.item.cgst_percentage / 100) * this.item.taxable_amount}}</th>
+                  <th>&#8377; {{item.sgst_amount = (this.item.sgst_percentage / 100) * this.item.taxable_amount}}</th>
+                  <th>&#8377; {{item.igst_amount = (this.item.igst_percentage / 100) * this.item.taxable_amount}}</th>
+                  <th>
+                    &#8377;{{item.total_payable_amount = item.taxable_amount + item.cgst_amount + item.sgst_amount + item.igst_amount}}
+                  </th>
+                </tr>
+                <tr v-if="!hideInputs2">
+                  <td class="zero"></td>
+                  <td class="zero"></td>
+                  <td class="zero"></td>
+                  <td class="zero"></td>
+                  <td class="zero"></td>
+                  <td class="zero"></td>
+                  <td class="zero"></td>
+                  <td class="zero"></td>
+                  <td class="zero"></td>
+                  <td class="zero"></td>
+                  <td class="zero"></td>
+                  <td class="zero"></td>
+                  <th>
+                    <p class="field is-pulled-right">
+                      <a class="button" @click="addItemData">
+                        Add &nbsp;<span class="icon is-small">
+                          <i class="fa fa-plus"></i>
+                        </span>
+                      </a>
+                    </p></th>
                   </tr>
-                  <tr>
-                    <th colspan="2">CGST</th>
-                    <th colspan="2">SGST</th>
-                    <th colspan="2">IGST</th>
-                    <th></th>
-                  </tr>
-                  <tr>
-                    <th>Rate</th>
-                    <th>Amount</th>
-                    <th>Rate</th>
-                    <th>Amount</th>
-                    <th>Rate</th>
-                    <th>Amount</th>
-                    <th>Total</th>
-                  </tr>
-                  <tr>
-                    <th>
-                      <div :class="{'has-error': errors.has('cgstRate') }">
-                        <div class="field has-addons">
-                          <p class="control">
-                            <input v-model="item.cgst_percentage" :class="{'input': true, 'is-danger': errors.has('cgstRate') }"
-                            name="cgstRate" v-validate="'required'"
-                            type="number" placeholder="Rate">
-                          </p>
-                          <p class="control">
-                            <a class="button is-static"> % </a>
-                          </p>
-                        </div>
-                      </div>
-                    </th>
-                    <th>&#8377; {{item.cgst_amount = (this.item.cgst_percentage / 100) * this.item.taxable_amount}}</th>
-                    <th>
-                      <div :class="{'has-error': errors.has('sgstRate') }">
-                        <div class="field has-addons">
-                          <p class="control">
-                            <input v-model="item.sgst_percentage" :class="{'input': true, 'is-danger': errors.has('sgstRate') }"
-                            name="sgstRate" v-validate="'required'"
-                            type="number" placeholder="Rate">
-                          </p>
-                          <p class="control">
-                            <a class="button is-static"> % </a>
-                          </p>
-                        </div>
-                      </div>
-                    </th>
-                    <th>&#8377; {{item.sgst_amount = (this.item.sgst_percentage / 100) * this.item.taxable_amount}}</th>
-                    <th>
-                      <div :class="{'has-error': errors.has('igstRate') }">
-                        <div class="field has-addons">
-                          <p class="control">
-                            <input v-model='item.igst_percentage' :class="{'input': true, 'is-danger': errors.has('igstRate') }"
-                            name="igstRate" v-validate="'required'"
-                            type="number" placeholder="Rate">
-                          </p>
-                          <p class="control">
-                            <a class="button is-static"> % </a>
-                          </p>
-                        </div>
-                      </div>
-                    </th>
-                    <th>&#8377; {{item.igst_amount = (this.item.igst_percentage / 100) * this.item.taxable_amount}}</th>
-                    <th>
-                      &#8377; {{item.total_payable_amount = item.taxable_amount + item.cgst_amount + item.sgst_amount + item.igst_amount}}
-                    </th>
-                    <th><a class="button is-pulled-right" @click="addItemData">
-                      <i class="fa fa-plus" aria-hidden="true"></i> </a></th>
-                    </tr>
-                  </thead>
-                </table>
-              </div>
-            </article>
-          </div>
-        </div>
-
-      </form>
-
-      <div class="item-details" v-if="items.length">
-        <div class="box">
-          <!-- table -->
-          <div class="upper">
-            <div class="tile is-ancestor">
-              <div class="tile is-parent">
-                <article class="tile is-child">
-                  <div class="table-responsive">
-                    <table class="table is-bordered is-striped is-narrow">
-                      <thead>
-                        <tr>
-                          <!-- <th>SR</th> -->
-                          <th colspan="5">Particulars</th>
-                          <th colspan="3">Discount</th>
-                          <th colspan="2">CGST</th>
-                          <th colspan="2">SGST</th>
-                          <th colspan="2">IGST</th>
-                          <th>Edit</th>
-                        </tr>
-                      </thead>
-                      <thead>
-                        <tr>
-                          <!-- <th></th> -->
-                          <th>Name</th>
-                          <th>Size</th>
-                          <th>Qty</th>
-                          <th>Rate</th>
-                          <th>Amount</th>
-                          <th>Rate</th>
-                          <th>Amount</th>
-                          <th>Total</th>
-                          <th>Rate</th>
-                          <th>Amount</th>
-                          <th>Rate</th>
-                          <th>Amount</th>
-                          <th>Rate</th>
-                          <th>Amount</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="it,index in items">
-                          <td>{{it.product_name}}</td>
-                          <td>{{it.size}}</td>
-                          <td>{{it.quantity}}</td>
-                          <td>{{it.price}}</td>
-                          <td>{{it.amount}}</td>
-                          <td>{{it.discount_percentage}}</td>
-                          <td>{{it.discount_amount}}</td>
-                          <td>{{it.taxable_amount}}</td>
-                          <td>{{it.cgst_percentage}}</td>
-                          <td>{{it.cgst_amount}}</td>
-                          <td>{{it.sgst_percentage}}</td>
-                          <td>{{it.sgst_amount}}</td>
-                          <td>{{it.igst_percentage}}</td>
-                          <td>{{it.igst_amount}}</td>
-                          <td><a class="icon" @click="removeItem(it, index)">
-                            <i class="fa fa-times" aria-hidden="true"></i>
-                          </a></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </article>
-              </div>
+                </thead>
+              </table>
             </div>
-          </div>
-          <!-- table ends -->
-
-          <div class="lower-part-two">
-            <div class="tile is-ancestor">
-              <div class="tile is-parent">
-                <article class="tile is-child">
-                  <div class="table-responsive">
-                    <table class="table is-bordered is-striped is-narrow">
-                      <tbody>
-                        <tr> <td>Total Taxable Amount:</td> <th> &#8377; {{item.ftaxable_amount}} </th> </tr>
-                        <tr> <td>CGST:</td> <th> &#8377; {{item.fcgst_amount}} </th> </tr>
-                        <tr> <td>SGST:</td> <th> &#8377; {{item.fsgst_amount}} </th> </tr>
-                        <tr> <td>IGST:</td> <th> &#8377; {{item.figst_amount}} </th> </tr>
-                        <tr> <td>Total Invoice Value:</td> <th> &#8377; {{item.ftotal_payable_amount}} </th> </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </article>
-              </div>
-            </div>
-          </div>
-          <div class="submit-btn">
-            <button @click="validateAndCallApi" class="button is-success">Submit</button>
-          </div>
+          </article>
         </div>
       </div>
+    </div>
+    <!-- table ends -->
 
-
-      <!-- <pre>
-      {{$data}}
-    </pre> -->
+    <div class="lower-part-two">
+      <div class="tile is-ancestor">
+        <div class="tile is-parent">
+          <article class="tile is-child">
+            <div class="table-responsive">
+              <table class="table is-bordered is-striped is-narrow">
+                <tbody>
+                  <tr> <td>Total Taxable Amount:</td> <th> &#8377; {{item.ftaxable_amount}} </th> </tr>
+                  <tr> <td>CGST:</td> <th> &#8377; {{item.fcgst_amount}} </th> </tr>
+                  <tr> <td>SGST:</td> <th> &#8377; {{item.fsgst_amount}} </th> </tr>
+                  <tr> <td>IGST:</td> <th> &#8377; {{item.figst_amount}} </th> </tr>
+                  <tr> <td>Total Invoice Value:</td> <th> &#8377; {{item.ftotal_payable_amount}} </th> </tr>
+                </tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </div>
+    </div>
+    <div class="submit-btn">
+      <button @click="validateAndCallApi" class="button is-success">Submit</button>
+    </div>
   </div>
+</div>
+
+
+</div>
 </div>
 </template>
 
@@ -326,6 +397,7 @@ export default {
     ProductsNameDropdown,
   },
   created() {
+    this.getLastBillInvoiceNumber();
     this.userDetails();
     this.decodeToken();
     this.getYear = new Date().getFullYear();
@@ -382,17 +454,18 @@ export default {
         discount_amount: 0,
         taxable_amount: 0,
         ftaxable_amount: 0,
-        cgst_percentage: null,
+        cgst_percentage: 0,
         cgst_amount: 0,
         fcgst_amount: 0,
         sgst_percentage: 0,
         sgst_amount: 0,
         fsgst_amount: 0,
-        igst_percentage: null,
+        igst_percentage: 0,
         igst_amount: 0,
         figst_amount: 0,
         total_payable_amount: 0,
         ftotal_payable_amount: 0,
+        lastInvoiceId: '',
         product: {
           product_id: null,
           hsn_code: null,
@@ -403,6 +476,7 @@ export default {
       bill_detail: [ ],
       items: [ ],
       hideInputs: true,
+      hideInputs2: false,
     }
   },
   methods: {
@@ -424,7 +498,7 @@ export default {
         this.$validator.validateAll({
           //item name
           'size': this.item.size,
-          'price': this.item.product.price,
+          // 'price': this.item.product.price,
         })
         .then(result => {
           if (result == false) {
@@ -452,8 +526,6 @@ export default {
     },
 
     removeItem(it, index) {
-      console.log(it);
-      console.log(index);
 
       // values update
       this.item.ftaxable_amount -= it.taxable_amount;
@@ -499,7 +571,7 @@ export default {
       //api call to submit the bill
       api.createBill(this.item.user_id, this.item.firm.firm_id, this.item.invoice_no,
         this.item.ftaxable_amount, this.item.sgst_percentage, this.item.fsgst_amount,
-         this.item.cgst_percentage, this.item.fcgst_amount, this.item.igst_percentage, this.item.figst_amount,
+        this.item.cgst_percentage, this.item.fcgst_amount, this.item.igst_percentage, this.item.figst_amount,
         this.item.ftotal_payable_amount, this.item.created_at, this.bill_detail)
         .then(response => {
           let toast = this.$toasted.success("Bill Creation Successful!", {
@@ -507,7 +579,7 @@ export default {
             position: "top-center",
             duration : 3000
           });
-          // this.$router.push({ name: 'Sample' });
+          this.$router.push({ name: 'Sample', params: { invoice_no: response.data.invoice_no } });
         })
         .catch(error => {
           console.log(error);
@@ -529,18 +601,7 @@ export default {
         })
       },
       callMainDetailsAdd() {
-        this.validate()
-        if (this.errors.any()) {
-          //errors
-          let toast = this.$toasted.error("Please fill in all the details first", {
-            theme: "outline",
-            position: "bottom-center",
-            duration : 3000
-          });
-        }
-        else {
-          this.hideInputs=!this.hideInputs;
-        }
+        this.hideInputs=!this.hideInputs;
       },
 
       addDataToItems() {
@@ -555,7 +616,22 @@ export default {
             taxable_amount, cgst_percentage, cgst_amount, sgst_percentage, sgst_amount, igst_percentage, igst_amount,
             total_payable_amount});
             this.computed_total_payable_amount();
+            this.hideInputs = true;
+            this.item.size = '';
+            this.item.quantity = 0;
+            this.item.discount_percentage = 0;
           },
+
+          getLastBillInvoiceNumber() {
+            api.getLastBill()
+            .then(response => {
+              console.log(response.data.invoice_no);
+              this.item.invoice_no = response.data.invoice_no;
+            })
+            .catch(error => {
+              console.log(error);
+            })
+          }
         },
         computed: {
 
@@ -805,6 +881,33 @@ export default {
           .box {
             border-bottom: solid 1px #ddd;
           }
+        }
+
+        .zero {
+          border: none;
+        }
+
+        .name {
+          width: 12rem;
+          min-width: 12rem;
+        }
+        .size {
+          width: 6rem;
+        }
+        .quantity {
+          width: 6rem;
+        }
+        .rate {
+          width: 6rem;
+        }
+        .discPerc {
+          width: 5rem;
+        }
+        .amount {
+          width: 6rem;
+        }
+        .discAmount {
+          width: 5rem;
         }
 
       }

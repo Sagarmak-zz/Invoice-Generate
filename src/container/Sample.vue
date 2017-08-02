@@ -173,94 +173,7 @@
                     <td>250</td>
                     <td>4750</td>
                   </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>HoneyComb T-Shirt - 12345 </td>
-                    <td>L-XXL</td>
-                    <td>50</td>
-                    <td>100</td>
-                    <td>5000</td>
-                    <td>5</td>
-                    <td>250</td>
-                    <td>4750</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>HoneyComb T-Shirt - 12345 </td>
-                    <td>L-XXL</td>
-                    <td>50</td>
-                    <td>100</td>
-                    <td>5000</td>
-                    <td>5</td>
-                    <td>250</td>
-                    <td>4750</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>HoneyComb T-Shirt - 12345 </td>
-                    <td>L-XXL</td>
-                    <td>50</td>
-                    <td>100</td>
-                    <td>5000</td>
-                    <td>5</td>
-                    <td>250</td>
-                    <td>4750</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>HoneyComb T-Shirt - 12345 </td>
-                    <td>L-XXL</td>
-                    <td>50</td>
-                    <td>100</td>
-                    <td>5000</td>
-                    <td>5</td>
-                    <td>250</td>
-                    <td>4750</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>HoneyComb T-Shirt - 12345 </td>
-                    <td>L-XXL</td>
-                    <td>50</td>
-                    <td>100</td>
-                    <td>5000</td>
-                    <td>5</td>
-                    <td>250</td>
-                    <td>4750</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>HoneyComb T-Shirt - 12345 </td>
-                    <td>L-XXL</td>
-                    <td>50</td>
-                    <td>100</td>
-                    <td>5000</td>
-                    <td>5</td>
-                    <td>250</td>
-                    <td>4750</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>HoneyComb T-Shirt - 12345 </td>
-                    <td>L-XXL</td>
-                    <td>50</td>
-                    <td>100</td>
-                    <td>5000</td>
-                    <td>5</td>
-                    <td>250</td>
-                    <td>4750</td>
-                  </tr>
-                  <tr>
-                    <td>1</td>
-                    <td>HoneyComb T-Shirt - 12345 </td>
-                    <td>L-XXL</td>
-                    <td>50</td>
-                    <td>100</td>
-                    <td>5000</td>
-                    <td>5</td>
-                    <td>250</td>
-                    <td>4750</td>
-                  </tr>
+                
 
                 </tbody>
               </table>
@@ -1051,7 +964,7 @@ export default {
   }
 
   .template-body-items {
-    height: 15cm;
+    height: 14cm;
     padding: 2rem;
     padding-top: 1rem;
     border-bottom: solid 2px #ddd;

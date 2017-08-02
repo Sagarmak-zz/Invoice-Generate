@@ -35,6 +35,10 @@ export default {
     return HTTP.get('/getBill');
   },
 
+  getLastBill() {
+    return HTTP.get('/historyBill');
+  },
+
 
 
   //admin Details
@@ -157,6 +161,15 @@ export default {
           product_name: product_name,
           hsn_code: hsn_code,
           product_price: product_price
+        });
+      },
+
+
+      //reports
+      betweenDate(start_date, end_date) {
+        return HTTP.post('/betweenDate', {
+          start_date: start_date,
+          end_date: end_date
         });
       }
 

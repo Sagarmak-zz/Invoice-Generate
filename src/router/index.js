@@ -49,7 +49,7 @@ let router = new Router({
           meta: { requiresAuth: true },
         },
         {
-          path: '/template/:id',
+          path: '/template/:invoice_no',
           name: 'BillTemplate',
           component: require('@/container/Home/Billtemplate'),
           meta: { requiresAuth: true }
@@ -75,7 +75,7 @@ let router = new Router({
       ]
     }, //Home ends*
     {
-      path: '/sample',
+      path: '/sample/:invoice_no',
       name: 'Sample',
       component: require('@/container/Sample'),
       meta: { requiresAuth: true }
