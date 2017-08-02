@@ -363,17 +363,6 @@ export default {
     });
 
   },
-  //   user_id(this.user_id), firm_id(this.firm.firm_id), invoice_no(this.invoice_no), taxable_amount(this.ftaxable_amount),
-  //   sgst_percentage(this.sgst_percentage), fsgst_amount,//same
-  //   cgst_percentage(this.cgst_percentage), fcgst_amount,//same
-  //   igst_percentage(this.igst_percentage), figst_amount,//same
-  //   total_payable_amount, created_at, bill_detail : {
-  //              "product_id" : 2, (this.product.product_id)
-  //              "quantity" : 1, (this.quantity)
-  //              "price" : 123, (this.price)
-  //              "discount_percentage" : 3, this.(discount_percentage)
-  //              "discount_amount" : 123, this.(discount_amount)
-  // }
   data() {
     return {
       item: {
@@ -411,12 +400,8 @@ export default {
           price: null,
         },
       },
-      bill_detail: [
-
-      ],
-      items: [
-
-      ],
+      bill_detail: [ ],
+      items: [ ],
       hideInputs: true,
     }
   },
@@ -485,7 +470,7 @@ export default {
     computed_total_payable_amount() {
       var x;  //for length
       for (x in this.items) {
-        console.log(this.items[this.items.length-1]);
+        // console.log(this.items[this.items.length-1]);
         this.item.ftaxable_amount += this.items[this.items.length-1].taxable_amount;
         this.item.fcgst_amount += this.items[this.items.length-1].cgst_amount;
         this.item.fsgst_amount += this.items[this.items.length-1].sgst_amount;
@@ -511,10 +496,6 @@ export default {
       return this.$validator.validateAll();
     },
     callApi() {
-      // console.log(this.item.user_id, this.item.firm.firm_id, this.item.invoice_no,
-      //   this.item.ftaxable_amount, this.item.sgst_percentage, this.item.fsgst_amount,
-      //    this.item.cgst_percentage, this.item.fcgst_amount, this.item.igst_percentage, this.item.figst_amount,
-      //   this.item.ftotal_payable_amount, this.item.created_at, this.bill_detail);
       //api call to submit the bill
       api.createBill(this.item.user_id, this.item.firm.firm_id, this.item.invoice_no,
         this.item.ftaxable_amount, this.item.sgst_percentage, this.item.fsgst_amount,

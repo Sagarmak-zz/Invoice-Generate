@@ -70,7 +70,6 @@ export default {
     getBill() {
       api.getBill()
       .then(response => {
-        console.log(response);
         if(response.data.message == "No data found") {
           this.noData = true;
         }

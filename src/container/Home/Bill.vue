@@ -324,8 +324,8 @@ export default {
     },
 
     deleteItem(indexNo) {
-      console.log(this.dataArr.splice(indexNo, 1));
-      console.log(this.bill_detail.splice(indexNo, 1));
+      this.dataArr.splice(indexNo, 1);
+      this.bill_detail.splice(indexNo, 1);
       this.calculateAmount();
     }
   },

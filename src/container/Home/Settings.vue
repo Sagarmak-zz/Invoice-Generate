@@ -8,6 +8,7 @@
       </div>
 
       <div class="form">
+        {{$data.data}}
         <div class="columns">
           <div class="column">
             <div class="field">
@@ -48,9 +49,9 @@
             <div class="field">
               <label class="label">Email</label>
               <p class="control">
-                <input v-model="email = data.email" name="billemail" v-validate="'required|email'" type="email" placeholder="Email" class="input">
+                <input v-model="email = data.email" name="email" v-validate="'required|email'" type="email" placeholder="Email" class="input">
               </p>
-              <div class="help is-danger" v-show="errors.has('billemail')">
+              <div class="help is-danger" v-show="errors.has('email')">
                 The Email is required and should be a valid Email address.
               </div>
             </div>
@@ -61,9 +62,9 @@
             <div class="field">
               <label class="label">Address</label>
               <p class="control">
-                <textarea v-model="address = data.address" name="billaddress" v-validate="'required'" class="textarea" placeholder="Address"></textarea>
+                <textarea v-model="address = data.address" name="address" v-validate="'required'" class="textarea" placeholder="Address"></textarea>
               </p>
-              <div v-show="errors.has('billaddress')" class="help is-danger">
+              <div v-show="errors.has('address')" class="help is-danger">
                 The Address is a required field..
               </div>
             </div>
@@ -94,9 +95,9 @@
             <div class="field">
               <label class="label">City</label>
               <p class="control">
-                <input v-model="city = data.cityname" class="input" name="billcity" v-validate="'required'" type="text" placeholder="City">
+                <input v-model="city = data.cityname" class="input" name="city" v-validate="'required'" type="text" placeholder="City">
               </p>
-              <div v-show="errors.has('billcity')" class="help is-danger">
+              <div v-show="errors.has('city')" class="help is-danger">
                 The City Name is required.
               </div>
             </div>
@@ -108,7 +109,7 @@
                 <input type="hidden" v-model="state_code = data.state_code">
                 <StateDropdown :stateCode="state_code"></StateDropdown>
               </p>
-              <div v-show="errors.has('billstate')" class="help is-danger">
+              <div v-show="errors.has('state')" class="help is-danger">
                 The State is required.
               </div>
             </div>
@@ -117,14 +118,17 @@
             <div class="field">
               <label class="label">Pincode</label>
               <p class="control">
-                <input v-model="pincode = data.pincode" name="billpincode" v-validate="'required|numeric'" type="text" placeholder="Pincode" class="input">
+                <input v-model="pincode = data.pincode" name="pincode" v-validate="'required|numeric'" type="text" placeholder="Pincode" class="input">
               </p>
-              <div class="help is-danger" v-show="errors.has('billpincode')">
+              <div class="help is-danger" v-show="errors.has('pincode')">
                 The Pincode is required and should be a numeric code.
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="update-button">
+        <button @click="validateAndUpdateDetails()" class="button is-success">Update</button>
       </div>
       <!-- <pre>
       {{data}}
@@ -167,6 +171,8 @@
 
 <script>
 import api from '@/api/main';
+import Auth from '@/packages/auth/Auth';
+import jwt_decode from 'jwt-decode';
 import StateDropdown from '@/components/StateDropdown';
 import AdminDetailsUpdateModal from '@/components/AdminDetailsUpdateModal';
 import EditStateBox from '@/components/EditStateBox';
@@ -175,6 +181,7 @@ export default {
   data() {
     return {
       data: {},
+      userId: null,
       admin_name: '',
       firm_name: '',
       gst_no: '',
@@ -194,8 +201,9 @@ export default {
     };
   },
   created() {
-    this.$bus.$on('state-change', (data) => {
-      this.state_code = data.state_id;
+    this.decodeToken();
+    this.$bus.$on('state-change', (response) => {
+      this.state_code = response.state_id;
     })
     this.$bus.$on('close-admin-update-modal', () => {
       this.showAdminDetailsModal = false;
@@ -206,6 +214,10 @@ export default {
     this.callUser();
   },
   methods: {
+    decodeToken() {
+      var decoded = jwt_decode(Auth.getToken());
+      this.userId = decoded.sub;
+    },
     callUser() {
       api.userDetails()
       .then((response) => {
@@ -295,22 +307,56 @@ export default {
         console.log(error);
       })
     },
-    // updateState() {
-    //   api.updateState(code, state_name)
-    //   .then((response) => {
-    //     if(response.status == 200) {
-    //       this.callStates();
-    //       let toast = this.$toasted.success("State Deleted Successfully!", {
-    //         theme: "outline",
-    //         position: "top-center",
-    //         duration : 3000
-    //       });
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //   })
-    // },
+    validateAndUpdateDetails() {
+      this.$validator.validateAll({
+        'admin_name': this.admin_name,
+        'firm_name': this.firm_name,
+        'gst_no': this.gst_no,
+        'email': this.email,
+        'address': this.address,
+        'city': this.city,
+        'pincode': this.pincode,
+        'mobile': this.mobile,
+        'landline': this.landline
+      })
+      if (!this.errors.any()) {
+        if(this.dataIsHere == false) {
+          let toast = this.$toasted.error('Please fill in the details.', {
+            theme: "outline",
+            position: "bottom-center",
+            duration : 3000
+          });
+        }
+        else {
+          //work or call an api
+          this.updateDetails();
+        }
+      }
+      else {
+        let toast = this.$toasted.error('Please fill in the details.', {
+          theme: "outline",
+          position: "bottom-center",
+          duration : 3000
+        });
+      }
+    },
+    updateDetails() {
+      api.updateUserDetails(this.userId, this.admin_name, this.email, this.firm_name, this.gst_no,
+      this.address, this.city, this.state_code, this.pincode, this.mobile, this.landline)
+      .then((response) => {
+        if(response.status == 200) {
+          let toast = this.$toasted.success('Details Updated.', {
+            theme: "outline",
+            position: "top-center",
+            duration : 3000
+          });
+          this.$bus.$emit('close-admin-update-modal');
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+    },
     validate() {
       return this.$validator.validateAll();
     },
@@ -341,7 +387,7 @@ export default {
   .form {
     padding: 1rem;
   }
-  .button-submit {
+  .update-button {
     padding: 1rem;
     border-top: solid 1px #ddd;
   }

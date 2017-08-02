@@ -300,9 +300,6 @@ export default {
       }
     },
     updateDetails() {
-      // console.log(this.firm_name + ' - ' + this.contact_person_name + ' - ' + this.gst_no + ' - ' + this.email + ' - ' +
-      // this.billing.address + ' - ' + this.billing.city + ' - ' + this.billing.state_code + ' - ' + this.billing.pincode + ' - ' + this.billing.mobile + ' - ' + this.billing.landline + ' - ' +
-      // this.shipping.address + ' - ' + this.shipping.city + ' - ' + this.shipping.state_code + ' - ' + this.shipping.pincode + ' - ' + this.shipping.mobile + ' - ' + this.shipping.landline);
       api.updateCustomer(this.customer.id, this.firm_name, this.contact_person_name, this.gst_no, this.email,
         this.billing.address, this.billing.city, this.billing.state_code, this.billing.pincode, this.billing.mobile, this.billing.landline,
         this.shipping.address, this.shipping.city, this.shipping.state_code, this.shipping.pincode, this.shipping.mobile, this.shipping.landline)
