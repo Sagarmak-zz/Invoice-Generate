@@ -36,10 +36,12 @@ export default {
   },
 
   getLastBill() {
-    return HTTP.get('/historyBill');
+    return HTTP.get('/invoiceNumber');
   },
 
-
+  getBillByInvoiceNo(invoice_no){
+    return HTTP.get('/getBill/' + invoice_no);
+  },
 
   //admin Details
   userDetails() {

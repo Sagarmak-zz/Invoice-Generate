@@ -29,7 +29,7 @@ export default {
       admin_state: null
     };
   },
-  created() {
+  mounted() {
     this.callUser();
   },
   methods: {

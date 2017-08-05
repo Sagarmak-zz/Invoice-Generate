@@ -6,25 +6,26 @@
           <router-link :to="{name:'History'}" class="icon"><i class="fa fa-arrow-left" aria-hidden="true"></i></router-link>
           <h1 class="title">Bill Template</h1>
         </div>
-        <router-link :to="{ name: 'Sample' }" href="printTemplate.html" class="button is-primary" @click="print">Print</router-link>
+        <router-link :to="{ name: 'Sample' }" class="button is-primary">Print</router-link>
       </div>
 
+      <!-- seller -->
       <div class="template-body-main">
-        <!-- seller -->
-        <div class="flex-head-items">
-          <div class="seller">
-            <h1 class="title is-2 has-text-centered">Siddhartha Wear</h1>
-            <div class="tile is-ancestor">
-              <div class="tile is-parent">
-                <article class="tile is-child">
-                  <div class="table-responsive">
-                    <table class="table is-bordered is-striped is-narrow">
-                      <tbody>
-                        <tr> <th>GST NO:</th> <td>24ACDPM5595M1Z3</td> </tr>
-                        <tr> <th>Address:</th> <td>2858, 2nd Floor, Opp. Anand Sweets,</td> </tr>
-                        <tr> <td colspan="2">Kalupur Kotni Rang, Ahmedabad, Gujarat, 380001</td> </tr>
-                        <tr> <th>Phone:</th> <td>079-22168689</td> </tr>
-                        <tr> <th>Email:</th> <td>siddharthawear2858@gmail.com</td> </tr>
+        <div class="seller">
+          <h1 class="title is-2 has-text-centered">{{bill_details.admin_firm}}</h1>
+          <div class="tile is-ancestor">
+            <div class="tile is-parent">
+              <article class="tile is-child">
+                <div class="table-responsive">
+                  <table class="table is-bordered is-striped is-narrow">
+                    <tbody>
+                      <tr> <th>GST NO:</th> <td>{{bill_details.admin_gst}}</td> </tr>
+                      <tr> <th rowspan="2">Address:</th> <td rowspan="2">
+                        {{bill_details.admin_address}}, {{bill_details.admin_cityname}}-{{bill_details.admin_pincode}}   </td> </tr>
+                        <tr> </tr>
+                        <tr> <th>State:</th> <td>{{bill_details.admin_state}}</td></tr>
+                        <tr> <th>Phone:</th> <td>{{bill_details.admin_landline_number}}</td> </tr>
+                        <tr> <th>Email:</th> <td>{{bill_details.admin_email}}</td> </tr>
                       </tbody>
                     </table>
                   </div>
@@ -33,49 +34,65 @@
             </div>
           </div>
           <div class="invoice">
-            <p class="invoice-details-copy"><b>Customer Copy</b></p>
-            <span class="invoice-head">INVOICE</span>
-            <p class="invoice-details"><b>Invoice No: 12345</b></p>
-            <p class="invoice-details"><b>Date: 13/09/1993</b></p>
-            <p class="invoice-details"><b>State Code: 24</b></p>
-          </div>
-        </div>
-      </div>
-      <!-- seller -->
-      <!-- buyer -->
-      <div class="buyer">
-        <div class="part-table">
-
+            <p class="invoice-details-copy"><b>Original Copy</b></p>
+            <p class="invoice-head">INVOICE</p>
+            <p class="invoice-details"><b>Invoice No: {{bill_details.invoice_no}}</b></p>
+            <p class="invoice-details" v-if="bill_details.created_at"><b>Date: {{moment(bill_details.created_at.date).format('D/MM/YYYY')}}</b></p>
+            <p class="invoice-details last"><b>State Code: dummy</b></p>
+            <!-- <div class="bank-details">
+            <p class="bank-body"> 200999222050</p>
+            <p class="bank-body">Bank Branch IFSC: INDB0000175</p>
+          </div> -->
           <div class="tile is-ancestor">
             <div class="tile is-parent">
               <article class="tile is-child">
                 <div class="table-responsive">
                   <table class="table is-bordered is-striped is-narrow">
                     <tbody>
-                      <tr> <th>M/S:</th> <td>Shanti Textile</td> </tr>
-                      <tr><th>GST NO:</th> <td>24ACDPM5595M1Z3</td> </tr>
-                      <tr> <th>Address:</th> <td>2858, 2nd Floor, Opp. Anand Sweets,</td> </tr>
-                      <tr> <td colspan="2">Kalupur Kotni Rang, Ahmedabad, Gujarat, 380001</td> </tr>
+                      <tr> <th>Bank Account Number:</th> <td>200999222050</td> </tr>
+                      <tr><th>Bank Branch IFSC:</th> <td>INDB0000175</td> </tr>
                     </tbody>
                   </table>
                 </div>
               </article>
             </div>
           </div>
-          <div class="tile is-ancestor">
-            <div class="tile is-parent">
-              <article class="tile is-child">
-                <div class="table-responsive right-side">
-                  <table class="table is-bordered is-striped is-narrow">
-                    <tbody>
-                      <tr> <th>Agent:</th> <td>Dummy Name</td> </tr>
-                      <tr> <th>Phone:</th> <td>079-22168689</td> </tr>
-                      <tr> <th>Email:</th> <td>siddharthawear2858@gmail.com</td> </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </article>
-            </div>
+        </div>
+      </div>
+      <!-- seller -->
+
+      <!-- buyer -->
+      <div class="buyer">
+
+        <div class="tile is-ancestor">
+          <div class="tile is-parent">
+            <article class="tile is-child">
+              <div class="table-responsive">
+                <table class="table is-bordered is-striped is-narrow">
+                  <tbody>
+                    <tr> <th>M/S:</th> <td>{{bill_details.firm_name}}</td> </tr>
+                    <tr><th>GST NO:</th> <td>{{bill_details.customer_gst}}</td> </tr>
+                    <tr> <th>Address:</th> <td>{{bill_details.billing_address}}</td> </tr>
+                    <tr> <td colspan="2">Kalupur Kotni Rang, Ahmedabad, Gujarat, 380001</td> </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
+          </div>
+        </div>
+        <div class="tile is-ancestor">
+          <div class="tile is-parent">
+            <article class="tile is-child">
+              <div class="table-responsive right-side">
+                <table class="table is-bordered is-striped is-narrow">
+                  <tbody>
+                    <!-- <tr> <th>Agent:</th> <td>Dummy Name</td> </tr> -->
+                    <tr> <th>Phone:</th> <td>{{bill_details.billing_landline_number}}</td> </tr>
+                    <tr> <th>Email:</th> <td>{{bill_details.customer_email}}</td> </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
           </div>
         </div>
       </div>
@@ -111,39 +128,41 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr v-for="products, index in bill_details.product_detail">
+                      <td>{{index+1}}</td>
+                      <td>{{products.product_name}} - {{products.hsn_code}} </td>
+                      <td>{{products.size}}</td>
+                      <td>{{products.quantity}}</td>
+                      <td>{{products.price}}</td>
+                      <td>{{products.quantity * products.price }}</td>
+                      <td>{{products.discount_percentage}}</td>
+                      <td>{{products.discount_amount}}</td>
+                      <td>{{(products.quantity * products.price) - products.discount_amount }}</td>
+                    </tr>
+
                     <tr>
-                      <td>1</td>
-                      <td>HoneyComb T-Shirt - 12345 </td>
-                      <td>L-XXL</td>
-                      <td>50</td>
-                      <td>100</td>
-                      <td>5000</td>
-                      <td>5</td>
-                      <td>250</td>
-                      <td>4750</td>
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
                     </tr>
                     <tr>
-                      <td>1</td>
-                      <td>HoneyComb T-Shirt - 12345 </td>
-                      <td>L-XXL</td>
-                      <td>50</td>
-                      <td>100</td>
-                      <td>5000</td>
-                      <td>5</td>
-                      <td>250</td>
-                      <td>4750</td>
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
                     </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>HoneyComb T-Shirt - 12345 </td>
-                      <td>L-XXL</td>
-                      <td>50</td>
-                      <td>100</td>
-                      <td>5000</td>
-                      <td>5</td>
-                      <td>250</td>
-                      <td>4750</td>
-                    </tr>
+
                   </tbody>
                 </table>
               </div>
@@ -152,7 +171,13 @@
         </div>
         <div class="bottom-details">
           <div class="part-one has-text-centered">
-            <strong>Amount: forty-two thousand, six hundred fifty-four</strong>
+            <div class="blank">
+
+            </div>
+            <div class="amount-in-words">
+              <p>Total Invoice Amount In Words:</p>
+              <p>{{amountInWords}}</p>
+            </div>
           </div>
           <div class="tile is-ancestor part-two">
             <div class="tile is-parent">
@@ -160,11 +185,11 @@
                 <div class="table-responsive">
                   <table class="table is-bordered is-striped is-narrow">
                     <tbody>
-                      <tr> <td>Total Taxable Amount: </td> <th>&#8377; 4750</th> </tr>
-                      <tr> <td>CGST: </td> <th>&#8377; 118.75</th> </tr>
-                      <tr> <td>SGST: </td> <th>&#8377; 118.75</th> </tr>
-                      <tr> <td>IGST: </td> <th>&#8377; 0</th> </tr>
-                      <tr> <td>Total Invoice Value: </td> <th>&#8377; 4980</th> </tr>
+                      <tr> <td>Total Taxable Amount: </td> <th>&#8377; {{bill_details.taxable_amount}}</th> </tr>
+                      <tr> <td>CGST: {{bill_details.cgst_percentage}}% </td> <th>&#8377; {{bill_details.cgst_amount}}</th> </tr>
+                      <tr> <td>SGST: {{bill_details.sgst_percentage}}% </td> <th>&#8377; {{bill_details.sgst_amount}}</th> </tr>
+                      <tr> <td>IGST: {{bill_details.igst_percentage}}% </td> <th>&#8377; {{bill_details.igst_amount}}</th> </tr>
+                      <tr> <td>Total Invoice Value: </td> <th>&#8377; {{bill_details.total_payable_amount}}</th> </tr>
                     </tbody>
                   </table>
                 </div>
@@ -180,70 +205,118 @@
         <div class="part-one">
           <span><b>N.B.</b></span>
           <p><b>(1)</b> Interest will be charged @ 18% from the date of bill <b>(2)</b> The Payment
-          of this bill should be made by demand draft of our name duly crossed  by
-          payee's A/c. only <b>(3)</b> Goods are sent on your account & risk and according
-          to the rules of the Gujarat Garment Manufacturer Association(GGMA).</p>
-          <p class="spacing">Subject to Ahmedabad Jurisdiction</p>
+            of this bill should be made by demand draft of our name duly crossed  by
+            payee's A/c. only <b>(3)</b> Goods are sent on your account & risk and according
+            to the rules of the Gujarat Garment Manufacturer Association(GGMA).</p>
+            <p class="spacing">Subject to Ahmedabad Jurisdiction</p>
+          </div>
+          <div class="part-two">
+            <p>For, Siddhartha Wear</p>
+            <p class="take-me-to-the-bottom">Authorised Signature</p>
+          </div>
         </div>
-        <div class="part-two">
-          <p>For, Siddhartha Wear</p>
-          <p class="take-me-to-the-bottom">Authorised Signature</p>
-        </div>
-      </div>
-      <!-- bottom -->
+        <!-- bottom -->
 
+      </div>
     </div>
   </div>
-</div>
 </template>
 
 <script>
+import api from '@/api/main';
+import num2Word from 'num2Word';
 export default {
   name: 'bill-template',
+  created() {
+    this.invoice_no = this.$route.params.invoice_no;
+    this.getBillByInvoiceNo();
+    // var numeral = require('numeral');
+    // var myNumeral =  numeral(1).format('0000');
+  },
   data() {
     return {
-
+      invoice_no: '',
+      bill_details: {},
+      amountInWords: null
     };
   },
   methods: {
-    print() {
-      // window.print();
+    getBillByInvoiceNo() {
+      api.getBillByInvoiceNo(this.invoice_no)
+      .then(response => {
+        if(response.data.invoice_no == this.invoice_no) {
+          this.bill_details = response.data;
+          this.amountInWords = this.toUpper(num2Word(this.bill_details.total_payable_amount));
+        }
+        else {
+          this.$router.push({name:'Page404'});
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    },
+
+    toUpper(str) {
+      return str
+      .toLowerCase()
+      .split(' ')
+      .map(function(word) {
+        return word[0].toUpperCase() + word.substr(1);
+      })
+      .join(' ');
     }
   }
 }
 </script>
 
 <style lang="scss">
-.bill-template {
-  .box {
-    padding: 0;
-  }
 
+.bill-template {
+  // width: 21cm;
+  // height: 29.7cm;
+  // background: burlywood;
+  // margin: 0 auto;
+  // margin-top: 0.2cm;
+  // margin-bottom: 0.5cm;
+  font: -webkit-small-control;
   .template-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem;
     border-bottom: solid 1px #ddd;
+    padding: 1rem;
     .template-head-header {
       display: flex;
       align-items: center;
+      .icon {
+        margin-right: 0.2rem;
+      }
     }
-    .title {
-      padding-left: 0.5rem;
-    }
+  }
+  .box {
+    padding: 0;
   }
 
   .template-body-main {
-    padding: 2rem;
-    .flex-head-items {
-      display: flex;
-      justify-content: space-between;
-      border-bottom: solid 2px #ddd;
+    height: 5.6cm;
+    padding: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: solid 2px #ddd;
+    .tile.is-ancestor {
+      .table-responsive {
+        .table.is-bordered.is-striped.is-narrow {
+          margin-bottom: 0;
+        }
+      }
     }
   }
 
   .seller {
+    width: 60%;
     .title.is-2 {
       font-weight: bold;
       margin: 0;
@@ -253,19 +326,24 @@ export default {
   }
 
   .invoice {
+    display: flex;
+    flex-direction: column;
     p {
       text-align: center;
     }
     .invoice-head {
       color: grey;
-      font-weight: 700;
+      font-weight: 500;
       font-size: -webkit-xxx-large;
     }
     .invoice-details {
-      font-size: 1.2rem;
+      font-size: 0.8rem;
     }
     .invoice-details-copy {
-      font-size: 1rem;
+      font-size: 0.8rem;
+    }
+    .invoice-details.last {
+      padding-bottom: 0.2rem;
     }
   }
 
@@ -275,15 +353,19 @@ export default {
 
 
   .buyer {
-    padding: 2rem;
-    padding-top: 0;
-    padding-bottom: 0;
-    .part-table {
-      border-bottom: solid 2px #ddd;
-      display: flex;
-      justify-content: space-between;
-      .tile.is-parent {
-        padding-bottom: 0;
+    padding: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: solid 2px #ddd;
+    display: flex;
+    justify-content: space-between;
+    .tile.is-ancestor {
+      margin-bottom: 0;
+    }
+    .tile.is-parent {
+      padding-bottom: 0;
+      .table.is-bordered.is-striped.is-narrow {
+        margin-bottom: 0;
       }
     }
     .right-side {
@@ -292,7 +374,9 @@ export default {
   }
 
   .template-body-items {
+    height: 13cm;
     padding: 2rem;
+    padding-top: 1rem;
     border-bottom: solid 2px #ddd;
     th, td{
       text-align: center;
@@ -306,43 +390,57 @@ export default {
         margin: 0;
       }
     }
+
     .bottom-details {
       display: flex;
       justify-content: space-between;
       .part-one {
-        width: 45rem;
-        bottom: 0;
-        margin-top: 13%;
         border: solid 1px #ddd;
-        // margin: auto;
+        width: 60%;
+        .blank {
+          padding-top: 0.5rem;
+          height: 50%;
+          border-bottom: solid 1px #ddd;
+        }
+        .amount-in-words {
+          padding-top: 0.5rem;
+          height: 50%;
+        }
+        // border: solid 1px #ddd;
+        // height: fit-content;
+        // display: flex;
+        // align-items: flex-end;
+        // margin-left: 6rem;
+        // margin-top: auto;
       }
       .table-responsive {
-        width: fit-content;
+        width: 100%;
         float: right;
       }
     }
   }
 
   .template-bottom {
-    padding: 2rem;
+    // position: relative;
+    // margin-top: 15rem;
+    // position: fixed;
+    // padding: 2rem;
     display: flex;
     justify-content: space-between;
     .part-one {
-      max-width: 33rem;
+      max-width: 23rem;
       .spacing {
         padding-top: 1.5rem;
       }
     }
     .part-two {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
       p {
         font-weight: 700;
       }
-      .take-me-to-the-bottom {
-        bottom: 0;
-        margin-top: 75%;
-      }
     }
   }
-
 }
 </style>

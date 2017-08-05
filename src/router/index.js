@@ -80,6 +80,12 @@ let router = new Router({
       component: require('@/container/Sample'),
       meta: { requiresAuth: true }
     },
+    {
+      path: '/page404',
+      name: 'Page404',
+      component: require('@/container/Page404'),
+      meta: { requiresAuth: true }
+    },
   ]
 });
 

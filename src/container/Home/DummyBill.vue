@@ -388,6 +388,7 @@ import Datepicker from 'vue-bulma-datepicker';
 import FirmNameDropdown from '@/components/FirmNameDropdown';
 import ProductsNameDropdown from '@/components/ProductsNameDropdown';
 import jwt_decode from 'jwt-decode';
+var numeral = require('numeral');
 export default {
   name: 'dummy-bill',
   props: ['admin_state'],
@@ -397,6 +398,8 @@ export default {
     ProductsNameDropdown,
   },
   created() {
+    // var numeral = require('numeral');
+    // var myNumeral =  numeral(1).format('0000');
     this.getLastBillInvoiceNumber();
     this.userDetails();
     this.decodeToken();
@@ -405,8 +408,6 @@ export default {
     this.getDate = new Date().getDate();
     this.today = this.getYear + '-' + this.getMonth + '-' + this.getDate;
     this.item.created_at = this.today;
-    var converter = require('number-to-words');
-    console.log(converter.toWords(42654));
     //firm name
     this.$bus.$on('firm_name_change', (response) => {
       this.item.firm.firm_name = response.firm.firm_name;
@@ -526,7 +527,6 @@ export default {
     },
 
     removeItem(it, index) {
-
       // values update
       this.item.ftaxable_amount -= it.taxable_amount;
       this.item.fcgst_amount -= it.cgst_amount
@@ -623,10 +623,15 @@ export default {
           },
 
           getLastBillInvoiceNumber() {
+            // var myNumeral =  numeral(1).format('0000');
             api.getLastBill()
             .then(response => {
-              console.log(response.data.invoice_no);
-              this.item.invoice_no = response.data.invoice_no;
+              if(isNaN(parseInt(response.data)) == true) {
+                this.item.invoice_no =  numeral(1).format('0000');
+              }
+              else {
+                this.item.invoice_no = numeral(response.data).format('0000');
+              }
             })
             .catch(error => {
               console.log(error);

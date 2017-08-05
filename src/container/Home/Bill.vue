@@ -176,8 +176,6 @@ export default {
     this.getDate = new Date().getDate();
     this.today = this.getYear + '-' + this.getMonth + '-' + this.getDate;
     this.date = this.today;
-    var converter = require('number-to-words');
-    console.log(converter.toWords(42654));
     this.$bus.$on('sendItemData', (response) => {
       this.dataIsHere = true;
       this.showAddItemModal = false;

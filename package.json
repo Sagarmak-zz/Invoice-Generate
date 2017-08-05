@@ -16,7 +16,7 @@
     "flatpickr": "^3.0.6",
     "jwt-decode": "^2.2.0",
     "moment": "^2.18.1",
-    "number-to-words": "^1.2.3",
+    "num2word": "^1.0.2",
     "sweetalert2": "^6.6.6",
     "vee-validate": "^2.0.0-rc.6",
     "vue": "^2.3.3",
