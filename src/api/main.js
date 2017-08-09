@@ -31,6 +31,10 @@ export default {
     });
   },
 
+  deleteBill(bill_id) {
+    return HTTP.delete('/deleteBill/' + bill_id);
+  },
+
   getBill() {
     return HTTP.get('/getBill');
   },

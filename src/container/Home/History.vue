@@ -8,7 +8,6 @@
     </div> -->
     <div class="columns is-multiline need-padding" v-if="!noData">
       <div class="column is-one-third" v-for="bill in orderedBills">
-
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
@@ -34,8 +33,7 @@
           </div>
           <footer class="card-footer">
             <router-link :to="{ name:'BillTemplate', params: { invoice_no: bill.invoice_no } }" class="card-footer-item">View</router-link>
-            <a class="card-footer-item">Delete</a>
-            <!-- <BillsViewModal :key="bill.id" :id="bill.id"></BillsViewModal> -->
+            <a @click="deleteBill(bill.id)" class="card-footer-item">Delete</a>
           </footer>
         </div>
       </div>
@@ -81,6 +79,18 @@ export default {
         console.log(error);
       })
     },
+
+    deleteBill(bill_id) {
+      api.deleteBill(bill_id)
+      .then(response => {
+        if(response.status == 200) {
+          this.getBill();
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    }
   },
 
   computed: {

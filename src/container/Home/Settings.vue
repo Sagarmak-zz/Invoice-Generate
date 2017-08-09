@@ -151,10 +151,10 @@
       <div class="foot">
         <div class="field is-grouped">
           <p class="control code">
-            <input v-validate="'required|numeric'" name="code" :class="{'input': true, 'is-danger': errors.has('code') }" type="text" placeholder="Code">
+            <input v-model="code" v-validate="'required|numeric'" name="code" :class="{'input': true, 'is-danger': errors.has('code') }" type="text" placeholder="Code">
           </p>
           <p class="control">
-            <input @keyup.enter="validateAndAddState()" v-validate="'required'" name="name" :class="{'input': true, 'is-danger': errors.has('name') }" type="text" placeholder="Name">
+            <input v-model="name" @keyup.enter="validateAndAddState()" v-validate="'required'" name="name" :class="{'input': true, 'is-danger': errors.has('name') }" type="text" placeholder="Name">
           </p>
           <p class="control">
             <a @click="validateAndAddState()" class="button is-success">
@@ -353,7 +353,12 @@ export default {
         }
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data.message);
+        let toast = this.$toasted.error(error.response.data.message, {
+          theme: "outline",
+          position: "bottom-center",
+          duration : 3000
+        });
       })
     },
     validate() {

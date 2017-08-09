@@ -31,7 +31,7 @@
             <p class="invoice-head">INVOICE</p>
             <p class="invoice-details"><b>Invoice No: {{bill_details.invoice_no}}</b></p>
             <p class="invoice-details" v-if="bill_details.created_at"><b>Date: {{moment(bill_details.created_at.date).format('D/MM/YYYY')}}</b></p>
-            <p class="invoice-details last"><b>State Code: dummy</b></p>
+            <p class="invoice-details last"><b>State Code: {{bill_details.admin_state_code}}</b></p>
             <div class="tile is-ancestor">
               <div class="tile is-parent">
                 <article class="tile is-child">
@@ -204,9 +204,9 @@
           </div>
           <!-- bottom -->
 
-          <!-- <pre>
+          <pre>
           {{bill_details}}
-        </pre> -->
+        </pre>
 
       </div>
     </div>
@@ -218,7 +218,7 @@
   export default {
     name: 'sample',
     updated() {
-      // window.print();
+      window.print();
     },
     created() {
       this.invoice_no = this.$route.params.invoice_no;
