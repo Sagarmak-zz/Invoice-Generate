@@ -7,13 +7,13 @@
 
     <ul class="menu-list">
       <List name="Dashboard" icon="fa fa-tachometer" route="Dashboard"></List>
-      <List name="Generate Bill" icon="fa fa-file-text" route="Bill"></List>
+      <!-- <List name="Generate Bill" icon="fa fa-file-text" route="Bill"></List> -->
+      <List name="Generate Bill" icon="fa fa-file-text" route="DummyBill"></List>
       <List name="User" icon="fa fa-user-plus" route="User"></List>
       <List name="Product" icon="fa fa-plus" route="Product"></List>
       <List name="History" icon="fa fa-history" route="History"></List>
       <List name="Reports" icon="fa fa-line-chart" route="Reports"></List>
       <List name="Settings" icon="fa fa-cogs" route="Settings"></List>
-      <List name="Dummy" icon="fa fa-cogs" route="DummyBill"></List>
     </ul>
   </aside>
 </div>

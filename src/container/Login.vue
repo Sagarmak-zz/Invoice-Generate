@@ -91,7 +91,8 @@ export default {
       api.login(this.email, this.password)
       .then((response) => {
         Auth.setToken(response.data.token);
-        window.location.href='/home';
+        // window.location.href='/home';
+        this.$router.push({ name: 'Dashboard' });
       })
       .catch((error) => {
         console.log(error);
