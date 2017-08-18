@@ -630,7 +630,7 @@
             export default {
               name: 'sample',
               updated() {
-                // window.print();
+                window.print();
               },
               created() {
                 this.invoice_no = this.$route.params.invoice_no;
