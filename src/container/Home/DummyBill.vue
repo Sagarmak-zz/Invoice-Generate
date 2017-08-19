@@ -289,7 +289,7 @@ type="number" placeholder="Rate">
                       <div :class="{'has-error': errors.has('price') }">
                         <div class="field has-addons">
                           <p class="control">
-                            <input v-model="item.product.price" :class="{'input': true, 'is-danger': errors.has('price') }"
+                            <input @keyup.enter="addItemData" v-model="item.product.price" :class="{'input': true, 'is-danger': errors.has('price') }"
                             name="price" v-validate="'required'"
                             type="number" placeholder="Rate">
                           </p>
@@ -546,7 +546,7 @@ export default {
         this.item.ftaxable_amount += this.items[this.items.length-1].taxable_amount;
         this.item.fcgst_amount += this.items[this.items.length-1].cgst_amount;
         this.item.fsgst_amount += this.items[this.items.length-1].sgst_amount;
-        this.item.fsgst_amount += this.items[this.items.length-1].igst_amount;
+        this.item.figst_amount += this.items[this.items.length-1].igst_amount;
         this.item.ftotal_payable_amount += this.items[this.items.length-1].total_payable_amount;
         break;
       }
