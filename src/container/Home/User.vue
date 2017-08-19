@@ -34,24 +34,29 @@
         </div>
         <div class="columns">
           <div class="column gst">
-            <div class="field">
-              <label class="label">GST Number</label>
+            <label class="label">GST Number</label>
+            <div class="field has-addons">
               <p class="control">
-                <input v-model="gst_no" class="input" name="gst_no" v-validate="'required'" type="text" placeholder="GST Number">
+                <input v-model="gst_no" class="input" name="gst_no" v-validate="'required|min:15'" type="text" placeholder="GST Number">
               </p>
-              <div v-show="errors.has('gst_no')" class="help is-danger">
-                The GST Number is required.
+              <div class="control">
+                <a class="button">
+                  {{gst_no.length}}/15
+                </a>
               </div>
+            </div>
+            <div v-show="errors.has('gst_no')" class="help is-danger">
+              The GST Number is required and should be more than 14 characters.
             </div>
           </div>
           <div class="column email">
             <div class="field">
               <label class="label">Email</label>
               <p class="control">
-                <input v-model="email" name="billemail" v-validate="'required|email'" type="email" placeholder="Email" class="input">
+                <input v-model="email" name="billemail" v-validate="'email'" type="email" placeholder="Email" class="input">
               </p>
               <div class="help is-danger" v-show="errors.has('billemail')">
-                The Email is required and should be a valid Email address.
+                The Email should be a valid Email address.
               </div>
             </div>
           </div>
@@ -63,18 +68,15 @@
             <div class="field">
               <label class="label">Address</label>
               <p class="control">
-                <textarea v-model="billing.address" name="billaddress" v-validate="'required'" class="textarea" placeholder="Address"></textarea>
+                <textarea v-model="billing.address" name="billaddress" class="textarea" placeholder="Address"></textarea>
               </p>
-              <div v-show="errors.has('billaddress')" class="help is-danger">
-                The Billing Address is a required field..
-              </div>
             </div>
           </div>
           <div class="column">
             <div class="field">
               <label class="label">Contact No(Mobile)</label>
               <p class="control">
-                <input v-model="billing.mobile" name="billmobile_no" v-validate="'required|numeric|min:8'" type="number" placeholder="Contact No" class="input">
+                <input v-model="billing.mobile" name="billmobile_no" v-validate="'numeric|min:8'" type="number" placeholder="Contact No" class="input">
               </p>
               <div class="help is-danger" v-show="errors.has('billmobile_no')">
                 The Contact Number field is required and should contain at least 8 numeric values.
@@ -83,10 +85,10 @@
             <div class="field">
               <label class="label">Contact No(Landline)</label>
               <p class="control">
-                <input v-model="billing.landline" name="billlandline_no" v-validate="'required|numeric|min:8'" type="number" placeholder="Contact No" class="input">
+                <input v-model="billing.landline" name="billlandline_no" v-validate="'numeric|min:8'" type="number" placeholder="Contact No" class="input">
               </p>
               <div class="help is-danger" v-show="errors.has('billlandline_no')">
-                The Contact Number field is required and should contain at least 8 numeric values.
+                The Contact Number field should contain at least 8 numeric values.
               </div>
             </div>
           </div>
@@ -97,11 +99,8 @@
             <div class="field">
               <label class="label">City</label>
               <p class="control">
-                <input v-model="billing.city" class="input" name="billcity" v-validate="'required'" type="text" placeholder="City">
+                <input v-model="billing.city" class="input" name="billcity" type="text" placeholder="City">
               </p>
-              <div v-show="errors.has('billcity')" class="help is-danger">
-                The City Name is required.
-              </div>
             </div>
           </div>
           <div class="column">
@@ -120,11 +119,8 @@
             <div class="field">
               <label class="label">Pincode</label>
               <p class="control">
-                <input v-model="billing.pincode" name="billpincode" v-validate="'required'" type="number" placeholder="Pincode" class="input">
+                <input v-model="billing.pincode" name="billpincode" type="number" placeholder="Pincode" class="input">
               </p>
-              <div class="help is-danger" v-show="errors.has('billpincode')">
-                The Pincode is required.
-              </div>
             </div>
           </div>
         </div>
@@ -138,10 +134,10 @@
             <div class="field">
               <label class="label">Address Line 1</label>
               <p class="control">
-                <textarea v-model="shipping.address" name="shipaddress" v-validate="'required'" class="textarea" placeholder="Address"></textarea>
+                <textarea v-model="shipping.address" name="shipaddress" class="textarea" placeholder="Address"></textarea>
               </p>
               <div v-show="errors.has('shipaddress')" class="help is-danger">
-                The Temporary Address is a required field with minimum of 10 letters.
+                The Temporary Address should be minimum of 10 letters.
               </div>
             </div>
           </div>
@@ -149,19 +145,19 @@
             <div class="field">
               <label class="label">Contact No(Mobile)</label>
               <p class="control">
-                <input v-model="shipping.mobile" name="shipmobile_no" v-validate="'required|numeric|min:8'" type="number" placeholder="Contact No" class="input">
+                <input v-model="shipping.mobile" name="shipmobile_no" v-validate="'numeric|min:8'" type="number" placeholder="Contact No" class="input">
               </p>
               <div class="help is-danger" v-show="errors.has('shipmobile_no')">
-                The Contact Number field is required and should contain at least 8 numeric values.
+                The Contact Number field should contain at least 8 numeric values.
               </div>
             </div>
             <div class="field">
               <label class="label">Contact No(Landline)</label>
               <p class="control">
-                <input v-model="shipping.landline" name="shiplandline_no" v-validate="'required|numeric|min:8'" type="number" placeholder="Contact No" class="input">
+                <input v-model="shipping.landline" name="shiplandline_no" v-validate="'numeric|min:8'" type="number" placeholder="Contact No" class="input">
               </p>
               <div class="help is-danger" v-show="errors.has('shiplandline_no')">
-                The Contact Number field is required and should contain at least 8 numeric values.
+                The Contact Number field should contain at least 8 numeric values.
               </div>
             </div>
           </div>
@@ -171,11 +167,8 @@
             <div class="field">
               <label class="label">City</label>
               <p class="control">
-                <input v-model="shipping.city" class="input" name="shipcity" v-validate="'required'" type="text" placeholder="City">
+                <input v-model="shipping.city" class="input" name="shipcity" type="text" placeholder="City">
               </p>
-              <div v-show="errors.has('shipcity')" class="help is-danger">
-                The City Name is required.
-              </div>
             </div>
           </div>
           <div class="column">
@@ -194,11 +187,8 @@
             <div class="field">
               <label class="label">Pincode</label>
               <p class="control">
-                <input v-model="shipping.pincode" name="shippincode" v-validate="'required'" type="number" placeholder="Pincode" class="input">
+                <input v-model="shipping.pincode" name="shippincode" type="number" placeholder="Pincode" class="input">
               </p>
-              <div class="help is-danger" v-show="errors.has('shippincode')">
-                The Email is required and should be a valid Email address.
-              </div>
             </div>
           </div>
         </div>
@@ -409,6 +399,9 @@ export default {
 
     .column.gst {
       padding-top: 0;
+      .input {
+        width: 29.6rem;
+      }
     }
     .column.email {
       padding-top: 0;
