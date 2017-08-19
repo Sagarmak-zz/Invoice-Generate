@@ -404,7 +404,7 @@ export default {
     this.userDetails();
     this.decodeToken();
     this.getYear = new Date().getFullYear();
-    this.getMonth = new Date().getMonth();
+    this.getMonth = new Date().getMonth() + 1;
     this.getDate = new Date().getDate();
     this.today = this.getYear + '-' + this.getMonth + '-' + this.getDate;
     this.item.created_at = this.today;
