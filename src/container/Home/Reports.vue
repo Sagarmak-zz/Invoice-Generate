@@ -171,9 +171,14 @@ export default {
       api.betweenDate(this.start_date, this.end_date)
       .then(response => {
         console.log(response);
-        if(response.data.length == 0) {
+        if(response.data.message == 'Data not found') {
           //no data present
           this.noData = true;
+          let toast = this.$toasted.show('No Data Found', {
+            theme: "outline",
+            position: "bottom-center",
+            duration : 3000
+          });
         }
         else {
           //data present
