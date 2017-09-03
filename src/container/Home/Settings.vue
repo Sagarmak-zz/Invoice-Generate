@@ -128,6 +128,8 @@
       </div>
       <div class="update-button">
         <button @click="validateAndUpdateDetails()" class="button is-success">Update</button>
+        <button @click="addUser = true" class="button is-pulled-right">Add User</button>
+        <AddAdminUserModal v-if="addUser"></AddAdminUserModal>
       </div>
       <!-- <pre>
       {{data}}
@@ -174,6 +176,7 @@ import Auth from '@/packages/auth/Auth';
 import jwt_decode from 'jwt-decode';
 import StateDropdown from '@/components/StateDropdown';
 import AdminDetailsUpdateModal from '@/components/AdminDetailsUpdateModal';
+import AddAdminUserModal from '@/components/AddAdminUserModal';
 import EditStateBox from '@/components/EditStateBox';
 export default {
   name: 'settings',
@@ -196,7 +199,8 @@ export default {
       name: '',
       newStateId: null,
       showAdminDetailsModal: false,
-      udapteStateModal: false
+      udapteStateModal: false,
+      addUser: false
     };
   },
   created() {
@@ -368,7 +372,8 @@ export default {
   components: {
     StateDropdown,
     AdminDetailsUpdateModal,
-    EditStateBox
+    EditStateBox,
+    AddAdminUserModal
   }
 }
 </script>
