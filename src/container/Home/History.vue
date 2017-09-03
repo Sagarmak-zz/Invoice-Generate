@@ -7,7 +7,7 @@
       <!-- <div class="reports-body">
     </div> -->
     <div class="columns is-multiline need-padding" v-if="!noData">
-      <div class="column is-one-third" v-for="bill in orderedBills">
+      <div class="column is-one-third" v-for="bill in bills">
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
@@ -90,12 +90,6 @@ export default {
       .catch(error => {
         console.log(error);
       })
-    }
-  },
-
-  computed: {
-    orderedBills() {
-      return this.bills.reverse();
     }
   },
   components: {
