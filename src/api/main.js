@@ -55,7 +55,7 @@ export default {
 
   createAdminUser(name, email, password) {
     let url = '/userDetails/create';
-    return HTTP.post('/userDetails/create', {
+    return HTTP.post(url, {
       name: name,
       email: email,
       password: password
@@ -75,6 +75,14 @@ export default {
       pincode: pincode,
       mobile_number: mobile_number,
       landline_number: landline_number
+    });
+  },
+
+  updateAdminPassword(password) {
+    console.log(password);
+    let url = '/userDetail/updatePassword';
+    return HTTP.patch(url, {
+      password: password
     });
   },
 

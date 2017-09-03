@@ -48,7 +48,12 @@ export default {
     return {
       changePassword: false
     }
-  }
+  },
+  created() {
+    this.$bus.$on('password-changed', () => {
+      this.changePassword = false;
+    })
+  },
 }
 </script>
 
