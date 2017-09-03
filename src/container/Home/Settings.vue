@@ -212,7 +212,11 @@ export default {
       this.showAdminDetailsModal = false;
       this.callStates();
       this.callUser();
-    })
+    });
+    this.$bus.$on('add-admin-close', () => {
+      console.log('called');
+      this.addUser = false;
+    });
     this.callStates();
     this.callUser();
   },

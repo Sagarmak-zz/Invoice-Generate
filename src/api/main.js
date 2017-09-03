@@ -53,6 +53,15 @@ export default {
     return HTTP.get('/userDetails');
   },
 
+  createAdminUser(name, email, password) {
+    let url = '/userDetails/create';
+    return HTTP.post('/userDetails/create', {
+      name: name,
+      email: email,
+      password: password
+    })
+  },
+
   updateUserDetails(user_id, username, email, name, gst_number, address, cityname, state_code, pincode, mobile_number, landline_number) {
     let url = '/userDetails/' + user_id;
     return HTTP.patch(url, {
