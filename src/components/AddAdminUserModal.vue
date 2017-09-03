@@ -1,12 +1,14 @@
 <template lang="html">
 	<div class="add-admin">
+		<button v-if="hide" @click="hide = !hide" class="button is-pulled-right">Add User</button>
+
 		<!-- modal starts -->
-		<div class="modal is-active">
+		<div class="modal is-active" v-if="hide">
 			<div class="modal-background"></div>
 			<div class="modal-card">
 				<header class="modal-card-head">
 					<p class="modal-card-title">Add Admin User</p>
-					<button class="delete" @click="$emit('close')"></button>
+					<button class="delete" @click="hide = !hide"></button>
 				</header>
 				<section class="modal-card-body">
 
@@ -51,7 +53,7 @@
 				</section>
 				<footer class="modal-card-foot">
 					<a class="button is-success">Add</a>
-					<a class="button" @click="$emit('close')">Cancel</a>
+					<a class="button" @click="hide = !hide">Cancel</a>
 				</footer>
 			</div>
 		</div>
@@ -67,7 +69,8 @@ export default {
 			name: '',
 			email: '',
 			password: '',
-			confirm: ''
+			confirm: '',
+			hide: true
 		}
 	},
 	methods: {
