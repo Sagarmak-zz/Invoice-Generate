@@ -12,7 +12,7 @@
 					<div class="field">
 						<label class="label">Email</label>
 						<div class="control">
-							<input class="input" type="email" placeholder="Email">
+							<input v-model="user_email" class="input" type="email" placeholder="Email">
 						</div>
 					</div>
 
@@ -41,17 +41,31 @@
 </template>
 
 <script>
+import api from '@/api/main';
+import Auth from '@/packages/auth/Auth';
 export default {
 	name: 'change-password',
+	created() {
+		this.callUser();
+	},
 	data() {
 		return {
 			email: '',
 			password: '',
-			confirm: ''
+			confirm: '',
+			user_email: ''
 		}
 	},
 	methods: {
-
+		callUser() {
+			api.userDetails()
+			.then((response) => {
+				this.user_email = response.data.user_email;
+			})
+			.catch((error) => {
+				console.log(error);
+			})
+		},
 	}
 }
 </script>
