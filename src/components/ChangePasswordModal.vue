@@ -9,17 +9,29 @@
 					<button class="delete" @click="$emit('close')"></button>
 				</header>
 				<section class="modal-card-body">
-					<label class="label">Password</label>
-            <p class="control">
-              <input class="input" type="text" placeholder="Text input">
-            </p>
-            <label class="label">Confirm Password</label>
-            <p class="control has-icon has-icon-right">
-              <input class="input" type="text" placeholder="Text input" value="bulma">
-            </p>
+					<div class="field">
+						<label class="label">Email</label>
+						<div class="control">
+							<input class="input" type="email" placeholder="Email">
+						</div>
+					</div>
+
+					<div class="field">
+						<label class="label">Password</label>
+						<div class="control">
+							<input class="input" type="password" placeholder="********">
+						</div>
+					</div>
+
+					<div class="field">
+						<label class="label">Confirm Password</label>
+						<div class="control">
+							<input class="input" type="password" placeholder="********">
+						</div>
+					</div>
 				</section>
 				<footer class="modal-card-foot">
-					<a class="button is-success">Save changes</a>
+					<a class="button is-success">Update</a>
 					<a class="button" @click="$emit('close')">Cancel</a>
 				</footer>
 			</div>
@@ -33,6 +45,7 @@ export default {
 	name: 'change-password',
 	data() {
 		return {
+			email: '',
 			password: '',
 			confirm: ''
 		}
@@ -45,6 +58,10 @@ export default {
 
 <style lang="scss">
 .change-password {
-
+	.field {
+		.label {
+			width: 0;
+		}
+	}
 }
 </style>
