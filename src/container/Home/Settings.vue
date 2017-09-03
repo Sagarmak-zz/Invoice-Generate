@@ -128,8 +128,8 @@
       </div>
       <div class="update-button">
         <button @click="validateAndUpdateDetails()" class="button is-success">Update</button>
-        <!-- <button @click="addUser = true" class="button is-pulled-right">Add User</button> -->
-        <AddAdminUserModal></AddAdminUserModal>
+        <button @click="addUser = true" class="button is-pulled-right">Add User</button>
+        <AddAdminUserModal v-if="addUser" @close="addUser = false"></AddAdminUserModal>
       </div>
       <!-- <pre>
       {{data}}
