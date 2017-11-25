@@ -67,7 +67,7 @@ let router = new Router({
           meta: { requiresAuth: true }
         },
         {
-          path: '/dummyBill',
+          path: '/createBill',
           name: 'DummyBill',
           component: require('@/container/Home/DummyBill'),
           meta: { requiresAuth: true }
