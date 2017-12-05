@@ -123,7 +123,7 @@
     </div>
 
     <div class="loading" v-show="loading">
-      <span class="title is-4">Please Wait while we load the data...</span>
+      <span class="title is-4">Please wait while we load the data...</span>
       <div class="fa fa-spinner fa-spin"> </div>
     </div>
 
