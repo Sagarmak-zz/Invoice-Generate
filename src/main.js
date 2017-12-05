@@ -7,6 +7,8 @@ import Toasted from 'vue-toasted';
 import Autocomplete from 'vue-bulma-typeahead';
 import Auth from '@/packages/auth/Auth.js';
 import moment from 'moment';
+import swal from 'sweetalert2';
+
 
 const flatpickr = require("flatpickr");
 Vue.prototype.flatpickr = flatpickr;
@@ -17,6 +19,11 @@ Vue.use(Toasted);
 Vue.use(Autocomplete);
 Vue.use(Auth);
 Vue.prototype.$bus = new Vue();
+const swalPlugin = {};
+swalPlugin.install = function(Vue){
+	Vue.prototype.$swal = swal;
+}
+Vue.use(swalPlugin);
 
 /* eslint-disable no-new */
 new Vue({

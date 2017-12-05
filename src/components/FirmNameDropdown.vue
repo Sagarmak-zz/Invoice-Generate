@@ -32,18 +32,18 @@ export default {
   methods: {
     listCustomer() {
       api.listCustomer()
-      .then((response) => {
-        this.firms = response.data.firms;
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+        .then( ( response ) => {
+          this.firms = response.data.firms;
+        } )
+        .catch( ( error ) => {
+          console.log( error );
+        } )
     },
 
     stateChange() {
-      this.$bus.$emit('firm_name_change', {
+      this.$bus.$emit( 'firm_name_change', {
         firm: this.firm
-      });
+      } );
     },
   }
 }
@@ -51,8 +51,8 @@ export default {
 
 <style lang="scss">
 .firm-name-dropdown {
-  .select.is-fullwidth {
-    width: 26rem;
-  }
+    .select.is-fullwidth {
+        width: 26rem;
+    }
 }
 </style>

@@ -6,7 +6,7 @@
       </div>
 
     <div class="columns is-multiline need-padding" v-if="!noData">
-      <div class="column is-one-third" v-for="bill in bills">
+      <div class="column is-one-third" v-for="bill in bills" v-if="!loading">
         <div class="card">
           <header class="card-header">
             <p class="card-header-title">
@@ -20,7 +20,7 @@
           </header>
           <div class="card-content">
             <div class="content">
-              <small>Date Created: <b>{{moment(bill.created_at.date).format('D/MM/YYYY')}}</b></small><br>
+              <small>Date Created: <b>{{moment(bill.created_at.date).format('LL')}}</b></small><br>
               <span>Taxable Amount: <b>&#8377;{{bill.taxable_amount}}</b></span> <br>
               <div class="taxes">
                 <span>SGST <b>&#8377;{{bill.sgst_amount}}</b></span>
@@ -32,7 +32,7 @@
           </div>
           <footer class="card-footer">
             <router-link :to="{ name:'BillTemplate', params: { invoice_no: bill.invoice_no } }" class="card-footer-item">View</router-link>
-            <a @click="deleteBill(bill.id)" class="card-footer-item">Delete</a>
+            <a @click="askHistoryDelete(bill.id)" class="card-footer-item">Delete</a>
           </footer>
         </div>
       </div>
@@ -45,12 +45,17 @@
       <span class="title">No Bills at the moment</span>
     </div>
 </div>
+<simplert :useRadius="true"
+          :useIcon="true"
+          ref="simplert">
+</simplert>
 </div>
 </template>
 
 <script>
 import api from '@/api/main';
 import BillsViewModal from '@/components/BillsViewModal';
+import Simplert from 'vue2-simplert';
 export default {
   name: 'history',
   data() {
@@ -58,7 +63,16 @@ export default {
       bills: [],
       noData: false,
       showBillViewData: false,
-      loading: false
+      loading: false,
+      obj: {
+        title: 'Delete!',
+        message: 'Are you sure you want to delete this bill?',
+        type: 'warning',
+        useConfirmBtn: true,
+        onClose: this.onClose,
+        onConfirm: this.delete,
+      },
+      deleteBillId: null
     };
   },
   created() {
@@ -82,10 +96,24 @@ export default {
         } )
     },
 
+    askHistoryDelete( bill_id ) {
+      this.$refs.simplert.openSimplert( this.obj );
+      this.deleteBillId = bill_id;
+    },
+
+    delete() {
+      this.deleteBill( this.deleteBillId );
+    },
+
     deleteBill( bill_id ) {
       api.deleteBill( bill_id )
         .then( response => {
           if ( response.status == 200 ) {
+            this.$toasted.success( 'Bill deleted!', {
+              theme: "outline",
+              position: "top-center",
+              duration: 3000
+            } );
             this.getBill();
           }
         } )
@@ -96,6 +124,7 @@ export default {
   },
   components: {
     // BillsViewModal
+    Simplert
   }
 }
 </script>
