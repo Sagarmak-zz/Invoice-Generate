@@ -6,7 +6,11 @@
       </div>
 
       <div name="top" class="form">
-        <div class="form-body" >
+        <div class="loading" v-show="loading">
+          <span class="title is-4">Please Wait while we load the data...</span>
+          <div class="fa fa-spinner fa-spin"> </div>
+        </div>
+        <div class="form-body" v-if="!loading">
           <div class="columns">
             <div class="column">
               <div :class="{'has-error': errors.has('customer') }">
@@ -46,91 +50,21 @@
           </div>
         </div>
       </div>
-      <!-- part-2 -->
-      <div class="main-details">
+
+      <div class="main-details" v-if="!loading">
         <h3 class="title">Main Details</h3>
         <a class="button is-primary" v-if="hideInputs" @click="callMainDetailsAdd()">Edit Taxes</a>
         <a class="button" v-if="!hideInputs" @click="hideInputs=!hideInputs">Hide</a>
       </div>
     </div>
-    <!-- box ends -->
 
     <form name="middle" class="box" v-if="!hideInputs">
-      <!-- table -->
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <article class="tile is-child">
             <div class="table-responsive">
               <table class="table is-bordered is-striped is-narrow">
                 <thead>
-                  <!-- <tr>
-                  <th colspan="5">Particulars</th>
-                  <th colspan="3">Discount</th>
-                </tr>
-              </thead> -->
-              <!-- <thead>
-              <tr>
-              <th>Name</th>
-              <th>Size</th>
-              <th>Quantity</th>
-              <th>Rate</th>
-              <th>Amount</th>
-              <th>Rate</th>
-              <th>Amount</th>
-              <th>Total</th>
-            </tr> -->
-            <!-- <tr>
-            <th><ProductsNameDropdown></ProductsNameDropdown></th>
-            <th>
-            <div :class="{'has-error': errors.has('size') }">
-            <p class="control">
-            <input v-model="item.size" :class="{'input': true, 'is-danger': errors.has('size') }"
-            name="size" v-validate="'required'"
-            type="text" placeholder="Size">
-          </p>
-        </div>
-      </th>
-      <th>
-      <div :class="{'has-error': errors.has('qty') }">
-      <p class="control">
-      <input @keyup.enter="addItemData" v-model="item.quantity" :class="{'input': true, 'is-danger': errors.has('qty') }"
-      name="qty" v-validate="'required'"
-      type="number" placeholder="Quantity">
-    </p>
-  </div>
-</th>
-<th>
-<div :class="{'has-error': errors.has('price') }">
-<div class="field has-addons">
-<p class="control">
-<a class="button is-static"> &#8377; </a>
-</p>
-<p class="control">
-<input v-model="item.product.price" :class="{'input': true, 'is-danger': errors.has('price') }"
-name="price" v-validate="'required'"
-type="number" placeholder="Rate">
-</p>
-</div>
-</div>
-</th>
-<th> &#8377; {{item.amount = item.quantity * item.product.price}}</th>
-<th>
-<div :class="{'has-error': errors.has('discount_percentage') }">
-<div class="field has-addons">
-<p class="control">
-<input @keyup.enter="addItemData" v-model="item.discount_percentage" :class="{'input': true, 'is-danger': errors.has('discount_percentage') }"
-name="discount_percentage" v-validate="'required'"
-type="number" placeholder="Rate">
-</p>
-<p class="control">
-<a class="button is-static"> % </a>
-</p>
-</div>
-</div>
-</th>
-<th class="show">&#8377; {{item.discount_amount = item.amount * (item.discount_percentage / 100)}}</th>
-<th class="taxAmount">&#8377; {{item.taxable_amount = item.amount - item.discount_amount}}</th>
-</tr> -->
 <tr>
   <th colspan="2">CGST</th>
   <th colspan="2">SGST</th>
@@ -205,9 +139,8 @@ type="number" placeholder="Rate">
 
 </form>
 
-<div class="item-details">
+<div class="item-details" v-if="!loading">
   <div class="box">
-    <!-- table -->
     <div class="upper">
       <div class="tile is-ancestor">
         <div class="tile is-parent">
@@ -305,9 +238,6 @@ type="number" placeholder="Rate">
                             name="discount_percentage" v-validate="'required'"
                             type="number" placeholder="Rate">
                           </p>
-                          <!-- <p class="control">
-                          <a class="button is-static"> % </a>
-                        </p> -->
                       </div>
                     </div>
                   </th>
@@ -349,7 +279,6 @@ type="number" placeholder="Rate">
         </div>
       </div>
     </div>
-    <!-- table ends -->
 
     <div class="lower-part-two">
       <div class="tile is-ancestor">
@@ -375,7 +304,6 @@ type="number" placeholder="Rate">
     </div>
   </div>
 </div>
-
 
 </div>
 </div>
@@ -478,7 +406,8 @@ export default {
       items: [ ],
       hideInputs: true,
       hideInputs2: false,
-    }
+      loading: false
+    };
   },
   methods: {
     decodeToken() {
@@ -623,9 +552,11 @@ export default {
           },
 
           getLastBillInvoiceNumber() {
+            this.loading = true;
             // var myNumeral =  numeral(1).format('0000');
             api.getLastBill()
             .then(response => {
+              this.loading = false;
               if(isNaN(parseInt(response.data)) == true) {
                 this.item.invoice_no =  numeral(1).format('0000');
               }
@@ -913,6 +844,10 @@ export default {
         }
         .discAmount {
           width: 5rem;
+        }
+
+        .loading {
+          padding: 1rem;
         }
 
       }

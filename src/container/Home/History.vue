@@ -4,8 +4,7 @@
       <div class="history-head">
         <h3 class="title">History</h3>
       </div>
-      <!-- <div class="reports-body">
-    </div> -->
+
     <div class="columns is-multiline need-padding" v-if="!noData">
       <div class="column is-one-third" v-for="bill in bills">
         <div class="card">
@@ -37,13 +36,14 @@
           </footer>
         </div>
       </div>
+      <div class="loading" v-show="loading">
+        <span class="title is-4">Please Wait while we load the data...</span>
+        <div class="fa fa-spinner fa-spin"> </div>
+      </div>
     </div>
     <div class="noData" v-if="noData">
       <span class="title">No Bills at the moment</span>
     </div>
-    <!-- <pre>
-    {{bills}}
-  </pre> -->
 </div>
 </div>
 </template>
@@ -58,6 +58,7 @@ export default {
       bills: [],
       noData: false,
       showBillViewData: false,
+      loading: false
     };
   },
   created() {
@@ -65,31 +66,32 @@ export default {
   },
   methods: {
     getBill() {
+      this.loading = true;
       api.getBill()
-      .then(response => {
-        if(response.data.message == "No data found") {
-          this.noData = true;
-        }
-        else {
-          this.noData = false;
-          this.bills = response.data;
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      })
+        .then( response => {
+          this.loading = false;
+          if ( response.data.message == "No data found" ) {
+            this.noData = true;
+          } else {
+            this.noData = false;
+            this.bills = response.data;
+          }
+        } )
+        .catch( error => {
+          console.log( error );
+        } )
     },
 
-    deleteBill(bill_id) {
-      api.deleteBill(bill_id)
-      .then(response => {
-        if(response.status == 200) {
-          this.getBill();
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      })
+    deleteBill( bill_id ) {
+      api.deleteBill( bill_id )
+        .then( response => {
+          if ( response.status == 200 ) {
+            this.getBill();
+          }
+        } )
+        .catch( error => {
+          console.log( error );
+        } )
     }
   },
   components: {
@@ -100,68 +102,73 @@ export default {
 
 <style lang="scss">
 .history {
-  height: 100%;
-  .box {
-    padding: 0;
-  }
-
-  .reports-body {
-    padding: 1rem;
-  }
-
-  .history-head {
-    padding: 1rem;
-    border-bottom: solid 1px #ddd;
-  }
-
-  .top-head {
-    padding: 1rem;
-  }
-
-  .body-head {
-    padding: 1rem;
-    border-bottom: solid 1px #ddd;
-    display: flex;
-    justify-content: space-between;
-    .title {
-      margin: 0;
+    height: 100%;
+    .box {
+        padding: 0;
     }
-  }
 
-  .body-titles {
-    padding-left: 1rem;
-    padding-top: 1rem;
-  }
-  .body-data {
-    padding-left: 1rem;
-    padding-bottom: 1rem;
-  }
+    .reports-body {
+        padding: 1rem;
+    }
 
-  .body-amount {
-    padding-bottom: 3rem;
-    padding-right: 1rem;
-    padding-top: 1rem;
-    border-top: solid 1px #ddd;
-  }
+    .history-head {
+        padding: 1rem;
+        border-bottom: solid 1px #ddd;
+    }
 
-  .need-padding {
-    padding: 1rem;
-  }
+    .top-head {
+        padding: 1rem;
+    }
 
-  .noData {
-    padding: 1rem;
-  }
+    .body-head {
+        padding: 1rem;
+        border-bottom: solid 1px #ddd;
+        display: flex;
+        justify-content: space-between;
+        .title {
+            margin: 0;
+        }
+    }
 
-  .card-header-title {
-    background: lightskyblue;
-    display: flex;
-    justify-content: space-between;
-  }
+    .body-titles {
+        padding-left: 1rem;
+        padding-top: 1rem;
+    }
+    .body-data {
+        padding-left: 1rem;
+        padding-bottom: 1rem;
+    }
 
-  .taxes {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
+    .body-amount {
+        padding-bottom: 3rem;
+        padding-right: 1rem;
+        padding-top: 1rem;
+        border-top: solid 1px #ddd;
+    }
+
+    .need-padding {
+        padding: 1rem;
+    }
+
+    .noData {
+        padding: 1rem;
+    }
+
+    .card-header-title {
+        background: lightskyblue;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .taxes {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .loading {
+        margin-top: 0.3rem;
+        margin-left: 0.3rem;
+    }
 }
 </style>

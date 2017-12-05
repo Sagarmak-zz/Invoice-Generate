@@ -18,8 +18,8 @@ import api from '@/api/main';
 export default {
   name: 'state-dropdown',
   created() {
-    console.log(this.stateCode);
     this.callStates();
+    console.log(this.stateCode);
     this.code = this.stateCode;
   },
   props: ['stateCode'],

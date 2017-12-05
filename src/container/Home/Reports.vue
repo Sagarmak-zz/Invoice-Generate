@@ -120,9 +120,14 @@
           </article>
         </div>
       </div>
-      <!-- <pre>{{$data.data}}</pre> -->
     </div>
-    <div v-if="noData">
+
+    <div class="loading" v-show="loading">
+      <span class="title is-4">Please Wait while we load the data...</span>
+      <div class="fa fa-spinner fa-spin"> </div>
+    </div>
+
+    <div v-if="noData && !loading">
       <span class="title">No Data present at the Moment!</span>
     </div>
   </div>
@@ -141,7 +146,7 @@ export default {
   created() {
 
   },
-  data () {
+  data() {
     return {
       select: '',
       start_date: '',
@@ -151,50 +156,51 @@ export default {
       customer_name: '',
       noData: true,
       data: [],
+      loading: false
     }
   },
   methods: {
     generateDateReport() {
+      this.loading = true;
       this.$validator.validateAll()
-      if (!this.errors.any()) {
+      if ( !this.errors.any() ) {
         this.date();
-      }
-      else {
-        let toast = this.$toasted.error('Please fill in the Dates first.', {
+      } else {
+        let toast = this.$toasted.error( 'Please fill in the Dates first.', {
           theme: "outline",
           position: "bottom-center",
-          duration : 3000
-        });
+          duration: 3000
+        } );
       }
     },
     date() {
-      api.betweenDate(this.start_date, this.end_date)
-      .then(response => {
-        console.log(response);
-        if(response.data.message == 'Data not found') {
-          //no data present
-          this.noData = true;
-          let toast = this.$toasted.show('No Data Found', {
-            theme: "outline",
-            position: "bottom-center",
-            duration : 3000
-          });
-        }
-        else {
-          //data present
-          this.data = response.data;
-          this.noData = false;
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      })
+      api.betweenDate( this.start_date, this.end_date )
+        .then( response => {
+          this.loading = false;
+          console.log( response );
+          if ( response.data.message == 'Data not found' ) {
+            //no data present
+            this.noData = true;
+            let toast = this.$toasted.show( 'No Data Found', {
+              theme: "outline",
+              position: "bottom-center",
+              duration: 3000
+            } );
+          } else {
+            //data present
+            this.data = response.data;
+            this.noData = false;
+          }
+        } )
+        .catch( error => {
+          console.log( error );
+        } )
     },
 
-    onSelect (value) {
+    onSelect( value ) {
       this.value = value
     },
-    onChange (value) {
+    onChange( value ) {
       this.value = value
     }
   },
@@ -211,68 +217,70 @@ export default {
 
 <style lang="scss">
 .reports {
-  .box {
-    padding: 0;
-  }
-  .head-report {
-    padding: 1rem;
-    border-bottom: solid 1px #ddd;
-  }
-  .vbta-menu.visible {
-    position: relative;
-  }
-  .column.is-5 {
-    padding-right: 0;
-    width: 35%;
-  }
-  .options {
-    padding: 1rem;
-    border-bottom: solid 1px #ddd;
-    .generate-report {
-      margin-top: 2rem;
+    .box {
+        padding: 0;
     }
-    .column.is-3.is-multiline {
-      padding-right: 0;
-      width: 17%;
-      border-right: solid 1px #ddd;
+    .head-report {
+        padding: 1rem;
+        border-bottom: solid 1px #ddd;
     }
-    .date {
-      width: 30rem;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      button {
-        margin-top: 2rem;
-      }
-      .field {
-        margin-bottom: 0;
-      }
-      .control {
-        padding-right: 0.5rem;
-        // width: 13rem;
-        margin: 0;
-      }
+    .vbta-menu.visible {
+        position: relative;
     }
-    .invoice_number, .firm_name, .customer_name {
-      width: 25rem;
-      display: flex;
-      align-items: center;
-      .form {
-        width: 20rem;
-      }
-      button {
-        margin-top: 2rem;
-      }
+    .column.is-5 {
+        padding-right: 0;
+        width: 35%;
     }
-  }
-  .reports-body {
-    padding: 1rem;
-  }
-  .tile.is-parent {
-    padding-bottom: 0;
-  }
-  .practise {
-    padding: 1rem;
-  }
+    .options {
+        padding: 1rem;
+        border-bottom: solid 1px #ddd;
+        .generate-report {
+            margin-top: 2rem;
+        }
+        .column.is-3.is-multiline {
+            padding-right: 0;
+            width: 17%;
+            border-right: solid 1px #ddd;
+        }
+        .date {
+            width: 30rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            button {
+                margin-top: 2rem;
+            }
+            .field {
+                margin-bottom: 0;
+            }
+            .control {
+                padding-right: 0.5rem;
+                // width: 13rem;
+                margin: 0;
+            }
+        }
+        .customer_name,
+        .firm_name,
+        .invoice_number {
+            width: 25rem;
+            display: flex;
+            align-items: center;
+            .form {
+                width: 20rem;
+            }
+            button {
+                margin-top: 2rem;
+            }
+        }
+    }
+    .reports-body {
+        padding: 1rem;
+    }
+    .tile.is-parent {
+        padding-bottom: 0;
+    }
+    .practise {
+        padding: 1rem;
+    }
 }
 </style>

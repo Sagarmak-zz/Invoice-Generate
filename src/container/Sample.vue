@@ -707,10 +707,9 @@
                   margin: 0;
                   padding-bottom: 0.5rem;
                   background: whitesmoke;
-                  font-style: italic;
-                  font-weight: bold;
-                  font-size: 33px;
-                  font-family: Georgia, serif;
+                  font-size: 44px;
+                  // font-variant: unicase;
+                  font-family: "Avenir LT Std 55", Arial, sans-serif;
                 }
               }
 
@@ -721,9 +720,9 @@
                   text-align: center;
                 }
                 .invoice-head {
-                  color: grey;
+                  color: black;
                   font-weight: 500;
-                  font-size: -webkit-xxx-large;
+                  font-size: 3rem;
                 }
                 .invoice-details {
                   font-size: 0.8rem;

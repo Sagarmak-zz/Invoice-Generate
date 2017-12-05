@@ -66,16 +66,15 @@ import api from '@/api/main.js';
 export default {
   name: 'login',
 
-  beforeRouteEnter (to, from, next) {
+  beforeRouteEnter(to, from, next) {
     // called before the route that renders this component is confirmed.
     // does NOT have access to `this` component instance,
     // because it has not been created yet when this guard is called!
-    if(Auth.isAuthenticated()) {
+    if (Auth.isAuthenticated()) {
       next({
         name: 'Dashboard'
       })
-    }
-    else {
+    } else {
       next();
     }
   },
@@ -88,31 +87,41 @@ export default {
   },
   methods: {
     redirect() {
+      console.log('Login Called');
       api.login(this.email, this.password)
-      .then((response) => {
-        Auth.setToken(response.data.token);
-        // window.location.href='/home';
-        this.$router.push({ name: 'Dashboard' });
-      })
-      .catch((error) => {
-        console.log(error);
-        if(error == "Error: Network Error") {
-          let toast = this.$toasted.error(error, {
-            theme: "outline",
-            position: "bottom-center",
-            duration : 3000
+        .then((response) => {
+          Auth.setToken(response.data.token);
+          // window.location.href='/home';
+          this.$router.push({
+            name: 'Dashboard'
           });
-        }
-        else if(error.response.status == 401) {
-          let toast = this.$toasted.error(error.response.statusText, {
-            theme: "outline",
-            position: "bottom-center",
-            duration : 3000
-          });
-        }
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error == "Error: Network Error") {
+            let toast = this.$toasted.error(error, {
+              theme: "outline",
+              position: "bottom-center",
+              duration: 3000
+            });
+          } else if (error.response.status == 401) {
+            let toast = this.$toasted.error(error.response.statusText, {
+              theme: "outline",
+              position: "bottom-center",
+              duration: 3000
+            });
+          } else {
+            console.log(error.response);
+            let toast = this.$toasted.error(error.response.statusText, {
+              theme: "outline",
+              position: "bottom-center",
+              duration: 3000,
+              icon: 'error'
+            });
+          }
 
 
-      });
+        });
     }
   }
 }
@@ -120,82 +129,82 @@ export default {
 
 <style lang="scss">
 .body {
-  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-  height: 100%;
-  padding: 0;
-  margin: 0;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    height: 100%;
+    padding: 0;
+    margin: 0;
 }
 .login {
-  .email-input,
-  .password-input {
-    border-radius: 40px;
-    font-size: 20px;
-    padding-left: 15px;
-    color: #95A5A6;
-  }
+    .email-input,
+    .password-input {
+        border-radius: 40px;
+        font-size: 20px;
+        padding-left: 15px;
+        color: #95A5A6;
+    }
 
-  .icon.user,
-  .icon.password {
-    margin: 5px 10px 0 0;
-  }
+    .icon.password,
+    .icon.user {
+        margin: 5px 10px 0 0;
+    }
 
-  .avatar img {
-    border-radius: 100px;
-    padding: 5px;
-    border: 1px solid #dbdbdb;
-  }
+    .avatar img {
+        border-radius: 100px;
+        padding: 5px;
+        border: 1px solid #dbdbdb;
+    }
 
-  .forgot-password a {
-    color: #95A5A6;
-    font-weight: bold;
-    padding-right: 20px;
-  }
+    .forgot-password a {
+        color: #95A5A6;
+        font-weight: bold;
+        padding-right: 20px;
+    }
 
-  .login {
-    padding-top: 20px;
-  }
+    .login {
+        padding-top: 20px;
+    }
 
-  .login button {
-    border-radius: 40px;
-    font-weight: bold;
-  }
+    .login button {
+        border-radius: 40px;
+        font-weight: bold;
+    }
 
-  .hero-body .container {
-    margin-top: -100px;
-  }
+    .hero-body .container {
+        margin-top: -100px;
+    }
 
-  .hero.is-dark .section {
-    background-color: transparent;
-  }
+    .hero.is-dark .section {
+        background-color: transparent;
+    }
 
-  .login-wrapper {
-    margin: -0.75rem;
-    overflow-y: hidden;
-  }
+    .login-wrapper {
+        margin: -0.75rem;
+        overflow-y: hidden;
+    }
 
-  .hero-banner .hero {
-    background: url('https://unsplash.it/2000/1000');
-    background-position: center;
-    background-size: cover;
-    background-blend-mode: normal;
-  }
-  .hero-banner {
-    padding-right: 0;
-  }
-  .hero-banner .title {
-    display: inline-block;
-    background-color: rgba(0,0,0, 0.6);
-    padding: 5px;
-  }
+    .hero-banner .hero {
+        background: url("https://unsplash.it/2000/1000");
+        background-position: center;
+        background-size: cover;
+        background-blend-mode: normal;
+    }
+    .hero-banner {
+        padding-right: 0;
+    }
+    .hero-banner .title {
+        display: inline-block;
+        background-color: rgba(0,0,0, 0.6);
+        padding: 5px;
+    }
 
-  .column.is-4 {
-    padding-left: 0;
-    padding-right: 0;
-  }
+    .column.is-4 {
+        padding-left: 0;
+        padding-right: 0;
+    }
 
-  .control.has-icon:first-child {
-    padding-bottom: 0.5rem;
-  }
+    .control.has-icon:first-child {
+        padding-bottom: 0.5rem;
+    }
 
 }
 </style>

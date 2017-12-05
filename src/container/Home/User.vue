@@ -6,7 +6,6 @@
         <button class="button is-primary is-pulled-right" v-if="!showAddUserModal" @click="showAddUserModal = true">Add</button>
         <button class="button" v-if="showAddUserModal" @click="showAddUserModal = false">Hide</button>
       </div>
-      <!-- <AddUserModal @close="showAddUserModal = false" v-if="showAddUserModal"></AddUserModal> -->
       <div v-if="showAddUserModal">
         <div class="columns">
           <div class="column">
@@ -107,7 +106,6 @@
             <div class="field">
               <label class="label">State</label>
               <p class="control">
-                <!-- <input v-model="billing.state" class="input" name="billstate" v-validate="'required'" type="text" placeholder="State Dropdown"> -->
                 <StateDropdownNewCustomer1></StateDropdownNewCustomer1>
               </p>
               <div v-show="errors.has('billstate')" class="help is-danger">
@@ -175,7 +173,6 @@
             <div class="field">
               <label class="label">State</label>
               <p class="control">
-                <!-- <input v-model="shipping.state" class="input" name="shipstate" v-validate="'required'" type="text" placeholder="State Dropdown"> -->
                 <StateDropdownNewCustomer2></StateDropdownNewCustomer2>
               </p>
               <div v-show="errors.has('shipstate')" class="help is-danger">
@@ -198,7 +195,7 @@
       </div>
 
       <div class="reports" v-if="!noData">
-        <div class="tile is-ancestor">
+        <div class="tile is-ancestor" v-if="!loading">
           <div class="tile is-parent">
             <article class="tile is-child">
               <div class="user-head">
@@ -237,6 +234,10 @@
               </div>
             </article>
           </div>
+        </div>
+        <div class="loading" v-show="loading">
+          <span class="title is-4">Please Wait while we load the data...</span>
+          <div class="fa fa-spinner fa-spin"> </div>
         </div>
       </div>
       <div class="noData" v-if="noData">
@@ -296,13 +297,16 @@ export default {
       },
       checkbox: '',
       customers: [],
-      noData: false
+      noData: false,
+      loading: false
     };
   },
   methods: {
     getCustomer() {
+      this.loading = true;
       api.getCustomer()
       .then((response) => {
+        this.loading = false;
         if(response.data.message == "No data found") {
           this.noData = true;
         }
@@ -475,6 +479,11 @@ export default {
 
     .noData {
       padding: 1rem;
+    }
+
+    .loading {
+        margin-top: 0.3rem;
+        margin-left: 0.3rem;
     }
 
   }

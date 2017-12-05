@@ -5,8 +5,8 @@
         <h3 class="title">Add Product</h3>
         <button class="button is-primary" v-if="!showAddProduct" @click="showAddProduct = true">Add</button>
         <button class="button" v-if="showAddProduct" @click="showAddProduct = false">Hide</button>
-        <!-- <AddProductModal @close="showAddProductModal = false" v-if="showAddProductModal"></AddProductModal> -->
       </div>
+
       <div class="hide-seek-product" v-if="showAddProduct">
         <div class="columns">
           <div class="column">
@@ -46,9 +46,14 @@
         <div class="button-form">
           <a @click="validateBeforeSubmit()" class="button is-primary">Save</a>
         </div>
+        <div class="loading" v-show="loading">
+          <span class="title is-4">Please Wait while we load the data...</span>
+          <div class="fa fa-spinner fa-spin"> </div>
+        </div>
       </div>
+
       <div class="reports" v-if="!noData">
-        <div class="tile is-ancestor">
+        <div class="tile is-ancestor" v-if="!loading">
           <div class="tile is-parent">
             <article class="tile is-child">
               <div class="product-head">
@@ -82,6 +87,10 @@
             </article>
           </div>
         </div>
+        <div class="loading" v-show="loading">
+          <span class="title is-4">Please Wait while we load the data...</span>
+          <div class="fa fa-spinner fa-spin"> </div>
+        </div>
       </div>
       <div class="noData" v-if="noData">
         <h1 class="title">No Data at the Moment.</h1>
@@ -101,10 +110,10 @@ export default {
     EditProductModal
   },
   created() {
-    this.$bus.$on('close', () => {
-      this.showAddProductModal = false;
-    });
     this.getProducts();
+    this.$bus.$on( 'close', () => {
+      this.showAddProductModal = false;
+    } );
   },
   data() {
     return {
@@ -115,52 +124,53 @@ export default {
       product_price: null,
       products: [],
       showEditProductModal: false,
-      noData: false
+      noData: false,
+      loading: false
     };
   },
   methods: {
     getProducts() {
+      this.loading = true;
       api.getProducts()
-      .then((response) => {
-        if(response.data.products) {
-          this.products = response.data.products;
-          this.noData = false;
-        }
-        else {
-          this.noData = true;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+        .then( ( response ) => {
+          if ( response.data.products ) {
+            this.loading = false;
+            this.products = response.data.products;
+            this.noData = false;
+          } else {
+            this.noData = true;
+          }
+        } )
+        .catch( ( error ) => {
+          console.log( error );
+        } )
     },
 
     validateBeforeSubmit() {
       this.validate()
-      if (!this.errors.any()) {
-        api.addProduct(this.product_name, this.hsn_code, this.product_price)
-        .then((response) => {
-          if(response.status == 200) {
-            this.showAddProduct = false;
-            this.getProducts();
-            let toast = this.$toasted.success("Product Added Successfully!", {
-              theme: "outline",
-              position: "top-center",
-              duration : 3000
-            });
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-      }
-      else {
-        console.log('Validation Failed');
-        let toast = this.$toasted.error('Please fill in the details.', {
+      if ( !this.errors.any() ) {
+        api.addProduct( this.product_name, this.hsn_code, this.product_price )
+          .then( ( response ) => {
+            if ( response.status == 200 ) {
+              this.showAddProduct = false;
+              this.getProducts();
+              let toast = this.$toasted.success( "Product Added Successfully!", {
+                theme: "outline",
+                position: "top-center",
+                duration: 3000
+              } );
+            }
+          } )
+          .catch( ( error ) => {
+            console.log( error );
+          } )
+      } else {
+        console.log( 'Validation Failed' );
+        let toast = this.$toasted.error( 'Please fill in the details.', {
           theme: "outline",
           position: "bottom-center",
-          duration : 3000
-        });
+          duration: 3000
+        } );
       }
     },
     validate() {
@@ -172,49 +182,54 @@ export default {
 
 <style lang="scss">
 .add-product {
-  .box {
-    padding: 0;
-  }
-  .head-product {
-    padding: 1rem;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: solid 1px #ddd;
-    .title {
-      margin: 0;
+    .box {
+        padding: 0;
     }
-  }
-  .reports {
-    // important
-    padding: 1rem;
-    overflow-x:scroll;
-    table-layout: inherit;
-  }
+    .head-product {
+        padding: 1rem;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: solid 1px #ddd;
+        .title {
+            margin: 0;
+        }
+    }
+    .reports {
+        // important
+        padding: 1rem;
+        overflow-x: scroll;
+        table-layout: inherit;
+    }
 
-  .hide-seek-product {
-    border-bottom: solid 1px #ddd;
-    .columns {
-      padding: 0.3rem;
-      margin: 0;
+    .hide-seek-product {
+        border-bottom: solid 1px #ddd;
+        .columns {
+            padding: 0.3rem;
+            margin: 0;
+        }
+        .button-form {
+            padding: 1rem;
+            border-top: solid 1px #ddd;
+        }
     }
-    .button-form {
-      padding: 1rem;
-      border-top: solid 1px #ddd;
-    }
-  }
 
-  .product-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1rem;
-    .title {
-      margin: 0;
+    .product-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        .title {
+            margin: 0;
+        }
     }
-  }
 
-  .noData {
-    padding: 1rem;
-  }
+    .noData {
+        padding: 1rem;
+    }
+
+    .loading {
+        margin-top: 0.3rem;
+        margin-left: 0.3rem;
+    }
 }
 </style>
