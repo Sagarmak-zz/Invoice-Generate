@@ -105,8 +105,7 @@
             <div class="field">
               <label class="label">State</label>
               <p class="control">
-                <input type="hidden" v-model="state_code">
-                <StateDropdown :stateCode="state_code"></StateDropdown>
+                <StateDropdown :stateCode="data.state_code"></StateDropdown>
               </p>
               <div v-show="errors.has('state')" class="help is-danger">
                 The State is required.
