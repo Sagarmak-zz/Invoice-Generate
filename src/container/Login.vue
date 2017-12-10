@@ -1,12 +1,12 @@
 <template lang="html">
   <div class="login body">
+    <Loading name="BounceLoader" v-if="load"></Loading>
     <div class="login-wrapper columns">
       <div class="column is-8 is-hidden-mobile hero-banner">
         <section class="hero is-fullheight is-dark">
           <div class="hero-body">
             <div class="container section">
               <div class="has-text-right">
-                <!-- any text -->
               </div>
             </div>
           </div>
@@ -62,18 +62,19 @@
 <script>
 import Auth from '@/packages/auth/Auth.js';
 import api from '@/api/main.js';
+import Loading from '@/components/Loading.vue';
 
 export default {
   name: 'login',
 
-  beforeRouteEnter(to, from, next) {
+  beforeRouteEnter( to, from, next ) {
     // called before the route that renders this component is confirmed.
     // does NOT have access to `this` component instance,
     // because it has not been created yet when this guard is called!
-    if (Auth.isAuthenticated()) {
-      next({
+    if ( Auth.isAuthenticated() ) {
+      next( {
         name: 'Dashboard'
-      })
+      } )
     } else {
       next();
     }
@@ -82,48 +83,55 @@ export default {
   data() {
     return {
       email: '',
-      password: ''
+      password: '',
+      load: false
     }
   },
   methods: {
     redirect() {
-      console.log('Login Called');
-      api.login(this.email, this.password)
-        .then((response) => {
-          Auth.setToken(response.data.token);
+      this.load = true;
+      api.login( this.email, this.password )
+        .then( ( response ) => {
+          this.load = false;
+          Auth.setToken( response.data.token );
           // window.location.href='/home';
-          this.$router.push({
+          this.$router.push( {
             name: 'Dashboard'
-          });
-        })
-        .catch((error) => {
-          console.log(error);
-          if (error == "Error: Network Error") {
-            let toast = this.$toasted.error(error, {
+          } );
+        } )
+        .catch( ( error ) => {
+          this.load = false;
+          console.log( error );
+          if ( error == "Error: Network Error" ) {
+            let toast = this.$toasted.error( error, {
               theme: "outline",
               position: "bottom-center",
               duration: 3000
-            });
-          } else if (error.response.status == 401) {
-            let toast = this.$toasted.error(error.response.statusText, {
+            } );
+          } else if ( error.response.status == 401 ) {
+            let toast = this.$toasted.error( error.response.statusText, {
               theme: "outline",
               position: "bottom-center",
               duration: 3000
-            });
+            } );
           } else {
-            console.log(error.response);
-            let toast = this.$toasted.error(error.response.statusText, {
+            console.log( error.response );
+            let toast = this.$toasted.error( error.response.statusText, {
               theme: "outline",
               position: "bottom-center",
               duration: 3000,
               icon: 'error'
-            });
+            } );
           }
 
-
-        });
+        } );
     }
-  }
+  },
+
+  components: {
+    Loading
+  },
+
 }
 </script>
 
@@ -205,6 +213,5 @@ export default {
     .control.has-icon:first-child {
         padding-bottom: 0.5rem;
     }
-
 }
 </style>

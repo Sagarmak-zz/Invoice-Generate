@@ -9,7 +9,6 @@ import Auth from '@/packages/auth/Auth.js';
 import moment from 'moment';
 import swal from 'sweetalert2';
 
-
 const flatpickr = require("flatpickr");
 Vue.prototype.flatpickr = flatpickr;
 Vue.prototype.moment = moment;
