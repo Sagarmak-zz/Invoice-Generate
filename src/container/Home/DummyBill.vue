@@ -327,10 +327,10 @@ import Datepicker from 'vue-bulma-datepicker';
 import FirmNameDropdown from '@/components/FirmNameDropdown';
 import ProductsNameDropdown from '@/components/ProductsNameDropdown';
 import jwt_decode from 'jwt-decode';
-var numeral = require('numeral');
+var numeral = require( 'numeral' );
 export default {
   name: 'dummy-bill',
-  props: ['admin_state'],
+  props: [ 'admin_state' ],
   components: {
     Datepicker,
     FirmNameDropdown,
@@ -348,31 +348,30 @@ export default {
     this.today = this.getYear + '-' + this.getMonth + '-' + this.getDate;
     this.item.created_at = this.today;
     //firm name
-    this.$bus.$on('firm_name_change', (response) => {
+    this.$bus.$on( 'firm_name_change', ( response ) => {
       this.item.firm.firm_name = response.firm.firm_name;
       this.item.firm.firm_id = response.firm.id;
       this.item.firm.state_code = response.firm.state_code;
-      if(this.item.firm.state_code == this.item.admin_state_code) {
+      if ( this.item.firm.state_code == this.item.admin_state_code ) {
         //2.5% sgst and cgst
         this.item.sgst_percentage = 2.5;
         this.item.cgst_percentage = 2.5;
         this.item.igst_percentage = 0;
-      }
-      else {
+      } else {
         //5% igst
         this.item.sgst_percentage = 0;
         this.item.cgst_percentage = 0;
         this.item.igst_percentage = 5;
       }
-    });
+    } );
 
     //ProductNameChange
-    this.$bus.$on('product_name_change', response => {
+    this.$bus.$on( 'product_name_change', response => {
       this.item.product.hsn_code = response.product.hsn_code;
       this.item.product.product_id = response.product.id;
       this.item.product.product_name = response.product.product_name;
       this.item.product.price = response.product.product_price;
-    });
+    } );
 
   },
   data() {
@@ -413,8 +412,8 @@ export default {
           price: null,
         },
       },
-      bill_detail: [ ],
-      items: [ ],
+      bill_detail: [],
+      items: [],
       hideInputs: true,
       hideInputs2: false,
       loading: false
@@ -422,51 +421,49 @@ export default {
   },
   methods: {
     decodeToken() {
-      var decoded = jwt_decode(Auth.getToken());
+      var decoded = jwt_decode( Auth.getToken() );
       this.item.user_id = decoded.sub;
     },
 
     addItemData() {
       //validate first
-      if(this.item.quantity == 0) {
-        let toast = this.$toasted.error('The Quantity should be greater than 0.', {
+      if ( this.item.quantity == 0 ) {
+        let toast = this.$toasted.error( 'The Quantity should be greater than 0.', {
           theme: "outline",
           position: "bottom-center",
-          duration : 3000
-        });
-      }
-      else {
-        this.$validator.validateAll({
-          //item name
-          'size': this.item.size,
-          // 'price': this.item.product.price,
-        })
-        .then(result => {
-          if (result == false) {
-            // validation failed.
-            let toast = this.$toasted.error('Please fill in the details.', {
+          duration: 3000
+        } );
+      } else {
+        this.$validator.validateAll( {
+            //item name
+            'size': this.item.size,
+            // 'price': this.item.product.price,
+          } )
+          .then( result => {
+            if ( result == false ) {
+              // validation failed.
+              let toast = this.$toasted.error( 'Please fill in the details.', {
+                theme: "outline",
+                position: "bottom-center",
+                duration: 3000
+              } );
+            } else {
+              // success stuff.
+              this.addDataToItems();
+            }
+          } ).catch( ( error ) => {
+            console.log( error );
+            // something went wrong (non-validation related).
+            let toast = this.$toasted.error( 'Please fill in the details.', {
               theme: "outline",
               position: "bottom-center",
-              duration : 3000
-            });
-          }
-          else {
-            // success stuff.
-            this.addDataToItems();
-          }
-        }).catch((error) => {
-          console.log(error);
-          // something went wrong (non-validation related).
-          let toast = this.$toasted.error('Please fill in the details.', {
-            theme: "outline",
-            position: "bottom-center",
-            duration : 3000
-          });
-        });
+              duration: 3000
+            } );
+          } );
       }
     },
 
-    removeItem(it, index) {
+    removeItem( it, index ) {
       // values update
       this.item.ftaxable_amount -= it.taxable_amount;
       this.item.fcgst_amount -= it.cgst_amount
@@ -474,33 +471,32 @@ export default {
       this.item.figst_amount -= it.igst_amount;
       this.item.ftotal_payable_amount -= it.total_payable_amount;
       // bill_detail
-      this.bill_detail.splice(index, 1);
+      this.bill_detail.splice( index, 1 );
       // items
-      this.items.splice(index, 1);
+      this.items.splice( index, 1 );
     },
 
     computed_total_payable_amount() {
-      var x;  //for length
-      for (x in this.items) {
+      var x; //for length
+      for ( x in this.items ) {
         // console.log(this.items[this.items.length-1]);
-        this.item.ftaxable_amount += this.items[this.items.length-1].taxable_amount;
-        this.item.fcgst_amount += this.items[this.items.length-1].cgst_amount;
-        this.item.fsgst_amount += this.items[this.items.length-1].sgst_amount;
-        this.item.figst_amount += this.items[this.items.length-1].igst_amount;
-        this.item.ftotal_payable_amount += this.items[this.items.length-1].total_payable_amount;
+        this.item.ftaxable_amount += this.items[ this.items.length - 1 ].taxable_amount;
+        this.item.fcgst_amount += this.items[ this.items.length - 1 ].cgst_amount;
+        this.item.fsgst_amount += this.items[ this.items.length - 1 ].sgst_amount;
+        this.item.figst_amount += this.items[ this.items.length - 1 ].igst_amount;
+        this.item.ftotal_payable_amount += this.items[ this.items.length - 1 ].total_payable_amount;
         break;
       }
     },
 
     validateAndCallApi() {
-      if(this.items.length == 0) {
-        let toast = this.$toasted.error("No Data!", {
+      if ( this.items.length == 0 ) {
+        let toast = this.$toasted.error( "No Data!", {
           theme: "outline",
           position: "top-center",
-          duration : 3000
-        });
-      }
-      else {
+          duration: 3000
+        } );
+      } else {
         this.callApi();
       }
     },
@@ -509,443 +505,480 @@ export default {
     },
     callApi() {
       //api call to submit the bill
-      api.createBill(this.item.user_id, this.item.firm.firm_id, this.item.invoice_no,
-        this.item.ftaxable_amount, this.item.sgst_percentage, this.item.fsgst_amount,
-        this.item.cgst_percentage, this.item.fcgst_amount, this.item.igst_percentage, this.item.figst_amount,
-        this.item.ftotal_payable_amount, this.item.created_at, this.bill_detail)
-        .then(response => {
-          let toast = this.$toasted.success("Bill Creation Successful!", {
+      api.createBill( this.item.user_id, this.item.firm.firm_id, this.item.invoice_no,
+          this.item.ftaxable_amount, this.item.sgst_percentage, this.item.fsgst_amount,
+          this.item.cgst_percentage, this.item.fcgst_amount, this.item.igst_percentage, this.item.figst_amount,
+          this.item.ftotal_payable_amount, this.item.created_at, this.bill_detail )
+        .then( response => {
+          let toast = this.$toasted.success( "Bill Creation Successful!", {
             theme: "outline",
             position: "top-center",
-            duration : 3000
-          });
-          this.$router.push({ name: 'Sample', params: { invoice_no: response.data.invoice_no } });
-        })
-        .catch(error => {
-          console.log(error);
-        })
-        //send to another page, with nice invoice template and hit print
-        // window.print();
+            duration: 3000
+          } );
+          this.$router.push( {
+            name: 'Sample',
+            params: {
+              invoice_no: response.data.invoice_no
+            }
+          } );
+        } )
+        .catch( error => {
+          console.log( error );
+        } )
+      //send to another page, with nice invoice template and hit print
+      // window.print();
 
-      },
+    },
 
-      deleteItem(indexNo) {
-        this.dataArr.splice(indexNo, 1);
-        this.bill_detail.splice(indexNo, 1);
-        this.calculateAmount();
-      },
-      userDetails() {
-        api.userDetails()
-        .then((response) => {
+    deleteItem( indexNo ) {
+      this.dataArr.splice( indexNo, 1 );
+      this.bill_detail.splice( indexNo, 1 );
+      this.calculateAmount();
+    },
+    userDetails() {
+      api.userDetails()
+        .then( ( response ) => {
           this.item.admin_state_code = response.data.state_code;
-        })
-      },
-      callMainDetailsAdd() {
-        this.hideInputs=!this.hideInputs;
-      },
+        } )
+    },
+    callMainDetailsAdd() {
+      this.hideInputs = !this.hideInputs;
+    },
 
-      addDataToItems() {
-        let{ quantity, size, amount, discount_percentage, discount_amount, taxable_amount,
-          cgst_percentage, cgst_amount, sgst_percentage, sgst_amount, igst_percentage, igst_amount,
-          total_payable_amount } = this.item;
-          let{ product_id, hsn_code, product_name, price } = this.item.product;
-          //bill_detail complete
-          this.bill_detail.push({product_id, quantity, price, size, discount_percentage, discount_amount});
-          //item detail complete
-          this.items.push({product_name, size, quantity, price, amount, discount_percentage, discount_amount,
-            taxable_amount, cgst_percentage, cgst_amount, sgst_percentage, sgst_amount, igst_percentage, igst_amount,
-            total_payable_amount});
-            this.computed_total_payable_amount();
-            this.hideInputs = true;
-            this.item.size = '';
-            this.item.quantity = 0;
-            this.item.discount_percentage = 0;
-          },
+    addDataToItems() {
+      let {
+        quantity,
+        size,
+        amount,
+        discount_percentage,
+        discount_amount,
+        taxable_amount,
+        cgst_percentage,
+        cgst_amount,
+        sgst_percentage,
+        sgst_amount,
+        igst_percentage,
+        igst_amount,
+        total_payable_amount
+      } = this.item;
+      let {
+        product_id,
+        hsn_code,
+        product_name,
+        price
+      } = this.item.product;
+      //bill_detail complete
+      this.bill_detail.push( {
+        product_id,
+        quantity,
+        price,
+        size,
+        discount_percentage,
+        discount_amount
+      } );
+      //item detail complete
+      this.items.push( {
+        product_name,
+        size,
+        quantity,
+        price,
+        amount,
+        discount_percentage,
+        discount_amount,
+        taxable_amount,
+        cgst_percentage,
+        cgst_amount,
+        sgst_percentage,
+        sgst_amount,
+        igst_percentage,
+        igst_amount,
+        total_payable_amount
+      } );
+      this.computed_total_payable_amount();
+      this.hideInputs = true;
+      this.item.size = '';
+      this.item.quantity = 0;
+      this.item.discount_percentage = 0;
+    },
 
-          getLastBillInvoiceNumber() {
-            // this.loading = true;
-            // var myNumeral =  numeral(1).format('0000');
-            api.getLastBill()
-            .then(response => {
-              this.loading = false;
-              if(isNaN(parseInt(response.data)) == true) {
-                this.item.invoice_no =  numeral(1).format('0000');
-              }
-              else {
-                this.item.invoice_no = numeral(response.data).format('0000');
-              }
-            })
-            .catch(error => {
-              console.log(error);
-            })
+    getLastBillInvoiceNumber() {
+      // this.loading = true;
+      // var myNumeral =  numeral(1).format('0000');
+      api.getLastBill()
+        .then( response => {
+          this.loading = false;
+          if ( isNaN( parseInt( response.data ) ) == true ) {
+            this.item.invoice_no = numeral( 1 ).format( '0000' );
+          } else {
+            this.item.invoice_no = numeral( response.data ).format( '0000' );
           }
-        },
-        computed: {
+        } )
+        .catch( error => {
+          console.log( error );
+        } )
+    }
+  },
+  computed: {
 
-        }
-      }
-      </script>
+  }
+}
+</script>
 
-      <style lang="scss">
-      .dummy-bill {
-        margin-bottom: 2rem;
+<style lang="scss">
+.dummy-bill {
+    margin-bottom: 2rem;
+    .box {
+        padding: 0;
+    }
+
+    .item-details {
         .box {
-          padding: 0;
-        }
-
-        .item-details {
-          .box {
             background: #fbfbfd;
-          }
         }
+    }
 
-        .bill-wala-box {
-          margin-bottom: 0;
-        }
+    .bill-wala-box {
+        margin-bottom: 0;
+    }
 
-        .head {
-          padding: 1rem;
-          border-bottom: solid 1px #ddd;
-        }
+    .head {
+        padding: 1rem;
+        border-bottom: solid 1px #ddd;
+    }
 
-        .form {
-          .form-head {
+    .form {
+        .form-head {
             padding: 1rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
             .title {
-              margin: 0;
+                margin: 0;
             }
-          }
-          .form-body {
+        }
+        .form-body {
             padding: 0.4rem;
             border-top: solid 1px #ddd;
             .columns {
-              margin: 0;
-              .customer-name {
-                padding-top: 0;
-              }
+                margin: 0;
+                .customer-name {
+                    padding-top: 0;
+                }
             }
-          }
         }
+    }
 
-        .control.is-mobile {
-          display: flex;
-          max-width: 52%;
-          .icon.is-medium {
+    .control.is-mobile {
+        display: flex;
+        max-width: 52%;
+        .icon.is-medium {
             padding-left: 0.5rem;
             padding-top: 0.3rem;
-          }
         }
+    }
 
-        .control.is-mobile.srno {
-          max-width: 49%;
-        }
+    .control.is-mobile.srno {
+        max-width: 49%;
+    }
 
-        .main-details {
-          padding: 1rem;
-          border-top: solid 1px #ddd;
-          border-bottom: solid 1px #ddd;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          .title {
+    .main-details {
+        padding: 1rem;
+        border-top: solid 1px #ddd;
+        border-bottom: solid 1px #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .title {
             margin: 0;
-          }
         }
+    }
 
-        .sr-no1 {
-          border-left: solid 1px #ddd;
-          max-width: 2.1rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          border-top: solid 1px #ddd;
-          text-align:center;
-          padding-left: 0.4rem;
-        }
-        .particulars1 {
-          max-width: 26rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          border-top: solid 1px #ddd;
-          text-align:center;
-        }
-        .numbers {
-          max-width: 5rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          border-top: solid 1px #ddd;
-        }
-        .discount1 {
-          max-width: 13rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          border-top: solid 1px #ddd;
-          text-align:center;
-        }
-        .cgst {
-          max-width: 8rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          border-top: solid 1px #ddd;
-          text-align:center;
-        }
-        .sgst {
-          max-width: 8rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          border-top: solid 1px #ddd;
-          text-align:center;
-        }
-        .igst {
-          max-width: 8rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          border-top: solid 1px #ddd;
-          text-align:center;
-        }
-        .size {
-          max-width: 6rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          text-align:center;
-        }
-        .sr-no {
-          border-left: solid 1px #ddd;
-          max-width: 2.1rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          text-align:center;
-          padding-left: 0.6rem;
-        }
-        .sr-no.edit {
-          z-index: 1026;
-        }
-        .particulars {
-          max-width: 15rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          text-align:center;
-        }
-        .qty {
-          max-width: 3rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          text-align:center;
-        }
-        .rate {
-          max-width: 3rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          text-align:center;
-        }
-        .amount {
-          max-width: 5rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          text-align:center;
-        }
-        .total {
-          max-width: 5rem;
-          border-bottom: solid 1px #ddd;
-          border-right: solid 1px #ddd;
-          text-align:center;
-        }
-        .edit-delete1 {
-          max-width: 3rem;
-        }
-        .edit-delete {
-          max-width: 4.2rem;
-        }
+    .sr-no1 {
+        border-left: solid 1px #ddd;
+        max-width: 2.1rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+        text-align: center;
+        padding-left: 0.4rem;
+    }
+    .particulars1 {
+        max-width: 26rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+        text-align: center;
+    }
+    .numbers {
+        max-width: 5rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+    }
+    .discount1 {
+        max-width: 13rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+        text-align: center;
+    }
+    .cgst {
+        max-width: 8rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+        text-align: center;
+    }
+    .sgst {
+        max-width: 8rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+        text-align: center;
+    }
+    .igst {
+        max-width: 8rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+        text-align: center;
+    }
+    .size {
+        max-width: 6rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+    }
+    .sr-no {
+        border-left: solid 1px #ddd;
+        max-width: 2.1rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+        padding-left: 0.6rem;
+    }
+    .sr-no.edit {
+        z-index: 1026;
+    }
+    .particulars {
+        max-width: 15rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+    }
+    .qty {
+        max-width: 3rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+    }
+    .rate {
+        max-width: 3rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+    }
+    .amount {
+        max-width: 5rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+    }
+    .total {
+        max-width: 5rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+    }
+    .edit-delete1 {
+        max-width: 3rem;
+    }
+    .edit-delete {
+        max-width: 4.2rem;
+    }
 
-        .columns {
-          max-width: 100%;
-        }
+    .columns {
+        max-width: 100%;
+    }
 
-        .box {
-          border-radius: 0;
-        }
+    .box {
+        border-radius: 0;
+    }
 
-        .table {
-          padding: 1rem;
-          padding-top: 2rem;
-        }
+    .table {
+        padding: 2rem 1rem 1rem;
+    }
 
-        .additional-details {
-          border-top: solid 1px #ddd;
-          display: flow-root;
-          .is-pulled-right {
+    .additional-details {
+        border-top: solid 1px #ddd;
+        display: flow-root;
+        .is-pulled-right {
             margin-right: 1rem;
-          }
         }
+    }
 
-        .submit-btn {
-          padding: 1rem;
-          border-top: solid 1px #ddd;
-        }
+    .submit-btn {
+        padding: 1rem;
+        border-top: solid 1px #ddd;
+    }
 
-        .tile.is-ancestor {
-          margin: 0;
-          .tile.is-parent {
+    .tile.is-ancestor {
+        margin: 0;
+        .tile.is-parent {
             // padding-bottom: 0;
             .table.is-bordered.is-striped.is-narrow {
-              margin-bottom: 0;
+                margin-bottom: 0;
             }
-          }
         }
+    }
 
-        thead {
-          tr {
+    thead {
+        tr {
             align-items: center;
-          }
         }
+    }
 
-        th, td{
-          text-align: center;
-        }
+    td,
+    th {
+        text-align: center;
+    }
 
-
-
-        .lower {
-          border-top: solid 1px #ddd;
-          width: 17rem;
-          margin-left: auto;
-          padding-right: 1rem;
-          padding-left: 0.5rem;
-          border-left: solid 1px #ddd;
-          border-bottom: solid 1px #ddd;
-          .left {
-          }
-          .right {
+    .lower {
+        border-top: solid 1px #ddd;
+        width: 17rem;
+        margin-left: auto;
+        padding-right: 1rem;
+        padding-left: 0.5rem;
+        border-left: solid 1px #ddd;
+        border-bottom: solid 1px #ddd;
+        .left {}
+        .right {
             float: right;
-          }
         }
+    }
 
-        .lower-part-two {
-          width: fit-content;
-          margin-left: auto;
-        }
+    .lower-part-two {
+        width: fit-content;
+        margin-left: auto;
+    }
 
-        .item-details {
-          .box {
+    .item-details {
+        .box {
             border-bottom: solid 1px #ddd;
-          }
         }
+    }
 
-        .zero {
-          border: none;
+    .zero {
+        border: none;
+    }
+
+    .dash {
+        max-width: 2rem;
+        min-width: 2rem;
+    }
+
+    .name {
+        min-width: 11rem;
+        width: 13rem;
+    }
+    .size {
+        min-width: 7rem;
+    }
+    .quantity {
+        min-width: 5rem;
+        max-width: 8rem;
+    }
+    .rate {
+        max-width: 6rem;
+    }
+    .discPerc {
+        min-width: 5rem;
+        width: 6rem;
+        max-width: 7rem;
+    }
+    .amount {
+        min-width: 8rem;
+        max-width: 8rem;
+    }
+    .discAmount {
+        min-width: 5rem;
+        max-width: 5rem;
+    }
+
+    .taxAmount {
+        min-width: 8rem;
+        max-width: 8rem;
+    }
+
+    .loading {
+        padding: 1rem;
+    }
+
+    .cross {
+        max-width: 1.5rem;
+        min-width: 2rem;
+    }
+
+    .prod-name {
+        min-width: 12rem;
+        max-width: 16rem;
+    }
+
+    .prod-size {
+        min-width: 3rem;
+        max-width: 5rem;
+    }
+
+    .prod-qty {
+        min-width: 3rem;
+        max-width: 5rem;
+    }
+
+    .prod-price {
+        min-width: 4rem;
+        max-width: 5rem;
+    }
+
+    .prod-amt {
+        min-width: 1rem;
+        max-width: 5rem;
+    }
+
+    .disc-rate {
+        min-width: 1rem;
+        max-width: 3rem;
+    }
+
+    .disc-amt {
+        min-width: 1rem;
+        max-width: 3rem;
+    }
+
+    .taxable-amt {
+        min-width: 1rem;
+        max-width: 3rem;
+    }
+
+    .middle-box {
+        margin-bottom: 1rem;
+    }
+
+    .upper {
+        .tile.is-parent {
+            padding: 0;
         }
+    }
 
-        .dash {
-          max-width: 2rem;
-          min-width: 2rem;
+    .add-new {
+        text-align: left;
+    }
+
+    .item-table {
+        margin-top: 1rem;
+        .tile.is-parent {
+            padding: 0;
         }
+    }
 
-        .name {
-          min-width: 11rem;
-          width: 13rem;
-        }
-        .size {
-          min-width: 7rem;
-        }
-        .quantity {
-          min-width: 5rem;
-          max-width: 8rem;
-        }
-        .rate {
-          max-width: 6rem;
-        }
-        .discPerc {
-          min-width: 5rem;
-          width: 6rem;
-          max-width: 7rem;
-        }
-        .amount {
-          min-width: 8rem;
-          max-width: 8rem;
-        }
-        .discAmount {
-          min-width: 5rem;
-          max-width: 5rem;
-        }
-
-        .taxAmount {
-          min-width: 8rem;
-          max-width: 8rem;
-        }
-
-        .loading {
-          padding: 1rem;
-        }
-
-
-        .cross {
-          max-width: 1.5rem;
-          min-width: 2rem;
-        }
-
-
-        .prod-name {
-          min-width: 12rem;
-          max-width: 16rem;
-        }
-
-        .prod-size {
-          min-width: 3rem;
-          max-width: 5rem;
-        }
-
-        .prod-qty {
-          min-width: 3rem;
-          max-width: 5rem;
-        }
-
-        .prod-price {
-          min-width: 4rem;
-          max-width: 5rem;
-        }
-
-        .prod-amt {
-          min-width: 1rem;
-          max-width: 5rem;
-        }
-
-        .disc-rate {
-          min-width: 1rem;
-          max-width: 3rem;
-        }
-
-        .disc-amt {
-          min-width: 1rem;
-          max-width: 3rem;
-        }
-
-        .taxable-amt {
-          min-width: 1rem;
-          max-width: 3rem;
-        }
-
-          .middle-box {
-            margin-bottom: 1rem;
-          }
-
-          .upper {
-            .tile.is-parent {
-              padding: 0;
-            }
-          }
-
-          .add-new {
-            text-align: left
-          }
-
-          .item-table {
-            margin-top: 1rem;
-            .tile.is-parent {
-              padding: 0;
-            }
-          }
-
-      }
-      </style>
+}
+</style>
