@@ -4,7 +4,7 @@
       <span :class="{'select is-fullwidth': true, 'is-danger': errors.has('products') }">
         <select v-model="product" v-validate="'required|not_in:null'" @change="productChange()" name="products">
           <option value=null>Select dropdown</option>
-          <option v-for="pro in products" :value="pro">{{pro.product_name}}</option>
+          <option v-for="pro in products" :value="pro">{{pro.product_name}} - {{pro.hsn_code}}</option>
         </select>
       </span>
     </div>
@@ -34,29 +34,28 @@ export default {
   methods: {
     getProducts() {
       api.getProducts()
-      .then((response) => {
-        if(response.data.message) {
-          console.log(this.message = 'No Products');
-        }
-        else {
-          this.products = response.data.products;
-          this.message = null;
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+        .then( ( response ) => {
+          if ( response.data.message ) {
+            this.message = 'No Products';
+          } else {
+            this.products = response.data.products;
+            this.message = null;
+          }
+        } )
+        .catch( ( error ) => {
+          console.log( error );
+        } )
     },
 
     productChange() {
-      this.$bus.$emit('product_name_change', { product: this.product });
+      this.$bus.$emit( 'product_name_change', {
+        product: this.product
+      } );
     },
   }
 }
 </script>
 
 <style lang="scss">
-.products-name-dropdown {
-
-}
+.products-name-dropdown {}
 </style>
