@@ -1,6 +1,7 @@
 <template lang="html">
   <div class="settings">
     <div class="box">
+      <LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
       <div class="head-settings">
         <h3 class="title">Edit your Settings</h3>
         <button @click="showAdminDetailsModal = true" class="button is-primary">Edit</button>
@@ -180,6 +181,7 @@ import StateDropdown from '@/components/StateDropdown';
 import AdminDetailsUpdateModal from '@/components/AdminDetailsUpdateModal';
 import AddAdminUserModal from '@/components/AddAdminUserModal';
 import EditStateBox from '@/components/EditStateBox';
+import LoadingLight from '@/components/LoadingLight';
 export default {
   name: 'settings',
   data() {
@@ -203,7 +205,8 @@ export default {
       showAdminDetailsModal: false,
       udapteStateModal: false,
       addUser: false,
-      loading: false
+      loading: false,
+      loadingLight: false
     };
   },
   created() {
@@ -234,6 +237,7 @@ export default {
           this.loading = false;
           // assign data to data
           this.data = response.data;
+          this.state_code = response.data.state_code;
         } )
         .catch( ( error ) => {
           console.log( error.response.status );
@@ -347,9 +351,11 @@ export default {
       }
     },
     updateDetails() {
+      this.loadingLight = true;
       api.updateUserDetails( this.userId, this.admin_name, this.email, this.firm_name, this.gst_no,
           this.address, this.city, this.state_code, this.pincode, this.mobile, this.landline )
         .then( ( response ) => {
+          this.loadingLight = false;
           if ( response.data.message == "Failed to update record" ) {
             let toast = this.$toasted.error( 'Failed to update record.', {
               theme: "outline",
@@ -366,6 +372,7 @@ export default {
           }
         } )
         .catch( ( error ) => {
+          this.loadingLight = false;
           console.log( error.response.data.message );
           let toast = this.$toasted.error( error.response.data.message, {
             theme: "outline",
@@ -382,7 +389,8 @@ export default {
     StateDropdown,
     AdminDetailsUpdateModal,
     EditStateBox,
-    AddAdminUserModal
+    AddAdminUserModal,
+    LoadingLight
   }
 }
 </script>

@@ -260,12 +260,12 @@ export default {
   created() {
     this.billing.state_code = this.customer.billing_state_code;
     this.shipping.state_code = this.customer.shipping_state_code;
-    this.$bus.$on('state-change1', (data) => {
+    this.$bus.$on( 'state-change1', ( data ) => {
       this.billing.state_code = data.state_id;
-    });
-    this.$bus.$on('state-change2', (data) => {
+    } );
+    this.$bus.$on( 'state-change2', ( data ) => {
       this.shipping.state_code = data.state_id;
-    });
+    } );
   },
   methods: {
     same() {
@@ -279,42 +279,40 @@ export default {
     },
     validateAndUpdateDetails() {
       this.validate()
-      if (!this.errors.any()) {
-        if(this.dataIsHere == false) {
-          let toast = this.$toasted.error('Please fill in the details.', {
+      if ( !this.errors.any() ) {
+        if ( this.dataIsHere == false ) {
+          let toast = this.$toasted.error( 'Please fill in the details.', {
             theme: "outline",
             position: "bottom-center",
-            duration : 3000
-          });
-        }
-        else {
+            duration: 3000
+          } );
+        } else {
           this.updateDetails();
         }
-      }
-      else {
-        let toast = this.$toasted.error('Please fill in the details.', {
+      } else {
+        let toast = this.$toasted.error( 'Please fill in the details.', {
           theme: "outline",
           position: "bottom-center",
-          duration : 3000
-        });
+          duration: 3000
+        } );
       }
     },
     updateDetails() {
-      api.updateCustomer(this.customer.id, this.firm_name, this.contact_person_name, this.gst_no, this.email,
-        this.billing.address, this.billing.city, this.billing.state_code, this.billing.pincode, this.billing.mobile, this.billing.landline,
-        this.shipping.address, this.shipping.city, this.shipping.state_code, this.shipping.pincode, this.shipping.mobile, this.shipping.landline)
-        .then((response) => {
-          let toast = this.$toasted.success("Customer Updated Successfully!", {
+      api.updateCustomer( this.customer.id, this.firm_name, this.contact_person_name, this.gst_no, this.email,
+          this.billing.address, this.billing.city, this.billing.state_code, this.billing.pincode, this.billing.mobile, this.billing.landline,
+          this.shipping.address, this.shipping.city, this.shipping.state_code, this.shipping.pincode, this.shipping.mobile, this.shipping.landline )
+        .then( ( response ) => {
+          let toast = this.$toasted.success( "Customer Updated Successfully!", {
             theme: "outline",
             position: "top-center",
-            duration : 3000
-          });
+            duration: 3000
+          } );
           this.hidden = true;
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        })
+          console.log( response );
+        } )
+        .catch( ( error ) => {
+          console.log( error );
+        } )
 
     },
     validate() {
@@ -326,14 +324,15 @@ export default {
 
 <style lang="scss">
 .edit-customer-modal {
-  z-index: 1026;
-  .modal-card-body {
-    padding: 0;
-  }
-  .modal-card-foot {
-    display: flex;
-    justify-content: flex-start;
-  }
+    .modal.is-active {
+        z-index: 1026;
+    }
+    .modal-card-body {
+        padding: 0;
+    }
+    .modal-card-foot {
+        display: flex;
+        justify-content: flex-start;
+    }
 }
-
 </style>

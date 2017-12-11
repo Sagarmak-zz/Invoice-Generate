@@ -1,6 +1,7 @@
 <template lang="html">
   <div class="add-product">
     <div class="box">
+      <LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
       <div class="head-product">
         <h3 class="title">Add Product</h3>
         <button class="button is-primary" v-if="!showAddProduct" @click="showAddProduct = true">Add</button>
@@ -103,11 +104,13 @@
 import api from '@/api/main';
 import AddProductModal from '@/components/AddProductModal';
 import EditProductModal from '@/components/EditProductModal';
+import LoadingLight from '@/components/LoadingLight';
 export default {
   name: 'add-product',
   components: {
     AddProductModal,
-    EditProductModal
+    EditProductModal,
+    LoadingLight
   },
   created() {
     this.getProducts();
@@ -125,7 +128,8 @@ export default {
       products: [],
       showEditProductModal: false,
       noData: false,
-      loading: false
+      loading: false,
+      loadingLight: false
     };
   },
   methods: {
@@ -149,8 +153,10 @@ export default {
     validateBeforeSubmit() {
       this.validate()
       if ( !this.errors.any() ) {
+        this.loadingLight = true;
         api.addProduct( this.product_name, this.hsn_code, this.product_price )
           .then( ( response ) => {
+            this.loadingLight = false;
             if ( response.status == 200 ) {
               this.showAddProduct = false;
               this.getProducts();
@@ -162,6 +168,7 @@ export default {
             }
           } )
           .catch( ( error ) => {
+            this.loadingLight = false;
             console.log( error );
           } )
       } else {

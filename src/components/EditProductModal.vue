@@ -61,7 +61,7 @@
 import api from '@/api/main';
 export default {
   name: 'edit-product-modal',
-  props: ['product'],
+  props: [ 'product' ],
   created() {
     this.product_old = this.product;
     this.product_id = this.product.id;
@@ -79,30 +79,29 @@ export default {
   methods: {
     validateAndUpdate() {
       this.validate()
-      if (!this.errors.any()) {
-        api.updateProduct(this.product_id, this.product_name, this.hsn_code, this.product_price)
-        .then((response) => {
-          if(response.status == 200) {
-            this.showAddProduct = false;
-            let toast = this.$toasted.success("Product Updated Successfully!", {
-              theme: "outline",
-              position: "top-center",
-              duration : 3000
-            });
-            this.hidden = true;
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-      }
-      else {
-        console.log('Validation Failed');
-        let toast = this.$toasted.error('Please fill in the details.', {
+      if ( !this.errors.any() ) {
+        api.updateProduct( this.product_id, this.product_name, this.hsn_code, this.product_price )
+          .then( ( response ) => {
+            if ( response.status == 200 ) {
+              this.showAddProduct = false;
+              let toast = this.$toasted.success( "Product Updated Successfully!", {
+                theme: "outline",
+                position: "top-center",
+                duration: 3000
+              } );
+              this.hidden = true;
+            }
+          } )
+          .catch( ( error ) => {
+            console.log( error );
+          } )
+      } else {
+        console.log( 'Validation Failed' );
+        let toast = this.$toasted.error( 'Please fill in the details.', {
           theme: "outline",
           position: "bottom-center",
-          duration : 3000
-        });
+          duration: 3000
+        } );
       }
     },
     validate() {
@@ -114,6 +113,8 @@ export default {
 
 <style lang="scss">
 .edit-product-modal {
-  z-index: 1026;
+    .modal.is-active {
+        z-index: 1026;
+    }
 }
 </style>

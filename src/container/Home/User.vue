@@ -1,6 +1,7 @@
 <template lang="html">
   <div class="add-user">
     <div class="box">
+      <LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
       <div class="head-user">
         <h3 class="title">Users</h3>
         <button class="button is-primary is-pulled-right" v-if="!showAddUserModal" @click="showAddUserModal = true">Add</button>
@@ -12,7 +13,8 @@
             <div class="field">
               <label class="label">Firm Name</label>
               <p class="control">
-                <input v-model="firm_name" class="input" name="firm_name" v-validate="'required'" type="text" placeholder="Name">
+                <input v-model="firm_name" class="input" name="firm_name"
+                v-validate="'required'" type="text" placeholder="Name">
               </p>
               <div v-show="errors.has('firm_name')" class="help is-danger">
                 The Firm Name is required.
@@ -23,7 +25,8 @@
             <div class="field">
               <label class="label">Contact Person Name</label>
               <p class="control">
-                <input v-model="contact_person_name" class="input" name="cp_name" v-validate="'required'" type="email" placeholder="Contact Person Name">
+                <input v-model="contact_person_name" class="input" name="cp_name"
+                v-validate="'required|alpha'" type="email" placeholder="Contact Person Name">
               </p>
               <div v-show="errors.has('cp_name')" class="help is-danger">
                 The Contact Person Name is required.
@@ -253,14 +256,9 @@ import AddUserModal from '@/components/AddUserModal';
 import StateDropdownNewCustomer1 from '@/components/StateDropdownNewCustomer1';
 import StateDropdownNewCustomer2 from '@/components/StateDropdownNewCustomer2';
 import EditCustomerDetailsModal from '@/components/EditCustomerDetailsModal';
+import LoadingLight from '@/components/LoadingLight';
 export default {
   name: 'add-user',
-  components: {
-    AddUserModal,
-    StateDropdownNewCustomer1,
-    StateDropdownNewCustomer2,
-    EditCustomerDetailsModal
-  },
   created() {
     this.$bus.$on('state-new-change1', (data) => {
       this.billing.state_code = data.state_id;
@@ -298,7 +296,8 @@ export default {
       checkbox: '',
       customers: [],
       noData: false,
-      loading: false
+      loading: false,
+      loadingLight: false
     };
   },
   methods: {
@@ -342,10 +341,12 @@ export default {
       }
     },
     submitCustomer() {
+      this.loadingLight = true;
       api.createCustomer(this.firm_name, this.contact_person_name, this.email, this.gst_no,
         this.billing.address, this.billing.city, this.billing.state_code, this.billing.pincode, this.billing.mobile, this.billing.landline,
         this.shipping.address, this.shipping.city, this.shipping.state_code, this.shipping.pincode, this.shipping.mobile, this.shipping.landline)
         .then((response) => {
+          this.loadingLight = false;
           if(response.status == 200) {
             this.getCustomer();
             let toast = this.$toasted.success("Customer Added Successfully!", {
@@ -357,6 +358,7 @@ export default {
           }
         })
         .catch((error) => {
+          this.loadingLight = false;
           console.log(error);
           let toast = this.$toasted.error(error.response.data.message, {
             theme: "outline",
@@ -377,6 +379,13 @@ export default {
         this.$bus.$emit('state-change', {state: this.shipping.state_code});
         this.shipping.pincode = this.billing.pincode;
       },
+    },
+    components: {
+      AddUserModal,
+      StateDropdownNewCustomer1,
+      StateDropdownNewCustomer2,
+      EditCustomerDetailsModal,
+      LoadingLight
     },
   }
   </script>
