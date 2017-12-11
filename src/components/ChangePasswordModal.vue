@@ -9,6 +9,7 @@
 				</header>
 				<section class="modal-card-body">
 
+					<LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
 					<div class="not-loading" v-if="!loading">
 						<div class="field">
 							<label class="label">Email</label>
@@ -60,6 +61,7 @@
 <script>
 import api from '@/api/main';
 import Auth from '@/packages/auth/Auth';
+import LoadingLight from '@/components/LoadingLight';
 export default {
   name: 'change-password',
   created() {
@@ -71,7 +73,8 @@ export default {
       password: '',
       confirm: '',
       user_email: '',
-      loading: false
+      loading: false,
+      loadingLight: false
     }
   },
   methods: {
@@ -93,8 +96,10 @@ export default {
     },
 
     updatePassword() {
+      this.loadingLight = true;
       api.updateAdminPassword( this.password )
         .then( response => {
+          this.loadingLight = false;
           if ( response.data = "Password successfully updated" ) {
             let toast = this.$toasted.success( 'Password updated successfully!', {
               theme: "outline",
@@ -105,6 +110,7 @@ export default {
           }
         } )
         .catch( error => {
+          this.loadingLight = false;
           console.log( error );
         } )
     },
@@ -120,6 +126,9 @@ export default {
           console.log( error );
         } )
     },
+  },
+  components: {
+    LoadingLight
   }
 }
 </script>

@@ -1,5 +1,6 @@
 <template lang="html">
   <div class="dummy-bill">
+    <LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
     <div class="box bill-wala-box">
       <div class="head">
         <h3 class="title">Generate Bill</h3>
@@ -327,6 +328,7 @@ import Datepicker from 'vue-bulma-datepicker';
 import FirmNameDropdown from '@/components/FirmNameDropdown';
 import ProductsNameDropdown from '@/components/ProductsNameDropdown';
 import jwt_decode from 'jwt-decode';
+import LoadingLight from '@/components/LoadingLight';
 var numeral = require( 'numeral' );
 export default {
   name: 'dummy-bill',
@@ -335,6 +337,7 @@ export default {
     Datepicker,
     FirmNameDropdown,
     ProductsNameDropdown,
+    LoadingLight
   },
   created() {
     // var numeral = require('numeral');
@@ -416,7 +419,8 @@ export default {
       items: [],
       hideInputs: true,
       hideInputs2: false,
-      loading: false
+      loading: false,
+      loadingLight: false
     };
   },
   methods: {
@@ -504,12 +508,14 @@ export default {
       return this.$validator.validateAll();
     },
     callApi() {
+      this.loadingLight = true;
       //api call to submit the bill
       api.createBill( this.item.user_id, this.item.firm.firm_id, this.item.invoice_no,
           this.item.ftaxable_amount, this.item.sgst_percentage, this.item.fsgst_amount,
           this.item.cgst_percentage, this.item.fcgst_amount, this.item.igst_percentage, this.item.figst_amount,
           this.item.ftotal_payable_amount, this.item.created_at, this.bill_detail )
         .then( response => {
+          this.loadingLight = false;
           let toast = this.$toasted.success( "Bill Creation Successful!", {
             theme: "outline",
             position: "top-center",
@@ -523,6 +529,7 @@ export default {
           } );
         } )
         .catch( error => {
+          this.loadingLight = false;
           console.log( error );
         } )
       //send to another page, with nice invoice template and hit print

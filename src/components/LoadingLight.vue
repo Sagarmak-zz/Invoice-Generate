@@ -56,5 +56,7 @@ export default {
 </script>
 
 <style lang="scss">
-.loading-light {}
+.loading-light {
+    z-index: 1030;
+}
 </style>

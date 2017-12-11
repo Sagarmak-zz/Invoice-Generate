@@ -8,7 +8,6 @@
           </div>
           <div class="nav-center">
             <a class="nav-item hero-brand" href="/">
-              <img src="">
               <div class="is-mobile">
                 <span class="vue">Siddhartha</span><strong class="admin">Wear</strong>
               </div>

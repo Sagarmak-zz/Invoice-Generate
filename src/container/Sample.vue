@@ -1,5 +1,6 @@
 <template lang="html">
   <div class="sample">
+    <LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
     <!-- part 1 -->
     <div class="box a4size">
 
@@ -627,6 +628,7 @@
             <script>
             import api from '@/api/main';
             import num2Word from 'num2Word';
+            import LoadingLight from '@/components/LoadingLight';
             export default {
               name: 'sample',
               updated() {
@@ -641,22 +643,27 @@
                 return {
                   invoice_no: '',
                   bill_details: {},
-                  amountInWords: null
+                  amountInWords: null,
+                  loadingLight: false
                 };
               },
               methods: {
                 getBillByInvoiceNo() {
+                  this.loadingLight = true;
                   api.getBillByInvoiceNo(this.invoice_no)
                   .then(response => {
+                    this.loadingLight = false;
                     if(response.data.invoice_no == this.invoice_no) {
                       this.bill_details = response.data;
                       this.amountInWords = this.toUpper(num2Word(this.bill_details.total_payable_amount));
                     }
                     else {
+                      this.loadingLight = false;
                       this.$router.push({name:'Page404'});
                     }
                   })
                   .catch(error => {
+                    this.loadingLight = false;
                     console.log(error);
                   })
                 },
@@ -670,6 +677,9 @@
                   })
                   .join(' ');
                 }
+              },
+              components: {
+                LoadingLight
               }
             }
             </script>

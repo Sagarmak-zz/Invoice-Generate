@@ -283,8 +283,10 @@ export default {
     },
     //states
     submitState() {
+      this.loadingLight = true;
       api.addState( this.code, this.name )
         .then( ( response ) => {
+          this.loadingLight = false;
           if ( response.status == 200 ) {
             this.callStates();
             let toast = this.$toasted.success( "State Added Successfully!", {
@@ -295,6 +297,7 @@ export default {
           }
         } )
         .catch( ( error ) => {
+          this.loadingLight = false;
           console.log( error.response.data.message );
           let toast = this.$toasted.error( error.response.data.message, {
             theme: "outline",

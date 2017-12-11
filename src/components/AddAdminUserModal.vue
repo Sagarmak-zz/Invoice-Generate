@@ -1,6 +1,5 @@
 <template lang="html">
 	<div class="add-admin">
-		<!-- modal starts -->
 		<div class="modal is-active">
 			<div class="modal-background"></div>
 			<div class="modal-card">
@@ -10,6 +9,7 @@
 				</header>
 				<section class="modal-card-body">
 
+					<LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
 					<div class="columns">
 						<div class="column">
 							<div class="field">
@@ -67,64 +67,73 @@
 				</footer>
 			</div>
 		</div>
-		<!-- modal ends -->
 	</div>
 </template>
 
 <script>
 import api from '@/api/main';
+import LoadingLight from '@/components/LoadingLight';
 export default {
-	name: 'add-admin',
-	data() {
-		return {
-			name: '',
-			email: '',
-			password: '',
-			confirm: '',
-		}
-	},
-	methods: {
-		validateAndCreateAdminUser() {
-      this.$validator.validateAll().then((result) => {
-        if (result) {
-					//correct
-          // eslint-disable-next-line
-					this.createAdminUser();
+  name: 'add-admin',
+  data() {
+    return {
+      name: '',
+      email: '',
+      password: '',
+      confirm: '',
+      loadingLight: false
+    }
+  },
+  methods: {
+    validateAndCreateAdminUser() {
+      this.$validator.validateAll().then( ( result ) => {
+        if ( result ) {
+          this.createAdminUser();
+        } else {
+          let toast = this.$toasted.error( 'Please fill in the details.', {
+            theme: "outline",
+            position: "bottom-center",
+            duration: 3000
+          } );
         }
-				else {
-					//not correct
-					let toast = this.$toasted.error('Please fill in the details.', {
-	          theme: "outline",
-	          position: "bottom-center",
-	          duration : 3000
-	        });
-				}
-      });
+      } );
     },
 
-		createAdminUser() {
-			api.createAdminUser(this.name, this.email, this.password)
-			.then(response => {
-				if(response.status == 200) {
-					//user added
-					let toast = this.$toasted.success('Admin User Added.', {
-	          theme: "outline",
-	          position: "top-center",
-	          duration : 3000
-	        });
-					this.$bus.$emit('add-admin-close');
-				}
-			})
-			.catch(error => {
-				console.log(error);
-			})
-		}
-	}
+    createAdminUser() {
+      this.loadingLight = true;
+      api.createAdminUser( this.name, this.email, this.password )
+        .then( response => {
+          this.loadingLight = false;
+          if ( response.status == 200 ) {
+            let toast = this.$toasted.success( 'Admin User Added.', {
+              theme: "outline",
+              position: "top-center",
+              duration: 3000
+            } );
+            this.$bus.$emit( 'add-admin-close' );
+          }
+        } )
+        .catch( error => {
+          this.loadingLight = false;
+          console.log( error );
+          this.$toasted.error( error.response.data.message, {
+            theme: "outline",
+            position: "bottom-center",
+            duration: 3000
+          } );
+        } )
+    }
+  },
+  components: {
+    LoadingLight
+  }
 }
 </script>
 
 <style lang="scss">
 .add-admin {
-	z-index: 1025;
+    .modal.is-active {
+        z-index: 1025;
+    }
 }
 </style>

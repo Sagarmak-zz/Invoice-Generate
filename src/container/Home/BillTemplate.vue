@@ -1,6 +1,7 @@
 <template lang="html">
   <div class="bill-template">
     <div class="box">
+      <LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
       <div class="template-head">
         <div class="template-head-header">
           <router-link :to="{name:'History'}" class="icon"><i class="fa fa-arrow-left" aria-hidden="true"></i></router-link>
@@ -38,7 +39,7 @@
             <p class="invoice-head">INVOICE</p>
             <p class="invoice-details"><b>Invoice No: {{bill_details.invoice_no}}</b></p>
             <p class="invoice-details" v-if="bill_details.created_at"><b>Date: {{moment(bill_details.created_at.date).format('D/MM/YYYY')}}</b></p>
-            <p class="invoice-details last"><b>State Code: dummy</b></p>
+            <p class="invoice-details last"><b>State Code: {{bill_details.billing_state_code}}</b></p>
             <!-- <div class="bank-details">
             <p class="bank-body"> 200999222050</p>
             <p class="bank-body">Bank Branch IFSC: INDB0000175</p>
@@ -225,6 +226,7 @@
 <script>
 import api from '@/api/main';
 import num2Word from 'num2Word';
+import LoadingLight from '@/components/LoadingLight';
 export default {
   name: 'bill-template',
   created() {
@@ -237,210 +239,212 @@ export default {
     return {
       invoice_no: '',
       bill_details: {},
-      amountInWords: null
+      amountInWords: null,
+      loadingLight: false
     };
   },
   methods: {
     getBillByInvoiceNo() {
-      api.getBillByInvoiceNo(this.invoice_no)
-      .then(response => {
-        if(response.data.invoice_no == this.invoice_no) {
-          this.bill_details = response.data;
-          this.amountInWords = this.toUpper(num2Word(this.bill_details.total_payable_amount));
-        }
-        else {
-          this.$router.push({name:'Page404'});
-        }
-      })
-      .catch(error => {
-        console.log(error);
-      })
+      this.loadingLight = true;
+      api.getBillByInvoiceNo( this.invoice_no )
+        .then( response => {
+          this.loadingLight = false;
+          if ( response.data.invoice_no == this.invoice_no ) {
+            this.bill_details = response.data;
+            this.amountInWords = this.toUpper( num2Word( this.bill_details.total_payable_amount ) );
+          } else {
+            this.$router.push( {
+              name: 'Page404'
+            } );
+          }
+        } )
+        .catch( error => {
+          this.loadingLight = false;
+          console.log( error );
+        } )
     },
 
-    toUpper(str) {
+    toUpper( str ) {
       return str
-      .toLowerCase()
-      .split(' ')
-      .map(function(word) {
-        return word[0].toUpperCase() + word.substr(1);
-      })
-      .join(' ');
+        .toLowerCase()
+        .split( ' ' )
+        .map( function ( word ) {
+          return word[ 0 ].toUpperCase() + word.substr( 1 );
+        } )
+        .join( ' ' );
     }
+  },
+  components: {
+    LoadingLight
   }
 }
 </script>
 
 <style lang="scss">
-
 .bill-template {
-  // width: 21cm;
-  // height: 29.7cm;
-  // background: burlywood;
-  // margin: 0 auto;
-  // margin-top: 0.2cm;
-  // margin-bottom: 0.5cm;
-  font: -webkit-small-control;
-  .template-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: solid 1px #ddd;
-    padding: 1rem;
-    .template-head-header {
-      display: flex;
-      align-items: center;
-      .icon {
-        margin-right: 0.2rem;
-      }
-    }
-  }
-  .box {
-    padding: 0;
-  }
-
-  .template-body-main {
-    height: 5.6cm;
-    padding: 1.5rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    display: flex;
-    justify-content: space-between;
-    border-bottom: solid 2px #ddd;
-    .tile.is-ancestor {
-      .table-responsive {
-        .table.is-bordered.is-striped.is-narrow {
-          margin-bottom: 0;
+    // width: 21cm;
+    // height: 29.7cm;
+    // background: burlywood;
+    // margin: 0 auto;
+    // margin-top: 0.2cm;
+    // margin-bottom: 0.5cm;
+    font: -webkit-small-control;
+    .template-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: solid 1px #ddd;
+        padding: 1rem;
+        .template-head-header {
+            display: flex;
+            align-items: center;
+            .icon {
+                margin-right: 0.2rem;
+            }
         }
-      }
     }
-  }
-
-  .seller {
-    width: 60%;
-    .title.is-2 {
-      font-weight: bold;
-      margin: 0;
-      padding-bottom: 0.5rem;
-      background: whitesmoke;
-    }
-  }
-
-  .invoice {
-    display: flex;
-    flex-direction: column;
-    p {
-      text-align: center;
-    }
-    .invoice-head {
-      color: grey;
-      font-weight: 500;
-      font-size: -webkit-xxx-large;
-    }
-    .invoice-details {
-      font-size: 0.8rem;
-    }
-    .invoice-details-copy {
-      font-size: 0.8rem;
-    }
-    .invoice-details.last {
-      padding-bottom: 0.2rem;
-    }
-  }
-
-  .table-responsive {
-    // width: 28rem;
-  }
-
-
-  .buyer {
-    padding: 1.5rem;
-    padding-top: 1rem;
-    padding-bottom: 1rem;
-    border-bottom: solid 2px #ddd;
-    display: flex;
-    justify-content: space-between;
-    .tile.is-ancestor {
-      margin-bottom: 0;
-    }
-    .tile.is-parent {
-      padding-bottom: 0;
-      .table.is-bordered.is-striped.is-narrow {
-        margin-bottom: 0;
-      }
-    }
-    .right-side {
-      float: right;
-    }
-  }
-
-  .template-body-items {
-    height: 13cm;
-    padding: 2rem;
-    padding-top: 1rem;
-    border-bottom: solid 2px #ddd;
-    th, td{
-      text-align: center;
-    }
-    .tile.is-ancestor {
-      margin-bottom: 0;
-    }
-    .tile.is-parent {
-      padding-bottom: 0;
-      .table.is-bordered.is-striped.is-narrow {
-        margin: 0;
-      }
+    .box {
+        padding: 0;
     }
 
-    .bottom-details {
-      display: flex;
-      justify-content: space-between;
-      .part-one {
-        border: solid 1px #ddd;
+    .template-body-main {
+        height: 5.6cm;
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        border-bottom: solid 2px #ddd;
+        .tile.is-ancestor {
+            .table-responsive {
+                .table.is-bordered.is-striped.is-narrow {
+                    margin-bottom: 0;
+                }
+            }
+        }
+    }
+
+    .seller {
         width: 60%;
-        .blank {
-          padding-top: 0.5rem;
-          height: 50%;
-          border-bottom: solid 1px #ddd;
+        .title.is-2 {
+            font-weight: bold;
+            margin: 0;
+            padding-bottom: 0.5rem;
+            background: whitesmoke;
         }
-        .amount-in-words {
-          padding-top: 0.5rem;
-          height: 50%;
-        }
-        // border: solid 1px #ddd;
-        // height: fit-content;
-        // display: flex;
-        // align-items: flex-end;
-        // margin-left: 6rem;
-        // margin-top: auto;
-      }
-      .table-responsive {
-        width: 100%;
-        float: right;
-      }
     }
-  }
 
-  .template-bottom {
-    // position: relative;
-    // margin-top: 15rem;
-    // position: fixed;
-    // padding: 2rem;
-    display: flex;
-    justify-content: space-between;
-    .part-one {
-      max-width: 23rem;
-      .spacing {
-        padding-top: 1.5rem;
-      }
+    .invoice {
+        display: flex;
+        flex-direction: column;
+        p {
+            text-align: center;
+        }
+        .invoice-head {
+            color: grey;
+            font-weight: 500;
+            font-size: -webkit-xxx-large;
+        }
+        .invoice-details {
+            font-size: 0.8rem;
+        }
+        .invoice-details-copy {
+            font-size: 0.8rem;
+        }
+        .invoice-details.last {
+            padding-bottom: 0.2rem;
+        }
     }
-    .part-two {
-      display: flex;
-      justify-content: space-between;
-      flex-direction: column;
-      p {
-        font-weight: 700;
-      }
+
+    .table-responsive {
+        // width: 28rem;
     }
-  }
+
+    .buyer {
+        padding: 1rem 1.5rem;
+        border-bottom: solid 2px #ddd;
+        display: flex;
+        justify-content: space-between;
+        .tile.is-ancestor {
+            margin-bottom: 0;
+        }
+        .tile.is-parent {
+            padding-bottom: 0;
+            .table.is-bordered.is-striped.is-narrow {
+                margin-bottom: 0;
+            }
+        }
+        .right-side {
+            float: right;
+        }
+    }
+
+    .template-body-items {
+        height: 13cm;
+        padding: 1rem 2rem 2rem;
+        border-bottom: solid 2px #ddd;
+        td,
+        th {
+            text-align: center;
+        }
+        .tile.is-ancestor {
+            margin-bottom: 0;
+        }
+        .tile.is-parent {
+            padding-bottom: 0;
+            .table.is-bordered.is-striped.is-narrow {
+                margin: 0;
+            }
+        }
+
+        .bottom-details {
+            display: flex;
+            justify-content: space-between;
+            .part-one {
+                border: solid 1px #ddd;
+                width: 60%;
+                .blank {
+                    padding-top: 0.5rem;
+                    height: 50%;
+                    border-bottom: solid 1px #ddd;
+                }
+                .amount-in-words {
+                    padding-top: 0.5rem;
+                    height: 50%;
+                }
+                // border: solid 1px #ddd;
+                // height: fit-content;
+                // display: flex;
+                // align-items: flex-end;
+                // margin-left: 6rem;
+                // margin-top: auto;
+            }
+            .table-responsive {
+                width: 100%;
+                float: right;
+            }
+        }
+    }
+
+    .template-bottom {
+        // position: relative;
+        // margin-top: 15rem;
+        // position: fixed;
+        // padding: 2rem;
+        display: flex;
+        justify-content: space-between;
+        .part-one {
+            max-width: 23rem;
+            .spacing {
+                padding-top: 1.5rem;
+            }
+        }
+        .part-two {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+            p {
+                font-weight: 700;
+            }
+        }
+    }
 }
 </style>
