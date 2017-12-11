@@ -213,7 +213,6 @@
                       <th>Contact Person Name</th>
                       <th>GST</th>
                       <th>Email</th>
-                      <th>Address</th>
                       <th>Mobile No-Landline No</th>
                       <th>Edit</th>
                     </tr>
@@ -224,7 +223,6 @@
                       <td>{{customer.person_name}}</td>
                       <td>{{customer.gst_number}}</td>
                       <td>{{customer.email}}</td>
-                      <td>{{customer.billing_address}}</td>
                       <td> {{customer.billing_mobile_number}} - {{customer.billing_landline_number}} </td>
                       <td>
                         <a class="icon">

@@ -89,7 +89,7 @@
               <table class="table is-bordered is-striped is-narrow">
                 <thead>
                   <tr>
-                    <th>SR No</th>
+                    <th>SR</th>
                     <th>Bill No</th>
                     <th>Date</th>
                     <th>Party Name</th>
@@ -112,7 +112,7 @@
                     <td>Rs {{d.sgst_amount}}</td>
                     <td>Rs {{d.igst_amount}}</td>
                     <td>Rs {{d.total_payable_amount}}</td>
-                    <td>ABC123456Z</td>
+                    <td>NOGSTNOGSTNOGST</td>
                   </tr>
                 </tbody>
               </table>

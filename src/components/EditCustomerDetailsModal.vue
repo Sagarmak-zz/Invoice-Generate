@@ -10,6 +10,7 @@
           <button class="delete" @click="hidden=!hidden"></button>
         </header>
         <section class="modal-card-body">
+          <LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
           <div class="columns">
             <div class="column">
               <div class="field">
@@ -204,7 +205,6 @@
               </div>
             </div>
           </div>
-          <!-- <pre>{{$data}}</pre> -->
         </section>
         <footer class="modal-card-foot">
           <a class="button is-success" @click="validateAndUpdateDetails()">Update</a>
@@ -219,12 +219,10 @@
 import api from '@/api/main';
 import StateDropdown1 from '@/components/StateDropdownCustomer1';
 import StateDropdown2 from '@/components/StateDropdownCustomer2';
+import LoadingLight from '@/components/LoadingLight';
 export default {
   name: 'edit-customer-modal',
-  components: {
-    StateDropdown1,
-    StateDropdown2
-  },
+
   data() {
     return {
       hidden: true,
@@ -249,7 +247,8 @@ export default {
         landline: null,
       },
       newBcode: 0,
-      newScode: 0
+      newScode: 0,
+      loadingLight: false
     };
   },
   props: {
@@ -298,10 +297,12 @@ export default {
       }
     },
     updateDetails() {
+      this.loadingLight = true;
       api.updateCustomer( this.customer.id, this.firm_name, this.contact_person_name, this.gst_no, this.email,
           this.billing.address, this.billing.city, this.billing.state_code, this.billing.pincode, this.billing.mobile, this.billing.landline,
           this.shipping.address, this.shipping.city, this.shipping.state_code, this.shipping.pincode, this.shipping.mobile, this.shipping.landline )
         .then( ( response ) => {
+          this.loadingLight = false;
           let toast = this.$toasted.success( "Customer Updated Successfully!", {
             theme: "outline",
             position: "top-center",
@@ -311,6 +312,7 @@ export default {
           console.log( response );
         } )
         .catch( ( error ) => {
+          this.loadingLight = false;
           console.log( error );
         } )
 
@@ -318,7 +320,12 @@ export default {
     validate() {
       return this.$validator.validateAll();
     },
-  }
+  },
+  components: {
+    StateDropdown1,
+    StateDropdown2,
+    LoadingLight
+  },
 }
 </script>
 

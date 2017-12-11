@@ -10,6 +10,7 @@
           <button class="delete" @click="hidden=!hidden"></button>
         </header>
         <section class="modal-card-body">
+          <LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
           <div class="columns">
             <div class="column">
               <div class="field">
@@ -59,6 +60,7 @@
 
 <script>
 import api from '@/api/main';
+import LoadingLight from '@/components/LoadingLight';
 export default {
   name: 'edit-product-modal',
   props: [ 'product' ],
@@ -73,15 +75,18 @@ export default {
       hsn_code: '',
       product_price: null,
       product_old: '',
-      product_id: null
+      product_id: null,
+      loadingLight: false
     };
   },
   methods: {
     validateAndUpdate() {
+      this.loadingLight = true;
       this.validate()
       if ( !this.errors.any() ) {
         api.updateProduct( this.product_id, this.product_name, this.hsn_code, this.product_price )
           .then( ( response ) => {
+            this.loadingLight = false;
             if ( response.status == 200 ) {
               this.showAddProduct = false;
               let toast = this.$toasted.success( "Product Updated Successfully!", {
@@ -93,6 +98,7 @@ export default {
             }
           } )
           .catch( ( error ) => {
+            this.loadingLight = false;
             console.log( error );
           } )
       } else {
@@ -107,6 +113,9 @@ export default {
     validate() {
       this.$validator.validateAll();
     }
+  },
+  components: {
+    LoadingLight
   }
 }
 </script>
