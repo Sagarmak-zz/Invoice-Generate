@@ -21,7 +21,6 @@
 <skew-loader :loading="loading" :color="color" :size="size"></skew-loader>
 <moon-loader :loading="loading" :color="color" :size="size"></moon-loader>
 <ring-loader :loading="loading" :color="color" :size="size"></ring-loader>
-<bounce-loader :loading="loading" :color="color" :size="size"></bounce-loader>
 <dot-loader :loading="loading" :color="color" :size="size"></dot-loader> -->
     </div>
   </div>

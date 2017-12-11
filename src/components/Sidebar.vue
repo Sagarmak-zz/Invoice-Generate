@@ -1,9 +1,6 @@
 <template lang="html">
   <div class="sidebar">
     <aside class="menu app-sidebar animated">
-      <!-- <p class="menu-label">
-      General
-    </p> -->
 
     <ul class="menu-list">
       <List name="Dashboard" icon="fa fa-tachometer" route="Dashboard"></List>
@@ -31,34 +28,34 @@ export default {
 
 <style lang="scss">
 .sidebar {
-  .app-sidebar {
-    position: fixed;
-    top: 50px;
-    left: 0;
-    bottom: 0;
-    padding: 15px 0 50px;
-    width: 180px;
-    min-width: 45px;
-    max-height: 100vh;
-    height: calc(100% - 50px);
-    z-index: 1024 - 1;
-    background: #FFF;
-    box-shadow: 0 2px 3px rgba(17, 17, 17, 0.1), 0 0 0 1px rgba(17, 17, 17, 0.1);
-    overflow-y: auto;
-    overflow-x: hidden;
-    // margin-top: 0.2rem;
-  }
+    .app-sidebar {
+        position: fixed;
+        top: 50px;
+        left: 0;
+        bottom: 0;
+        padding: 15px 0 50px;
+        width: 180px;
+        min-width: 45px;
+        max-height: 100vh;
+        height: calc(100% - 50px);
+        z-index: 1024 - 1;
+        background: #FFF;
+        box-shadow: 0 2px 3px rgba(17, 17, 17, 0.1), 0 0 0 1px rgba(17, 17, 17, 0.1);
+        overflow-y: auto;
+        overflow-x: hidden;
+        // margin-top: 0.2rem;
+    }
 
-  .icon {
-    vertical-align: baseline;
-  }
+    .icon {
+        vertical-align: baseline;
+    }
 
-  .menu-label {
-    padding-left: 5px;
-  }
-  li a + ul {
-    // margin: 0 10px 0 15px;
-  }
+    .menu-label {
+        padding-left: 5px;
+    }
+    li a + ul {
+        // margin: 0 10px 0 15px;
+    }
 
 }
 </style>
