@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="navbar">
+  <div class="navbar nodisplay">
     <section class="hero is-bold app-navbar animated">
       <div class="hero-head">
         <nav class="nav">
@@ -78,6 +78,12 @@ export default {
         .admin {
             color: #28374B;
         }
+    }
+    @media print {
+        .nodisplay {
+            display: none;
+        }
+
     }
 }
 </style>

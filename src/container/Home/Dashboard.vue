@@ -299,16 +299,15 @@ export default {
   components: {
     Chartist
   },
-  created() {
-  },
-  data () {
+  created() {},
+  data() {
     return {
       json: {},
       //daily
       series: [
-        [12, 9, 7, 8, 5],
+        [ 12, 9, 7, 8, 5 ],
       ],
-      labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      labels: [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday' ],
       linesOptions: {
         chartPadding: {
           right: 0
@@ -316,9 +315,9 @@ export default {
       },
       //monthly
       lineAreaData: {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug'],
+        labels: [ 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug' ],
         series: [
-          [5, 9, 7, 8, 5, 3, 5, 4]
+          [ 5, 9, 7, 8, 5, 3, 5, 4 ]
         ]
       },
       lineAreaOptions: {
@@ -327,13 +326,13 @@ export default {
       },
       //yearly
       pieData: {
-        series: [2015, 2016, 2017]
+        series: [ 2015, 2016, 2017 ]
       },
       pieOptions: {
         //  chartPadding: 30,
         //  labelOffset: 40,
         labelDirection: 'explode',
-        labelInterpolationFnc (value) {
+        labelInterpolationFnc( value ) {
           return value
         }
       },
@@ -341,7 +340,7 @@ export default {
   },
 
   computed: {
-    linesData () {
+    linesData() {
       return {
         labels: this.labels,
         series: this.series
@@ -353,64 +352,64 @@ export default {
 
 <style lang="scss">
 .dashboard {
-  height: 100%;
-  .head-column {
-    // padding: 0;
-    margin: 1rem;
-    .box {
-      padding: 0;
+    height: 100%;
+    .head-column {
+        // padding: 0;
+        margin: 1rem;
+        .box {
+            padding: 0;
+        }
     }
-  }
-  .part-left {
-    padding: 0;
-  }
-  .part-right.box {
-    padding: 0;
-    height: 8.2rem;
-    border-radius: inherit;
-  }
-  margin-bottom: 1rem;
-  margin-right: 1rem;
-  .title {
+    .part-left {
+        padding: 0;
+    }
+    .part-right.box {
+        padding: 0;
+        height: 8.2rem;
+        border-radius: inherit;
+    }
     margin-bottom: 1rem;
-  }
-  .ct-label {
-    font-weight: bold;
-  }
-  .table-responsive {
-    display: block;
-    width: 100%;
-    min-height: .01%;
-    overflow-x: auto;
-  }
-  .figure {
-    background: turquoise;
-    i {
-      font-size: 5rem;
-      height: 8.2rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-  }
-  .column {
+    margin-right: 1rem;
     .title {
-
-      height: 50%;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
+        margin-bottom: 1rem;
     }
-    .subtitle {
-      height: 30%;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
+    .ct-label {
+        font-weight: bold;
     }
-  }
+    .table-responsive {
+        display: block;
+        width: 100%;
+        min-height: 0.01%;
+        overflow-x: auto;
+    }
+    .figure {
+        background: turquoise;
+        i {
+            font-size: 5rem;
+            height: 8.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    }
+    .column {
+        .title {
 
-  .foot.box {
-    margin-top: 1rem;
-  }
+            height: 50%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        .subtitle {
+            height: 30%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+    }
+
+    .foot.box {
+        margin-top: 1rem;
+    }
 }
 </style>

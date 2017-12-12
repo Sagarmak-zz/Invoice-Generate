@@ -1,16 +1,16 @@
 <template lang="html">
   <div class="home">
-    <div class="navbar">
-      <navbar @logout="logout"></navbar>
+
+    <div class="navbar nodisplay">
+      <Navbar @logout="logout"></Navbar>
     </div>
-    <sidebar></sidebar>
+
+    <Sidebar class="nodisplay"></Sidebar>
+
     <div class="app-main">
       <router-view :admin_state="admin_state"></router-view>
     </div>
-    <!--
-    //col2
-    //col10
-    <router-view></router-view> -->
+
   </div>
 </template>
 
@@ -24,7 +24,7 @@ export default {
   name: 'home',
   data() {
     return {
-      data: { },
+      data: {},
       username: '',
       admin_state: null
     };
@@ -35,42 +35,44 @@ export default {
   methods: {
     callUser() {
       api.userDetails()
-      .then((response) => {
-        // assign data to data
-        this.data = response.data;
-        this.admin_state = this.data.state_code;
-        this.username = response.data.username;
-        // prints the welcome + username
-        let toast = this.$toasted.success('Welcome, ' + this.username + '!', {
-          theme: "outline",
-          position: "top-center",
-          duration : 3000,
-          icon : 'star'
-        });
-      })
-      .catch((error) => {
-        console.log('error');
-        console.log(error.response.status);
-        console.log(error.response.statusText);
-        if(error.response.status == 500) {
-          let toast = this.$toasted.error("Please Logout and come back again to continue!", {
+        .then( ( response ) => {
+          // assign data to data
+          this.data = response.data;
+          this.admin_state = this.data.state_code;
+          this.username = response.data.username;
+          // prints the welcome + username
+          let toast = this.$toasted.success( 'Welcome, ' + this.username + '!', {
             theme: "outline",
             position: "top-center",
-            duration : 3000,
-            icon : 'sync'
-          });
-        }
-      })
+            duration: 3000,
+            icon: 'star'
+          } );
+        } )
+        .catch( ( error ) => {
+          console.log( 'error' );
+          console.log( error.response.status );
+          console.log( error.response.statusText );
+          if ( error.response.status == 500 ) {
+            let toast = this.$toasted.error( "Please Logout and come back again to continue!", {
+              theme: "outline",
+              position: "top-center",
+              duration: 3000,
+              icon: 'sync'
+            } );
+          }
+        } )
     },
     logout() {
       Auth.destroyToken();
-      let toast = this.$toasted.show("Successfully Logged Out!", {
+      let toast = this.$toasted.show( "Successfully Logged Out!", {
         theme: "outline",
         position: "top-center",
-        duration : 3000,
-        icon : 'sync'
-      });
-      this.$router.push({name: 'Login'});
+        duration: 3000,
+        icon: 'sync'
+      } );
+      this.$router.push( {
+        name: 'Login'
+      } );
     }
   },
   components: {
@@ -81,18 +83,30 @@ export default {
 </script>
 
 <style lang="scss">
-// .tile.is-ancestor:last-child {
-//   margin-bottom: 0;
-// }
 .home {
 
+    .app-main {
+        height: 100%;
+        padding-left: 12rem;
+        padding-top: 1rem;
+        margin-right: 1rem;
+        margin-bottom: 1.5rem;
+    }
 
-  .app-main {
-    height: 100%;
-    padding-left: 12rem;
-    padding-top: 1rem;
-    margin-right: 1rem;
-    margin-bottom: 1.5rem;
-  }
+    @media print {
+        .nodisplay {
+            display: none;
+        }
+
+        .home {
+            display: none;
+        }
+
+        .app-main {
+            padding: 0;
+            margin: 0;
+        }
+
+    }
 }
 </style>

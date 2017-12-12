@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="sidebar">
+  <div class="sidebar nodisplay">
     <aside class="menu app-sidebar animated">
 
     <ul class="menu-list">
@@ -55,6 +55,13 @@ export default {
     }
     li a + ul {
         // margin: 0 10px 0 15px;
+    }
+
+    @media print {
+        .nodisplay {
+            display: none;
+        }
+
     }
 
 }
