@@ -3,6 +3,7 @@
     <div class="box">
       <div class="head-report nodisplay">
         <h3 class="title">Reports</h3>
+        <button class="button is-primary" v-if="data.length" @click="printReports">Print</button>
       </div>
 
       <div class="options nodisplay">
@@ -198,10 +199,14 @@ export default {
     },
 
     onSelect( value ) {
-      this.value = value
+      this.value = value;
     },
     onChange( value ) {
-      this.value = value
+      this.value = value;
+    },
+
+    printReports() {
+      window.print();
     }
   },
   computed: {
@@ -223,6 +228,12 @@ export default {
     .head-report {
         padding: 1rem;
         border-bottom: solid 1px #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .title {
+            margin: 0;
+        }
     }
     .vbta-menu.visible {
         position: relative;
