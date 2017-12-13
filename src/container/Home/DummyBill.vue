@@ -96,7 +96,7 @@
                         </div>
                       </div>
                     </th>
-                    <th>&#8377; {{item.cgst_amount = (this.item.cgst_percentage / 100) * this.item.taxable_amount}}</th>
+                    <th>&#8377; {{ getcgst_amount }}</th>
                     <th>
                       <div :class="{'has-error': errors.has('sgstRate') }">
                         <div class="field has-addons">
@@ -111,7 +111,7 @@
                         </div>
                       </div>
                     </th>
-                    <th>&#8377; {{item.sgst_amount = (this.item.sgst_percentage / 100) * this.item.taxable_amount}}</th>
+                    <th>&#8377; {{ getsgst_amount }}</th>
                     <th>
                       <div :class="{'has-error': errors.has('igstRate') }">
                         <div class="field has-addons">
@@ -126,9 +126,9 @@
                         </div>
                       </div>
                     </th>
-                    <th>&#8377; {{item.igst_amount = (this.item.igst_percentage / 100) * this.item.taxable_amount}}</th>
+                    <th>&#8377; {{ getigst_amount }}</th>
                     <th>
-                      &#8377; {{item.total_payable_amount = item.taxable_amount + item.cgst_amount + item.sgst_amount + item.igst_amount}}
+                      &#8377; {{Math.round((item.cgst_amount + item.sgst_amount + item.igst_amount) * 100) / 100}}
                     </th>
                   </tr>
                 </thead>
@@ -202,7 +202,7 @@
                             </div>
                           </div>
                         </th>
-                        <th class="amount"> &#8377; {{item.amount = item.quantity * item.product.price}}</th>
+                        <th class="amount"> &#8377; {{ getamount }}</th>
                         <th class="discPerc">
                           <div :class="{'has-error': errors.has('discount_percentage') }">
                             <div class="field has-addons">
@@ -214,20 +214,28 @@
                           </div>
                         </div>
                       </th>
-                      <th class="discAmount">&#8377; {{item.discount_amount = item.amount * (item.discount_percentage / 100)}}</th>
-                      <th class="taxAmount">&#8377; {{item.taxable_amount = item.amount - item.discount_amount}}</th>
+                      <th class="discAmount">&#8377; {{getdiscount_amount}}</th>
+                      <th class="taxAmount">&#8377; {{ gettaxable_amount }}</th>
                     </tr>
                     <tr v-if="!hideInputs2">
-                      <th colspan="2">CGST ({{item.cgst_percentage}}%) :
-                      &#8377; {{item.cgst_amount = (this.item.cgst_percentage / 100) * this.item.taxable_amount}}</th>
+                      <th></th>
+                      <th>CGST ({{item.cgst_percentage}}%) :
+                      &#8377; {{ getcgst_amount }}</th>
 
-                      <th colspan="2">SGST ({{item.sgst_percentage}}%) :
-                      &#8377; {{item.sgst_amount = (this.item.sgst_percentage / 100) * this.item.taxable_amount}}</th>
-                      <th colspan="2">IGST ({{item.igst_percentage}}%) :
-                      &#8377; {{item.igst_amount = (this.item.igst_percentage / 100) * this.item.taxable_amount}}</th>
-                      <th colspan="2">Total :
-                        &#8377;{{(item.total_payable_amount = item.taxable_amount + item.cgst_amount + item.sgst_amount + item.igst_amount).toFixed(2)}}
+                      <th>SGST ({{item.sgst_percentage}}%) :
+                      &#8377; {{ getsgst_amount }}</th>
+
+                      <th>IGST ({{item.igst_percentage}}%) :
+                      &#8377; {{ getigst_amount }}</th>
+
+                      <th colspan="2"> Total Tax Amount:
+                        &#8377; &#8377; {{Math.round((item.cgst_amount + item.sgst_amount + item.igst_amount) * 100) / 100}}
                       </th>
+
+                      <th colspan="2">Total :
+                        &#8377;{{ gettotal_payable_amount }}
+                      </th>
+
                       <th>
                         <p class="field is-pulled-right">
                           <a class="button" @click="addItemData">
@@ -316,6 +324,10 @@
           </div>
         </div>
       </div>
+
+      <pre>
+        {{item}}
+      </pre>
 
     </div>
   </div>
@@ -626,6 +638,41 @@ export default {
     }
   },
   computed: {
+
+    getcgst_amount() {
+      this.item.cgst_amount = ( this.item.cgst_percentage / 100 ) * this.item.taxable_amount;
+      return parseFloat( ( this.item.cgst_amount ).toFixed( 2 ) );
+    },
+
+    getsgst_amount() {
+      this.item.sgst_amount = ( this.item.sgst_percentage / 100 ) * this.item.taxable_amount;
+      return parseFloat( ( this.item.sgst_amount ).toFixed( 2 ) );
+    },
+
+    getigst_amount() {
+      this.item.igst_amount = ( this.item.igst_percentage / 100 ) * this.item.taxable_amount;
+      return parseFloat( ( this.item.igst_amount ).toFixed( 2 ) );
+    },
+
+    getdiscount_amount() {
+      this.item.discount_amount = this.item.amount * ( this.item.discount_percentage / 100 );
+      return parseFloat( ( this.item.discount_amount ).toFixed( 2 ) );
+    },
+
+    getamount() {
+      this.item.amount = this.item.quantity * this.item.product.price;
+      return parseFloat( ( this.item.amount ).toFixed( 2 ) );
+    },
+
+    gettaxable_amount() {
+      this.item.taxable_amount = this.item.amount - this.item.discount_amount;
+      return parseFloat( ( this.item.taxable_amount ).toFixed( 2 ) );
+    },
+
+    gettotal_payable_amount() {
+      this.item.total_payable_amount = this.item.taxable_amount + this.item.cgst_amount + this.item.sgst_amount + this.item.igst_amount;
+      return parseFloat( ( this.item.total_payable_amount ).toFixed( 2 ) );
+    }
 
   }
 }
