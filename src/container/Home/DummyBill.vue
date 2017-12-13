@@ -325,10 +325,6 @@
         </div>
       </div>
 
-      <pre>
-        {{item}}
-      </pre>
-
     </div>
   </div>
 </template>
