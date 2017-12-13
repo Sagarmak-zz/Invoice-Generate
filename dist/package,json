@@ -1,0 +1,10 @@
+{
+ "name": "sw",
+ "version": "1.0.0",
+ "description": "Billing System for Siddhartha Wear",
+ "author": "Sagar Makhija",
+ "private": true,
+ "scripts": {
+   "postinstall": "npm install express"
+ }
+}
