@@ -226,7 +226,7 @@
                       <th colspan="2">IGST ({{item.igst_percentage}}%) :
                       &#8377; {{item.igst_amount = (this.item.igst_percentage / 100) * this.item.taxable_amount}}</th>
                       <th colspan="2">Total :
-                        &#8377;{{item.total_payable_amount = item.taxable_amount + item.cgst_amount + item.sgst_amount + item.igst_amount}}
+                        &#8377;{{(item.total_payable_amount = item.taxable_amount + item.cgst_amount + item.sgst_amount + item.igst_amount).toFixed(2)}}
                       </th>
                       <th>
                         <p class="field is-pulled-right">
