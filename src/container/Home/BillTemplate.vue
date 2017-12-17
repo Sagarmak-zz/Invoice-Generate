@@ -248,6 +248,7 @@ export default {
       this.loadingLight = true;
       api.getBillByInvoiceNo( this.invoice_no )
         .then( response => {
+          console.log("Bill: ", response);
           this.loadingLight = false;
           if ( response.data.invoice_no == this.invoice_no ) {
             this.bill_details = response.data;

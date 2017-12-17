@@ -4,88 +4,94 @@ import Auth from '@/packages/auth/Auth.js';
 Vue.use(Router);
 
 let router = new Router({
-  mode: 'history',
-  linkExactActiveClass: 'is-active',
+  mode: "history",
+  linkExactActiveClass: "is-active",
   routes: [
     {
-      path: '/',
-      name: 'Login',
-      component: require('@/container/Login'),
+      path: "/",
+      name: "Login",
+      component: require("@/container/Login"),
       meta: { requiresAuth: false }
     },
     {
-      path: '/home',
-      component: require('@/container/Home'),
+      path: "/login2",
+      name: "Login2",
+      component: require("@/container/Login2"),
+      meta: { requiresAuth: false }
+    },
+    {
+      path: "/home",
+      component: require("@/container/Home"),
       meta: { requiresAuth: true },
       children: [
         {
-          path: '/',
-          name: 'Dashboard',
-          component: require('@/container/Home/Dashboard'),
+          path: "/",
+          name: "Dashboard",
+          component: require("@/container/Home/Dashboard"),
           meta: { requiresAuth: true }
         },
         {
-          path: '/bill',
-          name: 'Bill',
-          component: require('@/container/Home/Bill'),
+          path: "/bill",
+          name: "Bill",
+          component: require("@/container/Home/Bill"),
           meta: { requiresAuth: true }
         },
         {
-          path: '/user',
-          name: 'User',
-          component: require('@/container/Home/User'),
+          path: "/user",
+          name: "User",
+          component: require("@/container/Home/User"),
           meta: { requiresAuth: true }
         },
         {
-          path: '/product',
-          name: 'Product',
-          component: require('@/container/Home/Product'),
+          path: "/product",
+          name: "Product",
+          component: require("@/container/Home/Product"),
           meta: { requiresAuth: true }
         },
         {
-          path: '/history',
-          name: 'History',
-          component: require('@/container/Home/History'),
-          meta: { requiresAuth: true },
-        },
-        {
-          path: '/template/:invoice_no',
-          name: 'BillTemplate',
-          component: require('@/container/Home/Billtemplate'),
+          path: "/history",
+          name: "History",
+          component: require("@/container/Home/History"),
           meta: { requiresAuth: true }
         },
         {
-          path: '/reports',
-          name: 'Reports',
-          component: require('@/container/Home/Reports'),
+          path: "/template/:invoice_no",
+          name: "BillTemplate",
+          component: require("@/container/Home/Billtemplate"),
           meta: { requiresAuth: true }
         },
         {
-          path: '/settings',
-          name: 'Settings',
-          component: require('@/container/Home/Settings'),
+          path: "/reports",
+          name: "Reports",
+          component: require("@/container/Home/Reports"),
           meta: { requiresAuth: true }
         },
         {
-          path: '/createBill',
-          name: 'DummyBill',
-          component: require('@/container/Home/DummyBill'),
+          path: "/settings",
+          name: "Settings",
+          component: require("@/container/Home/Settings"),
           meta: { requiresAuth: true }
         },
+        {
+          path: "/createBill",
+          name: "DummyBill",
+          component: require("@/container/Home/DummyBill"),
+          meta: { requiresAuth: true }
+        }
       ]
     }, //Home ends*
     {
-      path: '/sample/:invoice_no',
-      name: 'Sample',
-      component: require('@/container/Sample'),
+      path: "/sample/:invoice_no",
+      name: "Sample",
+      component: require("@/container/Sample"),
       meta: { requiresAuth: true }
     },
     {
-      path: '/page404',
-      name: 'Page404',
-      component: require('@/container/Page404'),
+      path: "/page404",
+      name: "Page404",
+      component: require("@/container/Page404"),
       meta: { requiresAuth: true }
-    },
+    }
   ]
 });
 

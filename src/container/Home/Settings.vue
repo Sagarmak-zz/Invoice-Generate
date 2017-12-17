@@ -125,13 +125,50 @@
             </div>
           </div>
         </div>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Bank Name</label>
+              <p class="control">
+                <input v-model="bank_name = data.bank_name" class="input" name="bank_name" type="text" placeholder="Bank Name">
+              </p>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">IFSC Code</label>
+              <p class="control">
+                <input v-model="ifsc_code = data.ifsc_code" class="input" name="ifsc_code" type="text" placeholder="IFSC Code">
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Account Number</label>
+              <p class="control">
+                <input v-model="account_no = data.account_no" class="input" name="account_no" type="text" placeholder="Account Number">
+              </p>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Branch Name</label>
+              <p class="control">
+                <input v-model="branch_name = data.branch_name" class="input" name="branch_name" type="text" placeholder="Branch Name">
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="loading" v-show="loading">
         <span class="title is-4">Please wait while we load the data...</span>
         <div class="fa fa-spinner fa-spin"> </div>
       </div>
       <div class="update-button" v-if="!loading">
-        <button @keyup.enter="validateAndUpdateDetails" @click="validateAndUpdateDetails()" class="button is-success">Update</button>
+        <button @keyup.enter="validateAndUpdateDetails"
+        @click="validateAndUpdateDetails" class="button is-success">Update</button>
         <button @click="addUser = true" class="button is-pulled-right">Add User</button>
         <AddAdminUserModal v-if="addUser" @close="addUser = false"></AddAdminUserModal>
       </div>
@@ -199,6 +236,10 @@ export default {
       mobile: null,
       landline: null,
       states: [],
+      bank_name: '',
+      ifsc_code: '',
+      account_no: null,
+      branch_name: '',
       code: '',
       name: '',
       newStateId: null,
@@ -355,9 +396,12 @@ export default {
     },
     updateDetails() {
       this.loadingLight = true;
+      console.log('Api called');
       api.updateUserDetails( this.userId, this.admin_name, this.email, this.firm_name, this.gst_no,
-          this.address, this.city, this.state_code, this.pincode, this.mobile, this.landline )
+          this.address, this.city, this.state_code, this.pincode, this.mobile, this.landline, 
+          this.bank_name, this.branch_name, this.ifsc_code, this.account_no )
         .then( ( response ) => {
+          console.log(response);
           this.loadingLight = false;
           if ( response.data.message == "Failed to update record" ) {
             let toast = this.$toasted.error( 'Failed to update record.', {
