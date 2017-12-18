@@ -178,7 +178,7 @@ export default {
       api.betweenDate( this.start_date, this.end_date )
         .then( response => {
           this.loading = false;
-          console.log( response );
+          console.log( "Date between: ", response );
           if ( response.data.message == 'Data not found' ) {
             //no data present
             this.noData = true;

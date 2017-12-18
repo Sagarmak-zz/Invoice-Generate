@@ -10,7 +10,7 @@ let axiosInstance = axios.create({
 
 // Add a request interceptor
 axiosInstance.interceptors.request.use((config) => {
-  console.log(config);
+  // console.log(config);
   // 1 Do something before request is sent
   if(Auth.isAuthenticated()) {
     //always for request, use config of axios (read documentation)
