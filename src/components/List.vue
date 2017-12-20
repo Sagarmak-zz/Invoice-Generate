@@ -3,7 +3,7 @@
   <li>
     <router-link :to="{ name:route }">
       <span class="icon is-small"> <i :class=icon aria-hidden="true"></i> </span>
-      {{name}}
+      <span>{{name}}</span>
     </router-link>
   </li>
 </div>
@@ -23,6 +23,8 @@ export default {
 
 <style lang="scss">
 .list {
-
+  .icon.is-small {
+    display: inline;
+  }
 }
 </style>

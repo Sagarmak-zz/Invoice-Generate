@@ -95,7 +95,7 @@
                     </tr>
                     <tr>
                       <th>Address:</th>
-                      <td>{{bill_details.billing_address}}</td>
+                      <td>{{bill_details.billing_address}}, {{bill_details.billing_city}}, {{bill_details.billing_state}}-{{bill_details.billing_pincode}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -151,7 +151,7 @@
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody v-if="bill_details.product_detail">
                     <tr v-for="products, index in bill_details.product_detail">
                       <td>{{index+1}}</td>
                       <td>{{products.product_name}} - {{products.hsn_code}} </td>
@@ -288,7 +288,7 @@
       <div class="template-bottom">
         <div class="part-one">
           <span><b>N.B.</b></span>
-          <p><b>(1)</b> Interest will be charged @ 18% from the date of bill <b>(2)</b> The Payment of this bill should be made by demand draft of our name duly crossed by payee's A/c. only <b>(3)</b> Goods are sent on your account & risk and according to
+          <p><b>(1)</b> Interest will be charged @ 18% from the date of bill <br><b>(2)</b> Goods are sent on your account & risk and according to
             the rules of the Gujarat Garment Manufacturer Association(GGMA).</p>
           <p class="spacing">Subject to Ahmedabad Jurisdiction</p>
         </div>
@@ -395,7 +395,7 @@
                     </tr>
                     <tr>
                       <th>Address:</th>
-                      <td>{{bill_details.billing_address}}</td>
+                      <td>{{bill_details.billing_address}}, {{bill_details.billing_city}}, {{bill_details.billing_state}}-{{bill_details.billing_pincode}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -453,7 +453,7 @@
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody v-if="bill_details.product_detail">
                     <tr v-for="products, index in bill_details.product_detail">
                       <td>{{index+1}}</td>
                       <td>{{products.product_name}} - {{products.hsn_code}} </td>
@@ -465,7 +465,7 @@
                       <td>{{products.discount_amount}}</td>
                       <td>{{(products.quantity * products.price) - products.discount_amount }}</td>
                     </tr>
-                    <tr>
+                    <tr v-if="bill_details.product_detail.length == 1" v-for="i in 18">
                       <td>&nbsp;</td>
                       <td></td>
                       <td></td>
@@ -476,7 +476,8 @@
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr>
+
+                    <tr v-if="bill_details.product_detail.length == 2" v-for="i in 17">
                       <td>&nbsp;</td>
                       <td></td>
                       <td></td>
@@ -487,6 +488,55 @@
                       <td></td>
                       <td></td>
                     </tr>
+                    
+                    <tr v-if="bill_details.product_detail.length == 3" v-for="i in 16">
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
+                    <tr v-if="bill_details.product_detail.length == 4" v-for="i in 15">
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
+                    <tr v-if="bill_details.product_detail.length == 5" v-for="i in 14">
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
+                    <tr v-if="bill_details.product_detail.length > 5" v-for="i in 10">
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
                   </tbody>
                 </table>
               </div>
@@ -540,7 +590,7 @@
       <div class="template-bottom">
         <div class="part-one">
           <span><b>N.B.</b></span>
-          <p><b>(1)</b> Interest will be charged @ 18% from the date of bill <b>(2)</b> The Payment of this bill should be made by demand draft of our name duly crossed by payee's A/c. only <b>(3)</b> Goods are sent on your account & risk and according to
+          <p><b>(1)</b> Interest will be charged @ 18% from the date of bill <br><b>(2)</b> Goods are sent on your account & risk and according to
             the rules of the Gujarat Garment Manufacturer Association(GGMA).</p>
           <p class="spacing">Subject to Ahmedabad Jurisdiction</p>
         </div>
@@ -618,7 +668,7 @@
                     </tr>
                     <tr>
                       <th>Address:</th>
-                      <td>{{bill_details.billing_address}}</td>
+                      <td>{{bill_details.billing_address}}, {{bill_details.billing_city}}, {{bill_details.billing_state}}-{{bill_details.billing_pincode}}</td>
                     </tr>
                   </tbody>
                 </table>
@@ -676,7 +726,7 @@
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody v-if="bill_details.product_detail">
                     <tr v-for="products, index in bill_details.product_detail">
                       <td>{{index+1}}</td>
                       <td>{{products.product_name}} - {{products.hsn_code}} </td>
@@ -688,7 +738,7 @@
                       <td>{{products.discount_amount}}</td>
                       <td>{{(products.quantity * products.price) - products.discount_amount }}</td>
                     </tr>
-                    <tr>
+                    <tr v-if="bill_details.product_detail.length == 1" v-for="i in 18">
                       <td>&nbsp;</td>
                       <td></td>
                       <td></td>
@@ -699,7 +749,8 @@
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr>
+
+                    <tr v-if="bill_details.product_detail.length == 2" v-for="i in 17">
                       <td>&nbsp;</td>
                       <td></td>
                       <td></td>
@@ -710,6 +761,55 @@
                       <td></td>
                       <td></td>
                     </tr>
+                    
+                    <tr v-if="bill_details.product_detail.length == 3" v-for="i in 16">
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
+                    <tr v-if="bill_details.product_detail.length == 4" v-for="i in 15">
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
+                    <tr v-if="bill_details.product_detail.length == 5" v-for="i in 14">
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
+                    <tr v-if="bill_details.product_detail.length > 5" v-for="i in 10">
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
                   </tbody>
                 </table>
               </div>
@@ -763,7 +863,7 @@
       <div class="template-bottom">
         <div class="part-one">
           <span><b>N.B.</b></span>
-          <p><b>(1)</b> Interest will be charged @ 18% from the date of bill <b>(2)</b> The Payment of this bill should be made by demand draft of our name duly crossed by payee's A/c. only <b>(3)</b> Goods are sent on your account & risk and according to
+          <p><b>(1)</b> Interest will be charged @ 18% from the date of bill <br><b>(2)</b> Goods are sent on your account & risk and according to
             the rules of the Gujarat Garment Manufacturer Association(GGMA).</p>
           <p class="spacing">Subject to Ahmedabad Jurisdiction</p>
         </div>
@@ -806,7 +906,7 @@ export default {
       api
         .getBillByInvoiceNo(this.invoice_no)
         .then(response => {
-          console.log(response);
+        // console.log(response);
           this.loadingLight = false;
           if (response.data.invoice_no == this.invoice_no) {
             this.bill_details = response.data;
@@ -872,7 +972,7 @@ export default {
     }
   }
   .seller {
-    width: 55%;
+    max-width: 55%;
     .title.is-3 {
       margin: 0;
       padding-bottom: 0.5rem;
@@ -915,6 +1015,7 @@ export default {
     border-bottom: solid 2px #ddd;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     .tile.is-ancestor {
       margin-bottom: 0;
     }

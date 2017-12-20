@@ -185,7 +185,7 @@
           <span class="code">{{state.state_code}}</span>
           <span class="name">{{state.state_name}}</span>
           <div class="icons">
-            <a @click="deleteState(state.state_code)" class="icon is-small"> <i class="fa fa-trash-o"></i> </a>
+            <a @click="deleteState(state.state_code)" class="icon is-small"> <i class="fas fa-trash-alt"></i> </a>
           </div>
         </div>
       </div>

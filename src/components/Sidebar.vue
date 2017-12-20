@@ -1,15 +1,15 @@
 <template lang="html">
-  <div class="sidebar nodisplay">
+  <div class="sidebar">
     <aside class="menu app-sidebar animated">
 
     <ul class="menu-list">
-      <List name="Dashboard" icon="fa fa-tachometer" route="Dashboard"></List>
+      <List name="Dashboard" icon="fab fa-slack-hash" route="Dashboard"></List>
       <!-- <List name="Generate Bill" icon="fa fa-file-text" route="Bill"></List> -->
-      <List name="Generate Bill" icon="fa fa-file-text" route="DummyBill"></List>
-      <List name="User" icon="fa fa-user-plus" route="User"></List>
+      <List name="Generate Bill" icon="fas fa-file-alt" route="DummyBill"></List>
+      <List name="User" icon="far fa-user-circle" route="User"></List>
       <List name="Product" icon="fa fa-plus" route="Product"></List>
       <List name="History" icon="fa fa-history" route="History"></List>
-      <List name="Reports" icon="fa fa-line-chart" route="Reports"></List>
+      <List name="Reports" icon="fas fa-chart-line" route="Reports"></List>
       <List name="Settings" icon="fa fa-cogs" route="Settings"></List>
     </ul>
   </aside>

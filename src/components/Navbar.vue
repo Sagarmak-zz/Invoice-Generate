@@ -19,7 +19,7 @@
               <span class="icon is-small"> <i class="fa fa-caret-down" aria-hidden="true"></i> </span> </a>
               <ChangePasswordModal v-if="changePassword" @close="changePassword = false"></ChangePasswordModal>
             <a @click="$emit('logout')" class="nav-item">
-              <span class="icon is-small"> <i class="fa fa-sign-out" aria-hidden="true"></i> </span>
+              <span class="icon is-small"> <i class="fas fa-sign-out-alt" aria-hidden="true"></i> </span>
               Logout
             </a>
           </div>

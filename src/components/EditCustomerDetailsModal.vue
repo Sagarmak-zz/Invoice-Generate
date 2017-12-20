@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="edit-customer-modal">
-    <a v-if="hidden" @click="hidden=!hidden" type="icon is-small"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
+    <a v-if="hidden" @click="hidden=!hidden" type="icon is-small"><i class="fas fa-edit" aria-hidden="true"></i></a>
     <!-- <a v-if="hidden" @click="hidden=!hidden" class="icon is-small"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> </a> -->
     <div class="modal is-active" v-if="!hidden">
       <div class="modal-background"></div>

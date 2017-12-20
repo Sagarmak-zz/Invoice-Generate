@@ -107,7 +107,7 @@
                       <td>{{bill_details.billing_address}}</td>
                     </tr>
                     <tr>
-                      <td colspan="2">Kalupur Kotni Rang, Ahmedabad, Gujarat, 380001</td>
+                      <td colspan="2"></td>
                     </tr>
                   </tbody>
                 </table>

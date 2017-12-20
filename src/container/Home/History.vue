@@ -134,6 +134,7 @@ export default {
     height: 100%;
     .box {
         padding: 0;
+        margin-bottom: 0;
     }
 
     .reports-body {
