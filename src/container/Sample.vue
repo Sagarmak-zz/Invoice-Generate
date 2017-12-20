@@ -146,7 +146,7 @@
                       <th>Qty</th>
                       <th>Rate</th>
                       <th>Amount</th>
-                      <th>Rate</th>
+                      <th>%</th>
                       <th>Amount</th>
                       <th></th>
                     </tr>
@@ -158,12 +158,13 @@
                       <td>{{products.size}}</td>
                       <td>{{products.quantity}}</td>
                       <td>{{products.price}}</td>
-                      <td>{{products.quantity * products.price }}</td>
+                      <td>{{(products.quantity * products.price).toLocaleString('en-IN') }}</td>
                       <td>{{products.discount_percentage}}</td>
                       <td>{{products.discount_amount}}</td>
-                      <td>{{(products.quantity * products.price) - products.discount_amount }}</td>
+                      <td>{{((products.quantity * products.price) - products.discount_amount).toLocaleString('en-IN') }}</td>
                     </tr>
-                    <tr>
+
+                    <tr v-if="bill_details.product_detail.length == 1" v-for="i in 18">
                       <td>&nbsp;</td>
                       <td></td>
                       <td></td>
@@ -174,7 +175,8 @@
                       <td></td>
                       <td></td>
                     </tr>
-                    <tr>
+
+                    <tr v-if="bill_details.product_detail.length == 2" v-for="i in 17">
                       <td>&nbsp;</td>
                       <td></td>
                       <td></td>
@@ -185,6 +187,55 @@
                       <td></td>
                       <td></td>
                     </tr>
+                    
+                    <tr v-if="bill_details.product_detail.length == 3" v-for="i in 16">
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
+                    <tr v-if="bill_details.product_detail.length == 4" v-for="i in 15">
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
+                    <tr v-if="bill_details.product_detail.length == 5" v-for="i in 14">
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+
+                    <tr v-if="bill_details.product_detail.length > 5" v-for="i in 10">
+                      <td>&nbsp;</td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+           
                   </tbody>
                 </table>
               </div>
@@ -208,7 +259,7 @@
                     <tbody>
                       <tr>
                         <td>Total Taxable Amount: </td>
-                        <th>&#8377; {{bill_details.taxable_amount}}</th>
+                        <th>&#8377; {{(bill_details.taxable_amount)}}</th>
                       </tr>
                       <tr>
                         <td>CGST: {{bill_details.cgst_percentage}}% </td>
@@ -224,7 +275,7 @@
                       </tr>
                       <tr>
                         <td>Total Invoice Value: </td>
-                        <th>&#8377; {{bill_details.total_payable_amount}}</th>
+                        <th>&#8377; {{(bill_details.total_payable_amount)}}</th>
                       </tr>
                     </tbody>
                   </table>
@@ -728,211 +779,219 @@
 </template>
 
 <script>
-  import api from '@/api/main';
-  import num2Word from 'num2Word';
-  import LoadingLight from '@/components/LoadingLight';
-  export default {
-    name: 'sample',
-    updated() {
-      window.print();
-    },
-    created() {
-      this.invoice_no = this.$route.params.invoice_no;
-      this.getBillByInvoiceNo();
-      // console.log(num2Word('1,234'));
-    },
-    data() {
-      return {
-        invoice_no: '',
-        bill_details: {},
-        amountInWords: null,
-        loadingLight: false
-      };
-    },
-    methods: {
-      getBillByInvoiceNo() {
-        this.loadingLight = true;
-        api.getBillByInvoiceNo(this.invoice_no)
-          .then(response => {
-            console.log(response);
+import api from "@/api/main";
+import num2Word from "num2Word";
+import LoadingLight from "@/components/LoadingLight";
+export default {
+  name: "sample",
+  updated() {
+    // window.print();
+  },
+  created() {
+    this.invoice_no = this.$route.params.invoice_no;
+    this.getBillByInvoiceNo();
+    // console.log(num2Word('1,234'));
+  },
+  data() {
+    return {
+      invoice_no: "",
+      bill_details: {},
+      amountInWords: null,
+      loadingLight: false
+    };
+  },
+  methods: {
+    getBillByInvoiceNo() {
+      this.loadingLight = true;
+      api
+        .getBillByInvoiceNo(this.invoice_no)
+        .then(response => {
+          console.log(response);
+          this.loadingLight = false;
+          if (response.data.invoice_no == this.invoice_no) {
+            this.bill_details = response.data;
+            this.amountInWords = this.toUpper(
+              num2Word(this.bill_details.total_payable_amount)
+            );
+          } else {
             this.loadingLight = false;
-            if (response.data.invoice_no == this.invoice_no) {
-              this.bill_details = response.data;
-              this.amountInWords = this.toUpper(num2Word(this.bill_details.total_payable_amount));
-            } else {
-              this.loadingLight = false;
-              this.$router.push({
-                name: 'Page404'
-              });
-            }
-          })
-          .catch(error => {
-            this.loadingLight = false;
-            console.log(error);
-          })
-      },
-      toUpper(str) {
-        return str
-          .toLowerCase()
-          .split(' ')
-          .map(function(word) {
-            return word[0].toUpperCase() + word.substr(1);
-          })
-          .join(' ');
-      }
+            this.$router.push({
+              name: "Page404"
+            });
+          }
+        })
+        .catch(error => {
+          this.loadingLight = false;
+          console.log(error);
+        });
     },
-    components: {
-      LoadingLight
+    toUpper(str) {
+      return str
+        .toLowerCase()
+        .split(" ")
+        .map(function(word) {
+          return word[0].toUpperCase() + word.substr(1);
+        })
+        .join(" ");
     }
+  },
+  components: {
+    LoadingLight
   }
+};
 </script>
 
 <style lang="scss">
-  .sample {
+.sample {
+  @media print {
+    .box {
+      box-shadow: none;
+    }
+  }
 
-    @media print {
-      .box {
-        box-shadow: none;
-      }
-    }
-
-    font: -webkit-small-control;
-    .a4size {
-      padding: 0;
-      width: 21cm;
-      height: 30.2cm;
-    }
-    .template-body-main {
-      max-height: 6.0cm;
-      padding: 1.5rem;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-      display: flex;
-      justify-content: space-between;
-      border-bottom: solid 2px #ddd;
-      .tile.is-ancestor {
-        .table-responsive {
-          .table.is-bordered.is-striped.is-narrow {
-            margin-bottom: 0;
-          }
-        }
-      }
-    }
-    .seller {
-      width: 55%;
-      .title.is-3 {
-        margin: 0;
-        padding-bottom: 0.5rem;
-        background: whitesmoke;
-        font-size: 44px; // font-variant: unicase;
-        font-family: "Avenir LT Std 55", Arial, sans-serif;
-      }
-    }
-    .invoice {
-      p {
-        text-align: center;
-      }
-      .invoice-head {
-        color: black;
-        font-weight: 500;
-        font-size: 3rem;
-      }
-      .invoice-details {
-        font-size: 17px;
-        font-weight: 500;
-      }
-      .invoice-details-copy {
-        font-size: 0.8rem;
-      }
-      .invoice-details.last {
-        padding-bottom: 0.2rem;
-      }
-      .invoice-no-date {
-        display: flex;
-        justify-content: space-evenly;
-        align-items: center;
-        margin-top: 0.5rem;
-        margin-bottom: 0.5rem;
-      }
-    }
-    .buyer {
-      padding: 1.5rem;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-      border-bottom: solid 2px #ddd;
-      display: flex;
-      justify-content: space-between;
-      .tile.is-ancestor {
-        margin-bottom: 0;
-      }
-      .tile.is-parent {
-        padding-bottom: 0;
+  font: -webkit-small-control;
+  .a4size {
+    padding: 0;
+    width: 21cm;
+    height: 30.2cm;
+  }
+  .template-body-main {
+    max-height: 6cm;
+    padding: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: solid 2px #ddd;
+    .tile.is-ancestor {
+      .table-responsive {
         .table.is-bordered.is-striped.is-narrow {
           margin-bottom: 0;
         }
       }
-      .right-side {
-        float: right;
-      }
     }
-    .template-body-items {
-      height: 17cm;
-      padding: 2rem;
-      padding-top: 1rem;
-      border-bottom: solid 2px #ddd;
-      th,
-      td {
-        text-align: center;
-      }
-      .tile.is-ancestor {
+  }
+  .seller {
+    width: 55%;
+    .title.is-3 {
+      margin: 0;
+      padding-bottom: 0.5rem;
+      background: whitesmoke;
+      font-size: 44px; // font-variant: unicase;
+      font-family: "Avenir LT Std 55", Arial, sans-serif;
+    }
+  }
+  .invoice {
+    p {
+      text-align: center;
+    }
+    .invoice-head {
+      color: black;
+      font-weight: 500;
+      font-size: 3rem;
+    }
+    .invoice-details {
+      font-size: 17px;
+      font-weight: 500;
+    }
+    .invoice-details-copy {
+      font-size: 0.8rem;
+    }
+    .invoice-details.last {
+      padding-bottom: 0.2rem;
+    }
+    .invoice-no-date {
+      display: flex;
+      justify-content: space-evenly;
+      align-items: center;
+      margin-top: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+  }
+  .buyer {
+    padding: 1.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: solid 2px #ddd;
+    display: flex;
+    justify-content: space-between;
+    .tile.is-ancestor {
+      margin-bottom: 0;
+    }
+    .tile.is-parent {
+      padding-bottom: 0;
+      .table.is-bordered.is-striped.is-narrow {
         margin-bottom: 0;
       }
-      .tile.is-parent {
-        padding-bottom: 0;
-        .table.is-bordered.is-striped.is-narrow {
-          margin: 0;
-        }
-      }
-      .bottom-details {
-        display: flex;
-        justify-content: space-between;
-        .part-one {
-          border: solid 1px #ddd;
-          width: 60%;
-          .blank {
-            padding-top: 0.5rem;
-            height: 50%;
-            border-bottom: solid 1px #ddd;
-          }
-          .amount-in-words {
-            padding-top: 0.5rem;
-            height: 50%;
-          }
-        }
-        .table-responsive {
-          width: 100%;
-          float: right;
-        }
+    }
+    .right-side {
+      float: right;
+    }
+    table.is-bordered.is-striped.is-narrow {
+      min-width: 19rem;
+      max-width: 19rem;
+    }
+  }
+  .template-body-items {
+    height: 17cm;
+    padding: 2rem;
+    padding-top: 1rem;
+    border-bottom: solid 2px #ddd;
+    display: flex;
+    flex-direction: column;
+    th,
+    td {
+      text-align: center;
+    }
+    .tile.is-ancestor {
+      margin-bottom: 0;
+    }
+    .tile.is-parent {
+      padding-bottom: 0;
+      .table.is-bordered.is-striped.is-narrow {
+        margin: 0;
       }
     }
-    .template-bottom {
-      padding: 1rem;
+    .bottom-details {
       display: flex;
       justify-content: space-between;
       .part-one {
-        max-width: 23rem;
-        .spacing {
-          padding-top: 1.5rem;
+        border: solid 1px #ddd;
+        width: 60%;
+        .blank {
+          padding-top: 0.5rem;
+          height: 50%;
+          border-bottom: solid 1px #ddd;
+        }
+        .amount-in-words {
+          padding-top: 0.5rem;
+          height: 50%;
         }
       }
-      .part-two {
-        display: flex;
-        justify-content: space-between;
-        flex-direction: column;
-        p {
-          font-weight: 700;
-        }
+      .table-responsive {
+        width: 100%;
+        float: right;
       }
     }
   }
+  .template-bottom {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    .part-one {
+      max-width: 23rem;
+      .spacing {
+        padding-top: 1.5rem;
+      }
+    }
+    .part-two {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+      p {
+        font-weight: 700;
+      }
+    }
+  }
+}
 </style>

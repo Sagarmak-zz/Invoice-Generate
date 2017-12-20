@@ -202,7 +202,7 @@
                             </div>
                           </div>
                         </th>
-                        <th class="amount"> &#8377; {{ getamount }}</th>
+                        <th class="amount"> &#8377; {{ getamount.toLocaleString('en-IN') }}</th>
                         <th class="discPerc">
                           <div :class="{'has-error': errors.has('discount_percentage') }">
                             <div class="field has-addons">
@@ -215,7 +215,7 @@
                         </div>
                       </th>
                       <th class="discAmount">&#8377; {{getdiscount_amount}}</th>
-                      <th class="taxAmount">&#8377; {{ gettaxable_amount }}</th>
+                      <th class="taxAmount">&#8377; {{ gettaxable_amount.toLocaleString('en-IN') }}</th>
                     </tr>
                     <tr v-if="!hideInputs2">
                       <th></th>
@@ -229,11 +229,11 @@
                       &#8377; {{ getigst_amount }}</th>
 
                       <th colspan="2"> Total Tax Amount:
-                        &#8377; &#8377; {{Math.round((item.cgst_amount + item.sgst_amount + item.igst_amount) * 100) / 100}}
+                        &#8377; {{Math.round((item.cgst_amount + item.sgst_amount + item.igst_amount) * 100) / 100}}
                       </th>
 
                       <th colspan="2">Total :
-                        &#8377;{{ gettotal_payable_amount }}
+                        &#8377;{{ gettotal_payable_amount.toLocaleString('en-IN') }}
                       </th>
 
                       <th>
@@ -285,10 +285,10 @@
                         <td class="prod-size">{{it.size}}</td>
                         <td class="prod-qty">{{it.quantity}}</td>
                         <td class="prod-price">&#8377; {{it.price}}</td>
-                        <td class="prod-amt">&#8377; {{it.amount}}</td>
+                        <td class="prod-amt">&#8377; {{it.amount.toLocaleString('en-IN')}}</td>
                         <td class="disc-rate">{{it.discount_percentage}}%</td>
                         <td class="disc-amt">&#8377; {{it.discount_amount}}</td>
-                        <td class="taxable-amt">&#8377; {{it.taxable_amount}}</td>
+                        <td class="taxable-amt">&#8377; {{it.taxable_amount.toLocaleString('en-IN')}}</td>
                         <td class="cross"><a class="icon" @click="removeItem(it, index)">
                           <i class="fa fa-times" aria-hidden="true"></i>
                         </a></td>
@@ -307,11 +307,11 @@
                   <div class="table-responsive">
                     <table class="table is-bordered is-striped is-narrow">
                       <tbody>
-                        <tr> <td>Total Taxable Amount:</td> <th> &#8377; {{item.ftaxable_amount}} </th> </tr>
-                        <tr> <td>CGST:</td> <th> &#8377; {{item.fcgst_amount}} </th> </tr>
-                        <tr> <td>SGST:</td> <th> &#8377; {{item.fsgst_amount}} </th> </tr>
-                        <tr> <td>IGST:</td> <th> &#8377; {{item.figst_amount}} </th> </tr>
-                        <tr> <td>Total Invoice Value:</td> <th> &#8377; {{item.ftotal_payable_amount}} </th> </tr>
+                        <tr> <td>Total Taxable Amount:</td> <th> &#8377; {{item.ftaxable_amount.toLocaleString('en-IN')}} </th> </tr>
+                        <tr> <td>CGST:</td> <th> &#8377; {{item.fcgst_amount.toLocaleString('en-IN')}} </th> </tr>
+                        <tr> <td>SGST:</td> <th> &#8377; {{item.fsgst_amount.toLocaleString('en-IN')}} </th> </tr>
+                        <tr> <td>IGST:</td> <th> &#8377; {{item.figst_amount.toLocaleString('en-IN')}} </th> </tr>
+                        <tr> <td>Total Invoice Value:</td> <th> &#8377; {{item.ftotal_payable_amount.toLocaleString('en-IN')}} </th> </tr>
                       </tbody>
                     </table>
                   </div>
