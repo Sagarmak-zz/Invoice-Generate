@@ -851,10 +851,6 @@ export default {
         max-width: 100%;
     }
 
-    .box {
-        border-radius: 0;
-    }
-
     .table {
         padding: 2rem 1rem 1rem;
     }
