@@ -26,7 +26,7 @@
               <label class="label">Contact Person Name</label>
               <p class="control">
                 <input v-model="contact_person_name" class="input" name="cp_name"
-                v-validate="'required|alpha'" type="email" placeholder="Contact Person Name">
+                v-validate="'required'" type="email" placeholder="Contact Person Name">
               </p>
               <div v-show="errors.has('cp_name')" class="help is-danger">
                 The Contact Person Name is required.
