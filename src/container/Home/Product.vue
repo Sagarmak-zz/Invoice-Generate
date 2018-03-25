@@ -1,55 +1,18 @@
 <template lang="html">
   <div class="add-product">
     <div class="box">
+
       <LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
+
       <div class="head-product">
         <h3 class="title">Add Product</h3>
-        <button class="button is-primary" v-if="!showAddProduct" @click="showAddProduct = true">Add</button>
-        <button class="button" v-if="showAddProduct" @click="showAddProduct = false">Hide</button>
+        <button class="button is-primary" v-if="!showAddProductFlash" @click="showAddProductFlash = true">Add</button>
+        <button class="button" v-if="showAddProductFlash" @click="showAddProductFlash = false">Hide</button>
       </div>
 
-      <div class="hide-seek-product" v-if="showAddProduct">
-        <div class="columns">
-          <div class="column">
-            <div class="field">
-              <label class="label">Product Name</label>
-              <p class="control">
-                <input v-model="product_name" class="input" name="product_name" v-validate="'required'" type="text" placeholder="Product Name">
-              </p>
-              <div v-show="errors.has('product_name')" class="help is-danger">
-                The Product Name is required.
-              </div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label">HSN Code</label>
-              <p class="control">
-                <input v-model="hsn_code" class="input" name="hsn_code" v-validate="'required'" type="email" placeholder="HSN Code">
-              </p>
-              <div v-show="errors.has('hsn_code')" class="help is-danger">
-                The HSN Code is required.
-              </div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label">Price</label>
-              <p class="control">
-                <input @keyup.enter="validateBeforeSubmit()" v-model="product_price" class="input" name="price" v-validate="'required'" type="text" placeholder="Price">
-              </p>
-              <div v-show="errors.has('price')" class="help is-danger">
-                The Price is required.
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="button-form">
-          <a @click="validateBeforeSubmit()" class="button is-primary">Save</a>
-        </div>
-      </div>
+      <AddProductFlash v-if="showAddProductFlash"></AddProductFlash>
 
-      <div class="reports" v-if="!noData">
+      <div class="reports" v-if="!isData">
         <div class="tile is-ancestor" v-if="!loading">
           <div class="tile is-parent">
             <article class="tile is-child">
@@ -89,7 +52,7 @@
           <div class="fa fa-spinner fa-spin"> </div>
         </div>
       </div>
-      <div class="noData" v-if="noData">
+      <div class="isData" v-if="isData">
         <h1 class="title">No Data at the Moment.</h1>
       </div>
     </div>
@@ -98,13 +61,15 @@
 
 <script>
 import api from '@/api/main';
-import AddProductModal from '@/components/AddProductModal';
+import AddProductModal from '@/components/Product/AddProductModal';
+import AddProductFlash from '@/components/Product/AddProductFlash';
 import EditProductModal from '@/components/EditProductModal';
 import LoadingLight from '@/components/LoadingLight';
 export default {
   name: 'add-product',
   components: {
     AddProductModal,
+    AddProductFlash,
     EditProductModal,
     LoadingLight
   },
@@ -113,17 +78,19 @@ export default {
     this.$bus.$on( 'close', () => {
       this.showAddProductModal = false;
     } );
+    this.getProductFlashData();
   },
   data() {
     return {
-      showAddProductModal: false,
-      showAddProduct: false,
-      product_name: '',
-      hsn_code: '',
-      product_price: null,
+      product: {
+        product_name: '',
+        hsn_code: '',
+        product_price: null,
+      },
+      showAddProductFlash: false,
       products: [],
       showEditProductModal: false,
-      noData: false,
+      isData: false,
       loading: false,
       loadingLight: false
     };
@@ -132,52 +99,47 @@ export default {
     getProducts() {
       this.loading = true;
       api.getProducts()
-        .then( ( response ) => {
-          if ( response.data.products ) {
-            this.loading = false;
-            this.products = response.data.products;
-            this.noData = false;
-          } else {
-            this.noData = true;
-          }
-        } )
-        .catch( ( error ) => {
-          console.log( error );
-        } )
+      .then( ( response ) => {
+        if ( response.data.products ) {
+          this.loading = false;
+          this.products = response.data.products;
+          this.isData = false;
+        } else {
+          this.isData = true;
+        }
+      } )
+      .catch( ( error ) => {
+        console.log( error );
+      } )
     },
-
-    validateBeforeSubmit() {
-      this.validate()
-      if ( !this.errors.any() ) {
-        this.loadingLight = true;
-        api.addProduct( this.product_name, this.hsn_code, this.product_price )
-          .then( ( response ) => {
-            this.loadingLight = false;
-            if ( response.status == 200 ) {
-              this.showAddProduct = false;
-              this.getProducts();
-              let toast = this.$toasted.success( "Product Added Successfully!", {
-                theme: "outline",
-                position: "top-center",
-                duration: 3000
-              } );
-            }
-          } )
-          .catch( ( error ) => {
-            this.loadingLight = false;
-            console.log( error );
-          } )
-      } else {
-        console.log( 'Validation Failed' );
-        let toast = this.$toasted.error( 'Please fill in the details.', {
-          theme: "outline",
-          position: "bottom-center",
-          duration: 3000
-        } );
-      }
+    getProductFlashData() {
+      this.$bus.$on('add-product-flash', (data) => {
+        this.showAddProductFlash = false;
+        this.product.product_name = data.product.product_name;
+        this.product.hsn_code = data.product.hsn_code;
+        this.product.product_price = data.product.product_price;
+        this.addProduct();
+      });
     },
-    validate() {
-      this.$validator.validateAll();
+    addProduct() {
+      this.loadingLight = true;
+      api.addProduct( this.product.product_name, this.product.hsn_code, this.product.product_price )
+      .then( ( response ) => {
+        this.loadingLight = false;
+        if ( response.status == 200 ) {
+          this.showAddProduct = false;
+          this.getProducts();
+          let toast = this.$toasted.success( "Product Added Successfully!", {
+            theme: "outline",
+            position: "top-center",
+            duration: 3000
+          } );
+        }
+      } )
+      .catch( ( error ) => {
+        this.loadingLight = false;
+        console.log( error );
+      } )
     }
   }
 }
@@ -185,54 +147,54 @@ export default {
 
 <style lang="scss">
 .add-product {
-    .box {
-        padding: 0;
+  .box {
+    padding: 0;
+  }
+  .head-product {
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: solid 1px #ddd;
+    .title {
+      margin: 0;
     }
-    .head-product {
-        padding: 1rem;
-        display: flex;
-        justify-content: space-between;
-        border-bottom: solid 1px #ddd;
-        .title {
-            margin: 0;
-        }
-    }
-    .reports {
-        // important
-        padding: 1rem;
-        overflow-x: scroll;
-        table-layout: inherit;
-    }
+  }
+  .reports {
+    // important
+    padding: 1rem;
+    overflow-x: scroll;
+    table-layout: inherit;
+  }
 
-    .hide-seek-product {
-        border-bottom: solid 1px #ddd;
-        .columns {
-            padding: 0.3rem;
-            margin: 0;
-        }
-        .button-form {
-            padding: 1rem;
-            border-top: solid 1px #ddd;
-        }
+  .hide-seek-product {
+    border-bottom: solid 1px #ddd;
+    .columns {
+      padding: 0.3rem;
+      margin: 0;
     }
+    .button-form {
+      padding: 1rem;
+      border-top: solid 1px #ddd;
+    }
+  }
 
-    .product-head {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 1rem;
-        .title {
-            margin: 0;
-        }
+  .product-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    .title {
+      margin: 0;
     }
+  }
 
-    .noData {
-        padding: 1rem;
-    }
+  .isData {
+    padding: 1rem;
+  }
 
-    .loading {
-        margin-top: 0.3rem;
-        margin-left: 0.3rem;
-    }
+  .loading {
+    margin-top: 0.3rem;
+    margin-left: 0.3rem;
+  }
 }
 </style>
