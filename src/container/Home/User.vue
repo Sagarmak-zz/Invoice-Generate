@@ -1,203 +1,18 @@
 <template lang="html">
   <div class="add-user">
     <div class="box">
+
       <LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
+
       <div class="head-user">
         <h3 class="title">Users</h3>
-        <button class="button is-primary is-pulled-right" v-if="!showAddUserModal" @click="showAddUserModal = true">Add</button>
-        <button class="button" v-if="showAddUserModal" @click="showAddUserModal = false">Hide</button>
-      </div>
-      <div v-if="showAddUserModal">
-        <div class="columns">
-          <div class="column">
-            <div class="field">
-              <label class="label">Firm Name</label>
-              <p class="control">
-                <input v-model="firm_name" class="input" name="firm_name"
-                v-validate="'required'" type="text" placeholder="Name">
-              </p>
-              <div v-show="errors.has('firm_name')" class="help is-danger">
-                The Firm Name is required.
-              </div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label">Contact Person Name</label>
-              <p class="control">
-                <input v-model="contact_person_name" class="input" name="cp_name"
-                v-validate="'required'" type="email" placeholder="Contact Person Name">
-              </p>
-              <div v-show="errors.has('cp_name')" class="help is-danger">
-                The Contact Person Name is required.
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column gst">
-            <label class="label">GST Number</label>
-            <div class="field has-addons">
-              <p class="control">
-                <input v-model="gst_no" class="input" name="gst_no" v-validate="'required|min:15'" type="text" placeholder="GST Number">
-              </p>
-              <div class="control">
-                <a class="button">
-                  {{gst_no.length}}/15
-                </a>
-              </div>
-            </div>
-            <div v-show="errors.has('gst_no')" class="help is-danger">
-              The GST Number is required and should be more than 14 characters.
-            </div>
-          </div>
-          <div class="column email">
-            <div class="field">
-              <label class="label">Email</label>
-              <p class="control">
-                <input v-model="email" name="billemail" v-validate="'email'" type="email" placeholder="Email" class="input">
-              </p>
-              <div class="help is-danger" v-show="errors.has('billemail')">
-                The Email should be a valid Email address.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <h3 class="title billing">Billing Address</h3>
-        <div class="columns">
-          <div class="column">
-            <div class="field">
-              <label class="label">Address</label>
-              <p class="control">
-                <textarea v-model="billing.address" name="billaddress" class="textarea" placeholder="Address"></textarea>
-              </p>
-            </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label">Contact No(Mobile)</label>
-              <p class="control">
-                <input v-model="billing.mobile" name="billmobile_no" v-validate="'numeric|min:8'" type="number" placeholder="Contact No" class="input">
-              </p>
-              <div class="help is-danger" v-show="errors.has('billmobile_no')">
-                The Contact Number field is required and should contain at least 8 numeric values.
-              </div>
-            </div>
-            <div class="field">
-              <label class="label">Contact No(Landline)</label>
-              <p class="control">
-                <input v-model="billing.landline" name="billlandline_no" v-validate="'numeric|min:8'" type="number" placeholder="Contact No" class="input">
-              </p>
-              <div class="help is-danger" v-show="errors.has('billlandline_no')">
-                The Contact Number field should contain at least 8 numeric values.
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="columns">
-          <div class="column">
-            <div class="field">
-              <label class="label">City</label>
-              <p class="control">
-                <input v-model="billing.city" class="input" name="billcity" type="text" placeholder="City">
-              </p>
-            </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label">State</label>
-              <p class="control">
-                <StateDropdownNewCustomer1></StateDropdownNewCustomer1>
-              </p>
-              <div v-show="errors.has('billstate')" class="help is-danger">
-                The State is required.
-              </div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label">Pincode</label>
-              <p class="control">
-                <input v-model="billing.pincode" name="billpincode" type="number" placeholder="Pincode" class="input">
-              </p>
-            </div>
-          </div>
-        </div>
-
-        <div class="shipping address">
-          <h3 class="title">Shipping Address</h3>
-          <button class="button is-primary" @click="same">Same as Above</button>
-        </div>
-        <div class="columns">
-          <div class="column">
-            <div class="field">
-              <label class="label">Address Line 1</label>
-              <p class="control">
-                <textarea v-model="shipping.address" name="shipaddress" class="textarea" placeholder="Address"></textarea>
-              </p>
-              <div v-show="errors.has('shipaddress')" class="help is-danger">
-                The Temporary Address should be minimum of 10 letters.
-              </div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label">Contact No(Mobile)</label>
-              <p class="control">
-                <input v-model="shipping.mobile" name="shipmobile_no" v-validate="'numeric|min:8'" type="number" placeholder="Contact No" class="input">
-              </p>
-              <div class="help is-danger" v-show="errors.has('shipmobile_no')">
-                The Contact Number field should contain at least 8 numeric values.
-              </div>
-            </div>
-            <div class="field">
-              <label class="label">Contact No(Landline)</label>
-              <p class="control">
-                <input v-model="shipping.landline" name="shiplandline_no" v-validate="'numeric|min:8'" type="number" placeholder="Contact No" class="input">
-              </p>
-              <div class="help is-danger" v-show="errors.has('shiplandline_no')">
-                The Contact Number field should contain at least 8 numeric values.
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="columns">
-          <div class="column">
-            <div class="field">
-              <label class="label">City</label>
-              <p class="control">
-                <input v-model="shipping.city" class="input" name="shipcity" type="text" placeholder="City">
-              </p>
-            </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label">State</label>
-              <p class="control">
-                <StateDropdownNewCustomer2></StateDropdownNewCustomer2>
-              </p>
-              <div v-show="errors.has('shipstate')" class="help is-danger">
-                The State is required.
-              </div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="field">
-              <label class="label">Pincode</label>
-              <p class="control">
-                <input v-model="shipping.pincode" name="shippincode" type="number" placeholder="Pincode" class="input">
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="button-form">
-          <a @click="validateAndAddCustomer()" class="button is-primary">Save</a>
-        </div>
+        <button class="button is-primary is-pulled-right" v-if="!showAddUser" @click="showAddUser = true">Add</button>
+        <button class="button" v-if="showAddUser" @click="showAddUser = false">Hide</button>
       </div>
 
-      <div class="reports" v-if="!noData">
+      <AddUser v-if="showAddUser"></AddUser>
+
+      <div class="reports" v-if="!isData">
         <div class="tile is-ancestor" v-if="!loading">
           <div class="tile is-parent">
             <article class="tile is-child">
@@ -226,7 +41,7 @@
                       <td> {{customer.billing_mobile_number}} - {{customer.billing_landline_number}} </td>
                       <td>
                         <a class="icon">
-                          <EditCustomerDetailsModal :key="customer.id" :customer="customer"></EditCustomerDetailsModal>
+                          <EditUserModal :key="customer.id" :customer="customer"></EditUserModal>
                         </a>
                       </td>
                     </tr>
@@ -241,19 +56,19 @@
           <div class="fa fa-spinner fa-spin"> </div>
         </div>
       </div>
-      <div class="noData" v-if="noData">
+      <div class="isData" v-if="isData">
         <h1 class="title">No Data at the Moment.</h1>
       </div>
     </div>
+
   </div>
 </template>
 
 <script>
 import api from '@/api/main';
-import AddUserModal from '@/components/AddUserModal';
-import StateDropdownNewCustomer1 from '@/components/StateDropdownNewCustomer1';
-import StateDropdownNewCustomer2 from '@/components/StateDropdownNewCustomer2';
-import EditCustomerDetailsModal from '@/components/EditCustomerDetailsModal';
+import AddUser from '@/components/User/AddUser';
+import StateDropdownNewCustomer from '@/components/User/StateDropdownNewCustomer';
+import EditUserModal from '@/components/User/EditUserModal';
 import LoadingLight from '@/components/LoadingLight';
 export default {
   name: 'add-user',
@@ -264,36 +79,43 @@ export default {
     this.$bus.$on('state-new-change2', (data) => {
       this.shipping.state_code = data.state_id;
     });
+    this.$bus.$on('add-user', (data) => {
+      console.log(data.user);
+      this.user = data.user;
+      this.addUser();
+    });
     this.getCustomer();
   },
   data() {
     return {
-      showAddUserModal: false,
+      showAddUser: false,
       editCustomerDetailsModal: false,
       cusID: null,
-      firm_name: '',
-      contact_person_name: '',
-      gst_no: '',
-      email: '',
-      billing: {
-        address: '',
-        city: '',
-        state_code: null,
-        pincode: '',
-        mobile: null,
-        landline: null,
-      },
-      shipping: {
-        address: '',
-        city: '',
-        state_code: null,
-        pincode: '',
-        mobile: null,
-        landline: null,
+      user: {
+        firm_name: '',
+        contact_person_name: '',
+        gst_no: '',
+        email: '',
+        billing: {
+          address: '',
+          city: '',
+          state_code: null,
+          pincode: '',
+          mobile: null,
+          landline: null,
+        },
+        shipping: {
+          address: '',
+          city: '',
+          state_code: null,
+          pincode: '',
+          mobile: null,
+          landline: null,
+        },
       },
       checkbox: '',
       customers: [],
-      noData: false,
+      isData: false,
       loading: false,
       loadingLight: false
     };
@@ -305,45 +127,24 @@ export default {
       .then((response) => {
         this.loading = false;
         if(response.data.message == "No data found") {
-          this.noData = true;
+          this.isData = true;
         }
         else {
           this.customers = response.data.Firms;
-          this.noData = false;
+          this.isData = false;
         }
       })
       .catch((error) => {
         console.log(error);
       })
     },
-    validateAndAddCustomer() {
-      this.validate()
-      if (!this.errors.any()) {
-        if(this.dataIsHere == false) {
-          let toast = this.$toasted.error('Please fill in the details.', {
-            theme: "outline",
-            position: "bottom-center",
-            duration : 3000
-          });
-        }
-        else {
-          this.submitCustomer();
-        }
-      }
-      else {
-        let toast = this.$toasted.error('Please fill in the details.', {
-          theme: "outline",
-          position: "bottom-center",
-          duration : 3000
-        });
-      }
-    },
-    submitCustomer() {
+    addUser() {
       this.loadingLight = true;
-      api.createCustomer(this.firm_name, this.contact_person_name, this.email, this.gst_no,
-        this.billing.address, this.billing.city, this.billing.state_code, this.billing.pincode, this.billing.mobile, this.billing.landline,
-        this.shipping.address, this.shipping.city, this.shipping.state_code, this.shipping.pincode, this.shipping.mobile, this.shipping.landline)
+      api.createCustomer(this.user.firm_name, this.user.contact_person_name, this.user.email, this.user.gst_no,
+        this.user.billing.address, this.user.billing.city, this.user.billing.state_code, this.user.billing.pincode, this.user.billing.mobile, this.user.billing.landline,
+        this.user.shipping.address, this.user.shipping.city, this.user.shipping.state_code, this.user.shipping.pincode, this.user.shipping.mobile, this.user.shipping.landline)
         .then((response) => {
+          console.log(response);
           this.loadingLight = false;
           if(response.status == 200) {
             this.getCustomer();
@@ -352,10 +153,11 @@ export default {
               position: "top-center",
               duration : 3000
             });
-            this.showAddUserModal = false;
+            this.showAddUser = false;
           }
         })
         .catch((error) => {
+          console.log(error);
           this.loadingLight = false;
           console.log(error);
           let toast = this.$toasted.error(error.response.data.message, {
@@ -368,21 +170,11 @@ export default {
       validate() {
         return this.$validator.validateAll();
       },
-      same() {
-        this.shipping.address = this.billing.address;
-        this.shipping.mobile = this.billing.mobile;
-        this.shipping.landline = this.billing.landline;
-        this.shipping.city = this.billing.city;
-        this.shipping.state_code = this.billing.state_code;
-        this.$bus.$emit('state-change', {state: this.shipping.state_code});
-        this.shipping.pincode = this.billing.pincode;
-      },
     },
     components: {
-      AddUserModal,
-      StateDropdownNewCustomer1,
-      StateDropdownNewCustomer2,
-      EditCustomerDetailsModal,
+      AddUser,
+      StateDropdownNewCustomer,
+      EditUserModal,
       LoadingLight
     },
   }
@@ -484,13 +276,13 @@ export default {
       }
     }
 
-    .noData {
+    .isData {
       padding: 1rem;
     }
 
     .loading {
-        margin-top: 0.3rem;
-        margin-left: 0.3rem;
+      margin-top: 0.3rem;
+      margin-left: 0.3rem;
     }
 
   }

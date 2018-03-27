@@ -186,7 +186,7 @@
                 <label class="label">State</label>
                 <p class="control">
                   <!-- <input type="hidden" v-model="shipping.state_code = customer.shipping_state_code"> -->
-                  <StateDropdown2 :edit_ship_state_code="customer.shipping_state_code"></StateDropdown2>
+                  <!-- <StateDropdown2 :edit_ship_state_code="customer.shipping_state_code"></StateDropdown2> -->
                 </p>
                 <div v-show="errors.has('shipstate')" class="help is-danger">
                   The State is required.
@@ -218,7 +218,6 @@
 <script>
 import api from '@/api/main';
 import StateDropdown1 from '@/components/StateDropdownCustomer1';
-import StateDropdown2 from '@/components/StateDropdownCustomer2';
 import LoadingLight from '@/components/LoadingLight';
 export default {
   name: 'edit-customer-modal',
@@ -323,7 +322,6 @@ export default {
   },
   components: {
     StateDropdown1,
-    StateDropdown2,
     LoadingLight
   },
 }
