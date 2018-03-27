@@ -77,6 +77,12 @@ let router = new Router({
           name: "DummyBill",
           component: require("@/container/Home/DummyBill"),
           meta: { requiresAuth: true }
+        },
+        {
+          path: "/chalan",
+          name: "Chalan",
+          component: require("@/container/Home/Chalan"),
+          meta: { requiresAuth: true }
         }
       ]
     }, //Home ends*

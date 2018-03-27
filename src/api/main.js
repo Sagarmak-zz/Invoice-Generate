@@ -255,5 +255,9 @@ export default {
       start_date: start_date,
       end_date: end_date
     });
+  },
+
+  getBill(invoice_number) {
+    return HTTP.get("/getBill/" + invoice_number);
   }
 };
