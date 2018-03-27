@@ -225,6 +225,7 @@ import StateDropdownNewCustomer from '@/components/User/StateDropdownNewCustomer
 export default {
   name: 'add-user',
   created() {
+    console.log();
   },
   data() {
     return {
@@ -276,7 +277,6 @@ export default {
       this.user.shipping.landline = this.user.billing.landline;
       this.user.shipping.city = this.user.billing.city;
       this.user.shipping.state_code = this.user.billing.state_code;
-      this.$bus.$emit('state-change', {state: this.user.shipping.state_code});
       this.user.shipping.pincode = this.user.billing.pincode;
     },
   },

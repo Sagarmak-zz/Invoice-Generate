@@ -13,12 +13,12 @@
       <AddUser v-if="showAddUser"></AddUser>
 
       <div class="reports" v-if="!isData">
-        <div class="tile is-ancestor" v-if="!loading">
+        <div class="tile is-ancestor" v-if="!loadingData">
           <div class="tile is-parent">
             <article class="tile is-child">
               <div class="user-head">
                 <h4 class="title">Customers List</h4>
-                <span>Total Customers: <b>{{customers.length}}</b></span>
+                <span>Total Customers: <b>{{users.length}}</b></span>
               </div>
               <div class="table-responsive">
                 <table class="table is-bordered is-striped is-narrow">
@@ -33,15 +33,15 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <tr v-for="customer in customers">
-                      <td>{{customer.name}}</td>
-                      <td>{{customer.person_name}}</td>
-                      <td>{{customer.gst_number}}</td>
-                      <td>{{customer.email}}</td>
-                      <td> {{customer.billing_mobile_number}} - {{customer.billing_landline_number}} </td>
+                    <tr v-for="user in users">
+                      <td>{{user.name}}</td>
+                      <td>{{user.person_name}}</td>
+                      <td>{{user.gst_number}}</td>
+                      <td>{{user.email}}</td>
+                      <td> {{user.billing_mobile_number}} - {{user.billing_landline_number}} </td>
                       <td>
                         <a class="icon">
-                          <EditUserModal :key="customer.id" :customer="customer"></EditUserModal>
+                          <EditUserModal :key="user.id" :userEdit="user"></EditUserModal>
                         </a>
                       </td>
                     </tr>
@@ -51,7 +51,7 @@
             </article>
           </div>
         </div>
-        <div class="loading" v-show="loading">
+        <div class="loadingData" v-show="loadingData">
           <span class="title is-4">Please wait while we load the data...</span>
           <div class="fa fa-spinner fa-spin"> </div>
         </div>
@@ -67,30 +67,22 @@
 <script>
 import api from '@/api/main';
 import AddUser from '@/components/User/AddUser';
-import StateDropdownNewCustomer from '@/components/User/StateDropdownNewCustomer';
 import EditUserModal from '@/components/User/EditUserModal';
 import LoadingLight from '@/components/LoadingLight';
 export default {
   name: 'add-user',
   created() {
-    this.$bus.$on('state-new-change1', (data) => {
-      this.billing.state_code = data.state_id;
-    });
-    this.$bus.$on('state-new-change2', (data) => {
-      this.shipping.state_code = data.state_id;
-    });
     this.$bus.$on('add-user', (data) => {
-      console.log(data.user);
       this.user = data.user;
       this.addUser();
     });
+    this.$bus.$on('updateUser', () => {
+      this.getCustomer();
+    })
     this.getCustomer();
   },
   data() {
     return {
-      showAddUser: false,
-      editCustomerDetailsModal: false,
-      cusID: null,
       user: {
         firm_name: '',
         contact_person_name: '',
@@ -113,24 +105,24 @@ export default {
           landline: null,
         },
       },
-      checkbox: '',
-      customers: [],
+      showAddUser: false,
+      users: [],
       isData: false,
-      loading: false,
+      loadingData: false,
       loadingLight: false
     };
   },
   methods: {
     getCustomer() {
-      this.loading = true;
+      this.loadingData = true;
       api.getCustomer()
       .then((response) => {
-        this.loading = false;
+        this.loadingData = false;
         if(response.data.message == "No data found") {
           this.isData = true;
         }
         else {
-          this.customers = response.data.Firms;
+          this.users = response.data.Firms;
           this.isData = false;
         }
       })
@@ -173,7 +165,6 @@ export default {
     },
     components: {
       AddUser,
-      StateDropdownNewCustomer,
       EditUserModal,
       LoadingLight
     },
@@ -280,7 +271,7 @@ export default {
       padding: 1rem;
     }
 
-    .loading {
+    .loadingData {
       margin-top: 0.3rem;
       margin-left: 0.3rem;
     }
