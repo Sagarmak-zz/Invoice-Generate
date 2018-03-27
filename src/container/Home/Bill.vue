@@ -154,7 +154,7 @@ import Auth from '@/packages/auth/Auth';
 import Datepicker from 'vue-bulma-datepicker';
 import AddItemModal from '@/components/AddItemModal';
 import EditBillModal from '@/components/EditBillModal';
-import AddUserModal from '@/components/AddUserModal';
+import AddUserModal from '@/components/User/AddUser';
 import FirmNameDropdown from '@/components/FirmNameDropdown';
 import ProductsNameDropdown from '@/components/ProductsNameDropdown';
 import jwt_decode from 'jwt-decode';

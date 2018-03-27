@@ -13,9 +13,6 @@
 export default {
   name: 'list',
   props: ['name', 'icon', 'route'],
-    // icon: {
-    //   required: true
-    // }
   created() {
   }
 }

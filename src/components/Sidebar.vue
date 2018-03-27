@@ -4,8 +4,8 @@
 
     <ul class="menu-list">
       <List name="Dashboard" icon="fab fa-slack-hash" route="Dashboard"></List>
-      <!-- <List name="Generate Bill" icon="fa fa-file-text" route="Bill"></List> -->
       <List name="Generate Bill" icon="fas fa-file-alt" route="DummyBill"></List>
+      <List name="Generate Chalan" icon="fa fa-clipboard " route="Chalan"></List>
       <List name="User" icon="far fa-user-circle" route="User"></List>
       <List name="Product" icon="fa fa-plus" route="Product"></List>
       <List name="History" icon="fa fa-history" route="History"></List>
