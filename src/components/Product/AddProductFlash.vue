@@ -1,12 +1,12 @@
 <template>
-  <div class="hide-seek-product">
+  <div class="add-product-flash">
 
     <form @submit.prevent="validateBeforeSubmit">
       <div class="columns">
 
         <div class="column">
           <div class="field">
-            <label class="label">Product Name</label>
+            <label class="label">Product Name<span class="required">*</span></label>
             <p class="control">
               <input v-model="product.product_name" v-validate="'required'" name="product_name"
               class="input" type="text" placeholder="Product Name">
@@ -19,7 +19,7 @@
 
         <div class="column">
           <div class="field">
-            <label class="label">HSN Code</label>
+            <label class="label">HSN Code<span class="required">*</span></label>
             <p class="control">
               <input v-model="product.hsn_code" v-validate="'required'" name="hsn_code"
               class="input" type="text" placeholder="HSN Code">
@@ -32,7 +32,7 @@
 
         <div class="column">
           <div class="field">
-            <label class="label">Price</label>
+            <label class="label">Price<span class="required">*</span></label>
             <p class="control">
               <input v-model="product.product_price" v-validate="'required'" name="product_price"
               class="input" type="number" placeholder="Price">
@@ -105,9 +105,18 @@ export default {
 
   </script>
   <style lang="scss">
-  .button-form {
-    display: flex;
-    justify-content: flex-end;
+  .add-product-flash {
+    padding: 1rem;
+    border-bottom: solid 1px #ddd;
+
+    div.columns {
+      border-bottom: solid 1px #ddd;
+    }
+
+    .button-form {
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 
   </style>
