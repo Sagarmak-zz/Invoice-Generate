@@ -12,14 +12,14 @@
               <label class="label">Select</label>
               <p class="control">
                 <span class="select">
-                      <select v-model="select">
-                        <option value=''>Select dropdown</option>
-                        <option value="date">Date</option>
-                        <option value="invoice_number">Invoice Number</option>
-                        <option value="firm_name">Firm Name</option>
-                        <option value="customer_name">Customer Name</option>
-                      </select>
-                    </span>
+                  <select v-model="select">
+                    <option value=''>Select dropdown</option>
+                    <option value="date">Date</option>
+                    <option value="invoice_number">Invoice Number</option>
+                    <option value="firm_name">Firm Name</option>
+                    <option value="customer_name">Customer Name</option>
+                  </select>
+                </span>
               </p>
             </div>
           </div>
@@ -81,7 +81,7 @@
       </div>
       <div class="reports-body">
         <div v-if="!noData">
-          <h1 class="title nodisplay" v-if="select == 'date'">Dates Between {{start_date}} and {{end_date}}</h1>
+          <h1 class="title nodisplay" v-if="select == 'date'">Dates Between {{moment(start_date).format('DD/MM/YYYY')}} and {{moment(end_date).format('DD/MM/YYYY')}}</h1>
           <div class="tile is-ancestor">
             <div class="tile is-parent">
               <article class="tile is-child">
@@ -105,7 +105,7 @@
                       <tr v-for="d,index in data">
                         <td>{{index+1}}</td>
                         <td>{{d.invoice_no}}</td>
-                        <td>{{moment(d.created_at.date).format('D/MM/YYYY')}}</td>
+                        <td>{{moment(d.created_at.date).format('DD/MM/YYYY')}}</td>
                         <td>{{d.firm_name}}</td>
                         <td>Rs {{d.taxable_amount}}</td>
                         <td>Rs {{d.cgst_amount}}</td>
@@ -134,193 +134,193 @@
 </template>
 
 <script>
-  import api from '@/api/main';
-  import Datepicker from 'vue-bulma-datepicker';
-  export default {
-    name: 'reports',
-    created() {},
-    data() {
-      return {
-        select: '',
-        start_date: '',
-        end_date: '',
-        invNum: '',
-        firm_name: '',
-        customer_name: '',
-        noData: true,
-        data: [],
-        loading: false
+import api from '@/api/main';
+import Datepicker from 'vue-bulma-datepicker';
+export default {
+  name: 'reports',
+  created() {},
+  data() {
+    return {
+      select: '',
+      start_date: '',
+      end_date: '',
+      invNum: '',
+      firm_name: '',
+      customer_name: '',
+      noData: true,
+      data: [],
+      loading: false
+    }
+  },
+  methods: {
+    generateDateReport() {
+      this.loading = true;
+      this.$validator.validateAll()
+      if (!this.errors.any()) {
+        this.date();
+      } else {
+        let toast = this.$toasted.error('Please fill in the Dates first.', {
+          theme: "outline",
+          position: "bottom-center",
+          duration: 3000
+        });
       }
     },
-    methods: {
-      generateDateReport() {
-        this.loading = true;
-        this.$validator.validateAll()
-        if (!this.errors.any()) {
-          this.date();
-        } else {
-          let toast = this.$toasted.error('Please fill in the Dates first.', {
+    generateInvoiceReport() {
+      alert('Alert');
+    },
+    generateFirmNameReport() {
+      alert('Alert');
+    },
+    generateCusNameReport() {
+      alert('Alert');
+    },
+    date() {
+      api.betweenDate(this.start_date, this.end_date)
+      .then(response => {
+        console.log(response);
+        this.loading = false;
+        if (response.data.message == 'Data not found') {
+          //no data present
+          this.noData = true;
+          let toast = this.$toasted.show('No Data Found', {
             theme: "outline",
             position: "bottom-center",
             duration: 3000
           });
+        } else {
+          //data present
+          this.data = response.data;
+          this.noData = false;
         }
-      },
-      generateInvoiceReport() {
-        alert('Alert');
-      },
-      generateFirmNameReport() {
-        alert('Alert');
-      },
-      generateCusNameReport() {
-        alert('Alert');
-      },
-      date() {
-        api.betweenDate(this.start_date, this.end_date)
-          .then(response => {
-            this.loading = false;
-            console.log("Date between: ", response);
-            if (response.data.message == 'Data not found') {
-              //no data present
-              this.noData = true;
-              let toast = this.$toasted.show('No Data Found', {
-                theme: "outline",
-                position: "bottom-center",
-                duration: 3000
-              });
-            } else {
-              //data present
-              this.data = response.data;
-              this.noData = false;
-            }
-          })
-          .catch(error => {
-            console.log(error);
-          })
-      },
-      onSelect(value) {
-        this.value = value;
-      },
-      onChange(value) {
-        this.value = value;
-      },
-      printReports() {
-        window.print();
-      }
+      })
+      .catch(error => {
+        console.log(error);
+      })
     },
-    computed: {
-      sortDateWise() {
-        return this.bills.reverse();
-      }
+    onSelect(value) {
+      this.value = value;
     },
-    components: {
-      Datepicker
+    onChange(value) {
+      this.value = value;
     },
-  }
+    printReports() {
+      window.print();
+    }
+  },
+  computed: {
+    sortDateWise() {
+      return this.bills.reverse();
+    }
+  },
+  components: {
+    Datepicker
+  },
+}
 </script>
 
 <style lang="scss">
-  .reports {
-    .box {
-      padding: 0;
+.reports {
+  .box {
+    padding: 0;
+  }
+  .head-report {
+    padding: 1rem;
+    border-bottom: solid 1px #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+      margin: 0;
     }
-    .head-report {
-      padding: 1rem;
-      border-bottom: solid 1px #ddd;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      .title {
-        margin: 0;
-      }
+  }
+  .vbta-menu.visible {
+    position: relative;
+  }
+  .column.is-5 {
+    padding-right: 0;
+    width: 35%;
+  }
+  .options {
+    padding: 1rem;
+    border-bottom: solid 1px #ddd;
+    .generate-report {
+      margin-top: 2rem;
     }
-    .vbta-menu.visible {
-      position: relative;
-    }
-    .column.is-5 {
+    .column.is-3.is-multiline {
       padding-right: 0;
-      width: 35%;
+      width: 17%;
+      border-right: solid 1px #ddd;
     }
-    .options {
-      padding: 1rem;
-      border-bottom: solid 1px #ddd;
-      .generate-report {
+    .date {
+      width: 30rem;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      button {
         margin-top: 2rem;
       }
-      .column.is-3.is-multiline {
-        padding-right: 0;
-        width: 17%;
-        border-right: solid 1px #ddd;
+      .field {
+        margin-bottom: 0;
       }
-      .date {
-        width: 30rem;
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-        button {
-          margin-top: 2rem;
-        }
-        .field {
-          margin-bottom: 0;
-        }
-        .control {
-          padding-right: 0.5rem; // width: 13rem;
-          margin: 0;
-        }
-      }
-      .customer_name,
-      .firm_name,
-      .invoice_number {
-        width: 25rem;
-        display: flex;
-        align-items: center;
-        .form {
-          width: 20rem;
-        }
-        button {
-          margin-top: 2rem;
-        }
+      .control {
+        padding-right: 0.5rem; // width: 13rem;
+        margin: 0;
       }
     }
     .customer_name,
-    .invoice_number,
-    .firm_name {
+    .firm_name,
+    .invoice_number {
+      width: 25rem;
+      display: flex;
+      align-items: center;
       .form {
-        margin-right: 1rem;
+        width: 20rem;
       }
-    }
-    .reports-body {
-      padding: 1rem;
-    }
-    .tile.is-parent {
-      padding-bottom: 0;
-    }
-    .practise {
-      padding: 1rem;
-    }
-    @media print {
-      .nodisplay {
-        display: none;
-      }
-      .box {
-        margin: 0;
-        padding: 0;
-        border: none; // display: none;
-      }
-      .tile.is-parent {
-        padding: 0;
-        margin: 0;
-      }
-      .table.is-bordered.is-striped.is-narrow {
-        margin: 0;
-      }
-      .reports-body {
-        border: none;
-      }
-      .box {
-        background: none;
-        box-shadow: none;
+      button {
+        margin-top: 2rem;
       }
     }
   }
+  .customer_name,
+  .invoice_number,
+  .firm_name {
+    .form {
+      margin-right: 1rem;
+    }
+  }
+  .reports-body {
+    padding: 1rem;
+  }
+  .tile.is-parent {
+    padding-bottom: 0;
+  }
+  .practise {
+    padding: 1rem;
+  }
+  @media print {
+    .nodisplay {
+      display: none;
+    }
+    .box {
+      margin: 0;
+      padding: 0;
+      border: none; // display: none;
+    }
+    .tile.is-parent {
+      padding: 0;
+      margin: 0;
+    }
+    .table.is-bordered.is-striped.is-narrow {
+      margin: 0;
+    }
+    .reports-body {
+      border: none;
+    }
+    .box {
+      background: none;
+      box-shadow: none;
+    }
+  }
+}
 </style>
