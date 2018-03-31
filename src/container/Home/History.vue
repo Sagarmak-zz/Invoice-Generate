@@ -81,7 +81,7 @@ export default {
   methods: {
     getBill() {
       this.loading = true;
-      api.getBill()
+      api.getBills()
       .then( response => {
         this.loading = false;
         if ( response.data.message == "No data found" || response.data.message == "bill not found" ) {

@@ -14,21 +14,27 @@
         </div>
       </div>
       <div class="foot">
-        <div class="field is-grouped">
-          <p class="control code">
-            <input v-model="state.code" v-validate="'required|numeric'" name="code"
-            :class="{'input': true, 'is-danger': errors.has('code') }" type="text" placeholder="Code">
-          </p>
-          <p class="control">
-            <input v-model="state.name" v-validate="'required'" name="name" @keyup.enter="addState"
-            :class="{'input': true, 'is-danger': errors.has('name') }" type="text" placeholder="Name">
-          </p>
-          <p class="control">
-            <a @click="addState" class="button is-success">
-              Add State
-            </a>
-          </p>
-        </div>
+
+        <form @submit.prevent="addState">
+
+          <div class="field is-grouped">
+            <p class="control code">
+              <input v-model="state.code" v-validate="'required|numeric'" name="code"
+              :class="{'input': true, 'is-danger': errors.has('code') }" type="text" placeholder="Code">
+            </p>
+            <p class="control">
+              <input v-model="state.name" v-validate="'required'" name="name"
+              :class="{'input': true, 'is-danger': errors.has('name') }" type="text" placeholder="Name">
+            </p>
+            <p class="control">
+              <button type="submit" class="button is-success">
+                Add State
+              </button>
+            </p>
+          </div>
+
+        </form>
+
       </div>
     </div>
   </div>

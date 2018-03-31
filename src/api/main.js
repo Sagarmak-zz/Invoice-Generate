@@ -47,7 +47,7 @@ export default {
   },
 
   //history page
-  getBill() {
+  getBills() {
     return HTTP.get("/getBill");
   },
 
