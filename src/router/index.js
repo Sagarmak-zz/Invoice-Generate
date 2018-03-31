@@ -37,6 +37,12 @@ let router = new Router({
           meta: { requiresAuth: true }
         },
         {
+          path: "/chalan",
+          name: "Chalan",
+          component: require("@/container/Home/Chalan"),
+          meta: { requiresAuth: true }
+        },
+        {
           path: "/user",
           name: "User",
           component: require("@/container/Home/User"),
@@ -72,18 +78,6 @@ let router = new Router({
           component: require("@/container/Home/Settings"),
           meta: { requiresAuth: true }
         },
-        {
-          path: "/createBill",
-          name: "DummyBill",
-          component: require("@/container/Home/DummyBill"),
-          meta: { requiresAuth: true }
-        },
-        {
-          path: "/chalan",
-          name: "Chalan",
-          component: require("@/container/Home/Chalan"),
-          meta: { requiresAuth: true }
-        }
       ]
     }, //Home ends*
     {

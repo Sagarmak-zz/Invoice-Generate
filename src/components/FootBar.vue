@@ -4,7 +4,7 @@
       <div class="content has-text-centered">
         Thanx to <i class="fab fa-vuejs"></i> and <i class="fab fa-laravel"></i>,
         <i class="fa fa-code"> </i> with <i class="fa fa-coffee"> </i> over the time by
-        <a href="https://github.com/Sagarmak">Sagar</a> and <a href="https://github.com/JiteshLakhwani">💩</a>.
+        <a href="https://github.com/Sagarmak">Sagar</a> and <a href="https://github.com/JiteshLakhwani">JiteshLakhwani</a>.
       </div>
     </div>
   </footer>
