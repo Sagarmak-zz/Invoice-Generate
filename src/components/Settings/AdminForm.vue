@@ -180,6 +180,33 @@
         </div>
 
       </div>
+      <div class="columns copies">
+
+        <div class="column">
+          <div class="field">
+            <label class="label">No of Invoice Copies</label>
+            <p class="control">
+              <input v-model="admin.copies.invoice" name="invoice_copies" v-validate="'numeric'"
+              class="input" type="text" placeholder="No of Invoice Copies">
+            </p>
+            <div v-show="errors.has('invoice_copies')" class="help is-danger">
+              The Invoice Copies is a numeric field.
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label">No of Chalan Copies</label>
+            <p class="control">
+              <input v-model="admin.copies.chalan" v-validate="'numeric'" name="chalan_copies"
+              class="input" type="text" placeholder="No of Chalan Copies">
+            </p>
+            <div v-show="errors.has('chalan_copies')" class="help is-danger">
+              The Chalan Copies is a numeric field.
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="update-button">
@@ -238,7 +265,11 @@ export default {
           branch_name: '',
           ifsc_code: '',
           account_no: null,
-        }
+        },
+        copies: {
+          invoice: 0,
+          chalan: 0
+        },
       },
       addUser: false
     }
@@ -271,6 +302,11 @@ export default {
 .admin-form {
   .form {
     padding: 1rem;
+    .column.gst {
+      p.control {
+        min-width: 88%;
+      }
+    }
   }
   .update-button {
     padding: 1rem;

@@ -276,129 +276,131 @@
 </template>
 
 <script>
-  import Chartist from 'vue-bulma-chartist';
-  import Auth from '@/packages/auth/Auth.js';
-  import api from '@/api/main';
-  export default {
-    name: 'dashboard',
-    components: {
-      Chartist
-    },
-    created() {},
-    data() {
-      return {
-        json: {},
-        //daily
-        series: [
-          [12, 9, 7, 8, 5],
-        ],
-        labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-        linesOptions: {
-          chartPadding: {
-            right: 0
-          }
-        },
-        //monthly
-        lineAreaData: {
-          labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug'],
-          series: [
-            [5, 9, 7, 8, 5, 3, 5, 4]
-          ]
-        },
-        lineAreaOptions: {
-          low: 0,
-          showArea: true
-        },
-        //yearly
-        pieData: {
-          series: [2015, 2016, 2017]
-        },
-        pieOptions: {
-          //  chartPadding: 30,
-          //  labelOffset: 40,
-          labelDirection: 'explode',
-          labelInterpolationFnc(value) {
-            return value
-          }
-        },
-      }
-    },
-    computed: {
-      linesData() {
-        return {
-          labels: this.labels,
-          series: this.series
+import Chartist from 'vue-bulma-chartist';
+import Auth from '@/packages/auth/Auth.js';
+import api from '@/api/main';
+
+export default {
+  name: 'dashboard',
+  components: {
+    Chartist
+  },
+  created() {
+  },
+  data() {
+    return {
+      json: {},
+      //daily
+      series: [
+        [12, 9, 7, 8, 5],
+      ],
+      labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      linesOptions: {
+        chartPadding: {
+          right: 0
         }
+      },
+      //monthly
+      lineAreaData: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June', 'July', 'Aug'],
+        series: [
+          [5, 9, 7, 8, 5, 3, 5, 4]
+        ]
+      },
+      lineAreaOptions: {
+        low: 0,
+        showArea: true
+      },
+      //yearly
+      pieData: {
+        series: [2015, 2016, 2017]
+      },
+      pieOptions: {
+        //  chartPadding: 30,
+        //  labelOffset: 40,
+        labelDirection: 'explode',
+        labelInterpolationFnc(value) {
+          return value
+        }
+      },
+    }
+  },
+  computed: {
+    linesData() {
+      return {
+        labels: this.labels,
+        series: this.series
       }
-    },
-  }
+    }
+  },
+}
 </script>
 
 <style lang="scss">
-  .dashboard {
-    height: 100%;
-    .head-column {
-      // padding: 0;
-      margin: 1rem;
-      .box {
-        padding: 0;
-      }
-    }
-    .part-left {
+.dashboard {
+  height: 100%;
+  .head-column {
+    // padding: 0;
+    margin: 1rem;
+    .box {
       padding: 0;
-      .figure {
-        min-height: 100%;
-        svg {
-          margin-left: 25%;
-          margin-top: 15%;
-        }
-      }
-    }
-    .part-right.box {
-      padding: 0;
-      height: 8.2rem;
-      border-radius: inherit;
-    }
-    margin-bottom: 1rem;
-    margin-right: 1rem;
-    .title {
-      margin-bottom: 1rem;
-    }
-    .ct-label {
-      font-weight: bold;
-    }
-    .table-responsive {
-      display: block;
-      width: 100%;
-      min-height: 0.01%;
-      overflow-x: auto;
-    }
-    .figure {
-      background: turquoise;
-      i {
-        font-size: 5rem;
-        height: 8.2rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-    }
-    .column {
-      .title {
-        height: 50%;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-      }
-      .subtitle {
-        height: 30%;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-      }
-    }
-    .foot.box {
-      margin-top: 1rem;
     }
   }
+  .part-left {
+    padding: 0;
+    .figure {
+      min-height: 100%;
+      svg {
+        margin-left: 25%;
+        margin-top: 15%;
+      }
+    }
+  }
+  .part-right.box {
+    padding: 0;
+    height: 8.2rem;
+    border-radius: inherit;
+  }
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+  .title {
+    margin-bottom: 1rem;
+  }
+  .ct-label {
+    font-weight: bold;
+  }
+  .table-responsive {
+    display: block;
+    width: 100%;
+    min-height: 0.01%;
+    overflow-x: auto;
+  }
+  .figure {
+    background: turquoise;
+    i {
+      font-size: 5rem;
+      height: 8.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .column {
+    .title {
+      height: 50%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+    .subtitle {
+      height: 30%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+    }
+  }
+  .foot.box {
+    margin-top: 1rem;
+  }
+}
 </style>

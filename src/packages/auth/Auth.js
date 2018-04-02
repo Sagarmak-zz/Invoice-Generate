@@ -1,3 +1,5 @@
+import jwt_decode from 'jwt-decode';
+
 export default {
   //set token
   setToken(token) {
@@ -13,6 +15,12 @@ export default {
       return token;
     }
   },
+  getUserId() {
+    return this.decodeToken(this.getToken()).sub;
+  },
+  isValidTokenValidTime() {
+    return this.decodeToken(this.getToken()).exp > new Date().getTime() / 1000;
+  },
   //destroy token
   destroyToken() {
     window.localStorage.removeItem('token')
@@ -25,5 +33,8 @@ export default {
     else {
       return false;
     }
-  }
+  },
+  decodeToken(token) {
+    return jwt_decode( token );
+  },
 }

@@ -81,9 +81,21 @@ let router = new Router({
       ]
     }, //Home ends*
     {
-      path: "/sample/:invoice_no",
-      name: "Sample",
-      component: require("@/container/Sample"),
+      path: "/printBill/:invoice_no/:fiscal_year",
+      name: "PrintBillTemplate",
+      component: require("@/container/PrintBillTemplate"),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: "/billPrint/:invoice_no/:fiscal_year",
+      name: "BillPrint",
+      component: require("@/container/BillPrint"),
+      meta: { requiresAuth: true }
+    },
+    {
+      path: "/printChalan/:invoice_no/:fiscal_year",
+      name: "PrintChalanTemplate",
+      component: require("@/container/PrintChalanTemplate"),
       meta: { requiresAuth: true }
     },
     {

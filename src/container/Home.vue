@@ -2,7 +2,7 @@
   <div class="home">
 
     <div class="navbar nodisplay">
-      <Navbar @logout="logout"></Navbar>
+      <Navbar @logout="logout" :firm_name="firm_name"></Navbar>
     </div>
 
     <Sidebar class="nodisplay"></Sidebar>
@@ -11,7 +11,7 @@
       <router-view :admin_state="admin_state" class="inside-app-main"></router-view>
       <FootBar class="nodisplay"></FootBar>
     </div>
-    
+
   </div>
 </template>
 
@@ -25,9 +25,9 @@
     name: 'home',
     data() {
       return {
-        data: {},
         username: '',
-        admin_state: null
+        admin_state: null,
+        firm_name: ''
       };
     },
     mounted() {
@@ -41,6 +41,7 @@
             this.data = response.data;
             this.admin_state = this.data.state_code;
             this.username = response.data.username;
+            this.firm_name = this.data.firm_name;
             // prints the welcome + username
             let toast = this.$toasted.success('Welcome, ' + this.username + '!', {
               theme: "outline",

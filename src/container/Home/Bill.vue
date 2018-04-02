@@ -4,6 +4,32 @@
     <div class="box bill-wala-box">
       <div class="head">
         <h3 class="title">Generate Bill</h3>
+
+        <div class="fiscal-year">
+          <div class="columns">
+            <h3 class="title">Fiscal Year:</h3>
+            <div class="column first">
+              <div class="field">
+                <p class="control">
+                  <input @input="calculateFiscalYear" v-model="item.fiscal_year.start_year"
+                  name="start_year" v-validate="'required|numeric|min:4|max:4'"
+                  :class="{'input': true, 'is-danger': errors.has('start_year') }"
+                  type="number" placeholder="Start Year">
+                </p>
+              </div>
+            </div>
+            <span class="title">-</span>
+            <div class="column last">
+              <div class="field">
+                <p class="control">
+                  <input name="end_year" v-model="item.fiscal_year.end_year"
+                  v-validate="'required|numeric'"
+                  class="input" type="text" placeholder="End Year" disabled>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div name="top" class="form">
@@ -28,9 +54,11 @@
               <div :class="{'has-error': errors.has('invoice_no') }">
                 <label class="label">Invoice Number</label>
                 <p class="control">
-                  <input v-model="item.invoice_no" :class="{'input': true, 'is-danger': errors.has('invoice_no') }"
-                  name="invoice_no" v-validate="'required'" @keyup.enter="callMainDetailsAdd()"
-                  type="text" placeholder="Invoice Number">
+                  <input v-model="item.invoice_no"
+                  :class="{'input': true, 'is-danger': errors.has('invoice_no') && isInvoiceValid }"
+                  name="invoice_no" v-validate="'required|numeric'" @keyup.enter="callMainDetailsAdd()"
+                  @blur="checkInvoice"
+                  type="number" placeholder="Invoice Number">
                 </p>
                 <div v-show="errors.has('invoice_no')" class="help is-danger">
                   The Invoice Number is required.
@@ -185,8 +213,9 @@
                         <th class="quantity">
                           <div :class="{'has-error': errors.has('qty') }">
                             <p class="control">
-                              <input @keyup.enter="addItemData" v-model="item.quantity" :class="{'input': true, 'is-danger': errors.has('qty') }"
-                              name="qty" v-validate="'required'"
+                              <input @keyup.enter="addItemData" v-model="item.quantity"
+                              name="qty" v-validate="'required|numeric|not_in:0'"
+                              :class="{'input': true, 'is-danger': errors.has('qty') }"
                               type="number" placeholder="Quantity">
                             </p>
                           </div>
@@ -211,820 +240,902 @@
                                 name="discount_percentage" v-validate="'required'"
                                 type="number" placeholder="Rate">
                               </p>
+                            </div>
                           </div>
-                        </div>
-                      </th>
-                      <th class="discAmount">&#8377; {{getdiscount_amount}}</th>
-                      <th class="taxAmount">&#8377; {{ gettaxable_amount.toLocaleString('en-IN') }}</th>
-                    </tr>
-                    <tr v-if="!hideInputs2">
-                      <th></th>
-                      <th>CGST ({{item.cgst_percentage}}%) :
-                      &#8377; {{ getcgst_amount }}</th>
-
-                      <th>SGST ({{item.sgst_percentage}}%) :
-                      &#8377; {{ getsgst_amount }}</th>
-
-                      <th>IGST ({{item.igst_percentage}}%) :
-                      &#8377; {{ getigst_amount }}</th>
-
-                      <th colspan="2"> Total Tax Amount:
-                        &#8377; {{Math.round((item.cgst_amount + item.sgst_amount + item.igst_amount) * 100) / 100}}
-                      </th>
-
-                      <th colspan="2">Total :
-                        &#8377;{{ gettotal_payable_amount.toLocaleString('en-IN') }}
-                      </th>
-
-                      <th>
-                        <p class="field is-pulled-right">
-                          <a class="button" @click="addItemData">
-                            Add &nbsp;<span class="icon is-small">
-                              <i class="fa fa-plus"></i>
-                            </span>
-                          </a>
-                        </p></th>
+                        </th>
+                        <th class="discAmount">&#8377; {{getdiscount_amount}}</th>
+                        <th class="taxAmount">&#8377; {{ gettaxable_amount.toLocaleString('en-IN') }}</th>
                       </tr>
-                    </thead>
-                  </table>
-                </div>
-              </article>
-            </div>
-          </div>
-        </div>
-
-        <div class="item-table">
-          <div class="tile is-ancestor">
-            <div class="tile is-parent">
-              <article class="tile is-child">
-                <div class="table-responsive">
-                  <table class="table is-bordered is-striped is-narrow">
-                    <thead v-if="items.length != 0">
-                      <th></th>
-                      <th colspan="5">Particulars</th>
-                      <th colspan="3">Discount</th>
-                      <th></th>
-                    </thead>
-                    <thead v-if="items.length != 0">
-                      <tr>
-                        <th>SR</th>
-                        <th>Name</th>
-                        <th>Size</th>
-                        <th>Qty</th>
-                        <th>Rate</th>
-                        <th>Amt</th>
-                        <th>Rate</th>
-                        <th>Amt</th>
-                        <th>Total</th>
+                      <tr v-if="!hideInputs2">
                         <th></th>
-                      </tr>
-                    </thead>
-                      <tr v-for="it,index in items">
-                        <td>{{index+1}}</td>
-                        <td class="prod-name">{{it.product_name}}</td>
-                        <td class="prod-size">{{it.size}}</td>
-                        <td class="prod-qty">{{it.quantity}}</td>
-                        <td class="prod-price">&#8377; {{it.price}}</td>
-                        <td class="prod-amt">&#8377; {{it.amount.toLocaleString('en-IN')}}</td>
-                        <td class="disc-rate">{{it.discount_percentage}}%</td>
-                        <td class="disc-amt">&#8377; {{it.discount_amount}}</td>
-                        <td class="taxable-amt">&#8377; {{it.taxable_amount.toLocaleString('en-IN')}}</td>
-                        <td class="cross"><a class="icon" @click="removeItem(it, index)">
-                          <i class="fa fa-times" aria-hidden="true"></i>
-                        </a></td>
-                      </tr>
-                    </table>
+                        <th>CGST ({{item.cgst_percentage}}%) :
+                          &#8377; {{ getcgst_amount }}</th>
+
+                          <th>SGST ({{item.sgst_percentage}}%) :
+                            &#8377; {{ getsgst_amount }}</th>
+
+                            <th>IGST ({{item.igst_percentage}}%) :
+                              &#8377; {{ getigst_amount }}</th>
+
+                              <th colspan="2"> Total Tax Amount:
+                                &#8377; {{Math.round((item.cgst_amount + item.sgst_amount + item.igst_amount) * 100) / 100}}
+                              </th>
+
+                              <th colspan="2">Total :
+                                &#8377;{{ gettotal_payable_amount.toLocaleString('en-IN') }}
+                              </th>
+
+                              <th>
+                                <p class="field is-pulled-right">
+                                  <a class="button is-info" @click="addItemData">
+                                    Add &nbsp;<span class="icon is-small">
+                                      <i class="fa fa-plus"></i>
+                                    </span>
+                                  </a>
+                                </p>
+                              </th>
+                            </tr>
+                          </thead>
+                        </table>
+                      </div>
+                    </article>
                   </div>
-                </article>
+                </div>
+              </div>
+
+              <div class="item-table">
+                <div class="tile is-ancestor">
+                  <div class="tile is-parent">
+                    <article class="tile is-child">
+                      <div class="table-responsive">
+                        <table class="table is-bordered is-striped is-narrow">
+                          <thead v-if="items.length != 0">
+                            <th></th>
+                            <th colspan="5">Particulars</th>
+                            <th colspan="3">Discount</th>
+                            <th></th>
+                          </thead>
+                          <thead v-if="items.length != 0">
+                            <tr>
+                              <th>SR</th>
+                              <th>Name</th>
+                              <th>Size</th>
+                              <th>Qty</th>
+                              <th>Rate</th>
+                              <th>Amt</th>
+                              <th>Rate</th>
+                              <th>Amt</th>
+                              <th>Total</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tr v-for="it,index in items">
+                            <td>{{index+1}}</td>
+                            <td class="prod-name">{{it.product_name}}</td>
+                            <td class="prod-size">{{it.size}}</td>
+                            <td class="prod-qty">{{it.quantity}}</td>
+                            <td class="prod-price">&#8377; {{it.price}}</td>
+                            <td class="prod-amt">&#8377; {{it.amount.toLocaleString('en-IN')}}</td>
+                            <td class="disc-rate">{{it.discount_percentage}}%</td>
+                            <td class="disc-amt">&#8377; {{it.discount_amount}}</td>
+                            <td class="taxable-amt">&#8377; {{it.taxable_amount.toLocaleString('en-IN')}}</td>
+                            <td class="cross"><a class="icon" @click="removeItem(it, index)">
+                              <i class="fa fa-times" aria-hidden="true"></i>
+                            </a></td>
+                          </tr>
+                        </table>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </div>
+
+              <div class="lower-part-two">
+                <div class="tile is-ancestor">
+                  <div class="tile is-parent">
+                    <article class="tile is-child">
+                      <div class="table-responsive">
+                        <table class="table is-bordered is-striped is-narrow">
+                          <tbody>
+                            <tr> <td>Total Taxable Amount:</td> <th> &#8377; {{item.ftaxable_amount.toLocaleString('en-IN')}} </th> </tr>
+                            <tr> <td>CGST:</td> <th> &#8377; {{item.fcgst_amount.toLocaleString('en-IN')}} </th> </tr>
+                            <tr> <td>SGST:</td> <th> &#8377; {{item.fsgst_amount.toLocaleString('en-IN')}} </th> </tr>
+                            <tr> <td>IGST:</td> <th> &#8377; {{item.figst_amount.toLocaleString('en-IN')}} </th> </tr>
+                            <tr> <td>Total Invoice Value:</td> <th> &#8377; {{item.ftotal_payable_amount.toLocaleString('en-IN')}} </th> </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </article>
+                  </div>
+                </div>
+              </div>
+              <div class="submit-btn">
+                <button @click="validateAndCallApi" class="button is-success">Submit</button>
               </div>
             </div>
           </div>
 
-          <div class="lower-part-two">
-            <div class="tile is-ancestor">
-              <div class="tile is-parent">
-                <article class="tile is-child">
-                  <div class="table-responsive">
-                    <table class="table is-bordered is-striped is-narrow">
-                      <tbody>
-                        <tr> <td>Total Taxable Amount:</td> <th> &#8377; {{item.ftaxable_amount.toLocaleString('en-IN')}} </th> </tr>
-                        <tr> <td>CGST:</td> <th> &#8377; {{item.fcgst_amount.toLocaleString('en-IN')}} </th> </tr>
-                        <tr> <td>SGST:</td> <th> &#8377; {{item.fsgst_amount.toLocaleString('en-IN')}} </th> </tr>
-                        <tr> <td>IGST:</td> <th> &#8377; {{item.figst_amount.toLocaleString('en-IN')}} </th> </tr>
-                        <tr> <td>Total Invoice Value:</td> <th> &#8377; {{item.ftotal_payable_amount.toLocaleString('en-IN')}} </th> </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </article>
-              </div>
-            </div>
-          </div>
-          <div class="submit-btn">
-            <button @click="validateAndCallApi" class="button is-success">Submit</button>
-          </div>
+          <pre>
+            {{$data}}
+          </pre>
+
         </div>
       </div>
+    </template>
 
-    </div>
-  </div>
-</template>
-
-<script>
-import api from '@/api/main';
-import Auth from '@/packages/auth/Auth';
-import Datepicker from 'vue-bulma-datepicker';
-import FirmNameDropdown from '@/components/FirmNameDropdown';
-import ProductsNameDropdown from '@/components/ProductsNameDropdown';
-import jwt_decode from 'jwt-decode';
-import LoadingLight from '@/components/LoadingLight';
-var numeral = require( 'numeral' );
-export default {
-  name: 'dummy-bill',
-  props: [ 'admin_state' ],
-  components: {
-    Datepicker,
-    FirmNameDropdown,
-    ProductsNameDropdown,
-    LoadingLight
-  },
-  created() {
-    // var numeral = require('numeral');
-    // var myNumeral =  numeral(1).format('0000');
-    this.getLastBillInvoiceNumber();
-    this.userDetails();
-    this.decodeToken();
-    this.getYear = new Date().getFullYear();
-    this.getMonth = new Date().getMonth() + 1;
-    this.getDate = new Date().getDate();
-    this.today = this.getYear + '-' + this.getMonth + '-' + this.getDate;
-    this.item.created_at = this.today;
-    //firm name
-    this.$bus.$on( 'firm_name_change', ( response ) => {
-      this.item.firm.firm_name = response.firm.firm_name;
-      this.item.firm.firm_id = response.firm.id;
-      this.item.firm.state_code = response.firm.state_code;
-      if ( this.item.firm.state_code == this.item.admin_state_code ) {
-        //2.5% sgst and cgst
-        this.item.sgst_percentage = 2.5;
-        this.item.cgst_percentage = 2.5;
-        this.item.igst_percentage = 0;
-      } else {
-        //5% igst
-        this.item.sgst_percentage = 0;
-        this.item.cgst_percentage = 0;
-        this.item.igst_percentage = 5;
-      }
-    } );
-
-    //ProductNameChange
-    this.$bus.$on( 'product_name_change', response => {
-      this.item.product.hsn_code = response.product.hsn_code;
-      this.item.product.product_id = response.product.id;
-      this.item.product.product_name = response.product.product_name;
-      this.item.product.price = response.product.product_price;
-    } );
-
-  },
-  data() {
-    return {
-      item: {
-        firm: {
-          firm_id: null,
-          firm_name: '',
-          state_code: null
-        },
-        admin_state_code: null,
-        user_id: null,
-        invoice_no: '',
-        created_at: '',
-        size: '',
-        quantity: 0,
-        amount: 0,
-        discount_percentage: 0,
-        discount_amount: 0,
-        taxable_amount: 0,
-        ftaxable_amount: 0,
-        cgst_percentage: 0,
-        cgst_amount: 0,
-        fcgst_amount: 0,
-        sgst_percentage: 0,
-        sgst_amount: 0,
-        fsgst_amount: 0,
-        igst_percentage: 0,
-        igst_amount: 0,
-        figst_amount: 0,
-        total_payable_amount: 0,
-        ftotal_payable_amount: 0,
-        lastInvoiceId: '',
-        product: {
-          product_id: null,
-          hsn_code: null,
-          product_name: '',
-          price: null,
-        },
+    <script>
+    import api from '@/api/main';
+    import Auth from '@/packages/auth/Auth';
+    import Datepicker from 'vue-bulma-datepicker';
+    import FirmNameDropdown from '@/components/FirmNameDropdown';
+    import ProductsNameDropdown from '@/components/ProductsNameDropdown';
+    import jwt_decode from 'jwt-decode';
+    import LoadingLight from '@/components/LoadingLight';
+    import dates from '@/packages/date/dates';
+    var numeral = require( 'numeral' );
+    export default {
+      name: 'dummy-bill',
+      props: [ 'admin_state' ],
+      components: {
+        Datepicker,
+        FirmNameDropdown,
+        ProductsNameDropdown,
+        LoadingLight
       },
-      bill_detail: [],
-      items: [],
-      hideInputs: true,
-      hideInputs2: false,
-      loading: false,
-      loadingLight: false
-    };
-  },
-  methods: {
-    decodeToken() {
-      var decoded = jwt_decode( Auth.getToken() );
-      this.item.user_id = decoded.sub;
-    },
-
-    addItemData() {
-      //validate first
-      if ( this.item.quantity == 0 ) {
-        let toast = this.$toasted.error( 'The Quantity should be greater than 0.', {
-          theme: "outline",
-          position: "bottom-center",
-          duration: 3000
+      created() {
+        this.item.userId = Auth.getUserId();
+        // var numeral = require('numeral');
+        // var myNumeral =  numeral(1).format('0000');
+        this.getLastBillInvoiceNumber();
+        this.userDetails();
+        // for calculate fiscal year computed property ex: 2018-19
+        this.calculateFiscalYear;
+        this.getYear = new Date().getFullYear();
+        this.getMonth = new Date().getMonth() + 1;
+        this.getDate = new Date().getDate();
+        this.today = this.getYear + '-' + this.getMonth + '-' + this.getDate;
+        this.item.created_at = this.today;
+        //firm name
+        this.$bus.$on( 'firm_name_change', ( response ) => {
+          this.item.firm.firm_name = response.firm.firm_name;
+          this.item.firm.firm_id = response.firm.id;
+          this.item.firm.state_code = response.firm.state_code;
+          if ( this.item.firm.state_code == this.item.admin_state_code ) {
+            //2.5% sgst and cgst
+            this.item.sgst_percentage = 2.5;
+            this.item.cgst_percentage = 2.5;
+            this.item.igst_percentage = 0;
+          } else {
+            //5% igst
+            this.item.sgst_percentage = 0;
+            this.item.cgst_percentage = 0;
+            this.item.igst_percentage = 5;
+          }
         } );
-      } else {
-        this.$validator.validateAll( {
-            //item name
-            'size': this.item.size,
-            // 'price': this.item.product.price,
+
+        //ProductNameChange
+        this.$bus.$on( 'product_name_change', response => {
+          this.item.product.hsn_code = response.product.hsn_code;
+          this.item.product.product_id = response.product.id;
+          this.item.product.product_name = response.product.product_name;
+          this.item.product.price = response.product.product_price;
+        } );
+
+      },
+      data() {
+        return {
+          bill_detail: [],
+          items: [],
+          item: {
+            firm: {
+              firm_id: null,
+              firm_name: '',
+              state_code: null
+            },
+            admin_state_code: null,
+            userId: null,
+            invoice_no: '',
+            created_at: '',
+            size: '',
+            quantity: 0,
+            amount: 0,
+            discount_percentage: 0,
+            discount_amount: 0,
+            taxable_amount: 0,
+            ftaxable_amount: 0,
+            cgst_percentage: 0,
+            cgst_amount: 0,
+            fcgst_amount: 0,
+            sgst_percentage: 0,
+            sgst_amount: 0,
+            fsgst_amount: 0,
+            igst_percentage: 0,
+            igst_amount: 0,
+            figst_amount: 0,
+            total_payable_amount: 0,
+            ftotal_payable_amount: 0,
+            lastInvoiceId: '',
+            product: {
+              product_id: null,
+              hsn_code: null,
+              product_name: '',
+              price: null,
+            },
+            fiscal_year: {
+              start_year: null,
+              end_year: null,
+              year: ''
+            }
+          },
+          hideInputs: true,
+          hideInputs2: false,
+          loading: false,
+          loadingLight: false,
+          isInvoiceValid: false
+        };
+      },
+      methods: {
+        getLastBillInvoiceNumber() {
+          // this.loading = true;
+          // var myNumeral =  numeral(1).format('0000');
+          api.getLastBill()
+          .then( response => {
+            this.loading = false;
+            this.item.invoice_no = response.data.invoiceNumber;
+            this.item.fiscal_year.year = response.data.year;
+            // call get current year after last bill invoice api coz,
+            // year comes in response of this api.
+            this.getCurrentFiscalYear();
           } )
-          .then( result => {
-            if ( result == false ) {
-              // validation failed.
+          .catch( error => {
+            console.log( error );
+          } );
+        },
+
+        addItemData() {
+          //validate first
+          if ( this.item.quantity == 0 ) {
+            let toast = this.$toasted.error( 'The Quantity should be greater than 0.', {
+              theme: "outline",
+              position: "bottom-center",
+              duration: 3000
+            } );
+          } else {
+            this.$validator.validateAll( {
+              //item name
+              'size': this.item.size,
+              // 'price': this.item.product.price,
+            } )
+            .then( result => {
+              if ( result == false ) {
+                // validation failed.
+                let toast = this.$toasted.error( 'Please fill in the details.', {
+                  theme: "outline",
+                  position: "bottom-center",
+                  duration: 3000
+                } );
+              } else {
+                // success stuff.
+                this.addDataToItems();
+              }
+            } ).catch( ( error ) => {
+              console.log( error );
+              // something went wrong (non-validation related).
               let toast = this.$toasted.error( 'Please fill in the details.', {
                 theme: "outline",
                 position: "bottom-center",
                 duration: 3000
               } );
-            } else {
-              // success stuff.
-              this.addDataToItems();
+            } );
+          }
+        },
+
+        addDataToItems() {
+          let {
+            quantity,
+            size,
+            amount,
+            discount_percentage,
+            discount_amount,
+            taxable_amount,
+            cgst_percentage,
+            cgst_amount,
+            sgst_percentage,
+            sgst_amount,
+            igst_percentage,
+            igst_amount,
+            total_payable_amount
+          } = this.item;
+          let {
+            product_id,
+            hsn_code,
+            product_name,
+            price
+          } = this.item.product;
+          //bill_detail complete
+          this.bill_detail.push( {
+            product_id,
+            quantity,
+            price,
+            size,
+            discount_percentage,
+            discount_amount
+          } );
+          //item detail complete
+          this.items.push( {
+            product_name,
+            size,
+            quantity,
+            price,
+            amount,
+            discount_percentage,
+            discount_amount,
+            taxable_amount,
+            cgst_percentage,
+            cgst_amount,
+            sgst_percentage,
+            sgst_amount,
+            igst_percentage,
+            igst_amount,
+            total_payable_amount
+          } );
+          this.computed_total_payable_amount();
+          this.hideInputs = true;
+          this.item.size = '';
+          this.item.quantity = 0;
+          this.item.discount_percentage = 0;
+        },
+
+        computed_total_payable_amount() {
+          var x; //for length
+          for ( x in this.items ) {
+            // console.log(this.items[this.items.length-1]);
+            this.item.ftaxable_amount += this.items[ this.items.length - 1 ].taxable_amount;
+            this.item.fcgst_amount += this.items[ this.items.length - 1 ].cgst_amount;
+            this.item.fsgst_amount += this.items[ this.items.length - 1 ].sgst_amount;
+            this.item.figst_amount += this.items[ this.items.length - 1 ].igst_amount;
+            this.item.ftotal_payable_amount += this.items[ this.items.length - 1 ].total_payable_amount;
+            break;
+          }
+        },
+
+        removeItem( it, index ) {
+          // values update
+          this.item.ftaxable_amount -= it.taxable_amount;
+          this.item.fcgst_amount -= it.cgst_amount
+          this.item.fsgst_amount -= it.sgst_amount;
+          this.item.figst_amount -= it.igst_amount;
+          this.item.ftotal_payable_amount -= it.total_payable_amount;
+          // bill_detail
+          this.bill_detail.splice( index, 1 );
+          // items
+          this.items.splice( index, 1 );
+        },
+
+        validateAndCallApi() {
+          if ( this.items.length == 0 ) {
+            let toast = this.$toasted.error( "No Data!", {
+              theme: "outline",
+              position: "top-center",
+              duration: 3000
+            } );
+          } else {
+            this.callApi();
+          }
+        },
+
+        checkInvoice() {
+          this.item.invoice_no = +this.item.invoice_no.toString();
+          api.checkInvoice(this.item.invoice_no, this.item.fiscal_year.year)
+          .then( response => {
+            if(response.data.message == "proceed") {
+              let toast = this.$toasted.success( "Invoice Number available!", {
+                theme: "outline",
+                position: "bottom-center",
+                duration: 3000
+              } );
+              this.isInvoiceValid = true;
+              return true;
             }
-          } ).catch( ( error ) => {
-            console.log( error );
-            // something went wrong (non-validation related).
-            let toast = this.$toasted.error( 'Please fill in the details.', {
+            else {
+              this.isInvoiceValid = false;
+              return false;
+            }
+          })
+          .catch( error => {
+            return false;
+            console.log("checkInvoice: ", error);
+            let toast = this.$toasted.error( 'Something is wrong with the Invoice Number', {
               theme: "outline",
               position: "bottom-center",
               duration: 3000
             } );
-          } );
-      }
-    },
+          } )
+        },
 
-    removeItem( it, index ) {
-      // values update
-      this.item.ftaxable_amount -= it.taxable_amount;
-      this.item.fcgst_amount -= it.cgst_amount
-      this.item.fsgst_amount -= it.sgst_amount;
-      this.item.figst_amount -= it.igst_amount;
-      this.item.ftotal_payable_amount -= it.total_payable_amount;
-      // bill_detail
-      this.bill_detail.splice( index, 1 );
-      // items
-      this.items.splice( index, 1 );
-    },
+        callApi() {
+          this.loadingLight = true;
+          //api call to submit the bill
+          api.createBill( this.item.userId, this.item.firm.firm_id, this.item.invoice_no, this.item.fiscal_year.year,
+            this.item.ftaxable_amount, this.item.sgst_percentage, this.item.fsgst_amount,
+            this.item.cgst_percentage, this.item.fcgst_amount, this.item.igst_percentage, this.item.figst_amount,
+            this.item.ftotal_payable_amount, this.item.created_at, this.bill_detail )
+            .then( response => {
+              this.loadingLight = false;
+              let toast = this.$toasted.success( "Bill Creation Successful!", {
+                theme: "outline",
+                position: "top-center",
+                duration: 3000
+              } );
+              this.$router.push( {
+                name: 'PrintBillTemplate',
+                params: {
+                  invoice_no: response.data.invoice_no,
+                  fiscal_year: response.data.invoiceYear
+                }
+              } );
+            } )
+            .catch( error => {
+              this.loadingLight = false;
+              console.log( error );
+            } )
+            //send to another page, with nice invoice template and hit print
+            // window.print();
+          },
 
-    computed_total_payable_amount() {
-      var x; //for length
-      for ( x in this.items ) {
-        // console.log(this.items[this.items.length-1]);
-        this.item.ftaxable_amount += this.items[ this.items.length - 1 ].taxable_amount;
-        this.item.fcgst_amount += this.items[ this.items.length - 1 ].cgst_amount;
-        this.item.fsgst_amount += this.items[ this.items.length - 1 ].sgst_amount;
-        this.item.figst_amount += this.items[ this.items.length - 1 ].igst_amount;
-        this.item.ftotal_payable_amount += this.items[ this.items.length - 1 ].total_payable_amount;
-        break;
-      }
-    },
+          getCurrentFiscalYear() {
+            this.item.fiscal_year.start_year = dates.getCurrentYear().currentFullYear;
+            this.item.fiscal_year.end_year = +dates.getCurrentYear().currentShortYear+1;
+            return dates.calculateCurrentFiscalYear();
+          },
 
-    validateAndCallApi() {
-      if ( this.items.length == 0 ) {
-        let toast = this.$toasted.error( "No Data!", {
-          theme: "outline",
-          position: "top-center",
-          duration: 3000
-        } );
-      } else {
-        this.callApi();
-      }
-    },
-    validate() {
-      return this.$validator.validateAll();
-    },
-    callApi() {
-      this.loadingLight = true;
-      //api call to submit the bill
-      api.createBill( this.item.user_id, this.item.firm.firm_id, this.item.invoice_no,
-          this.item.ftaxable_amount, this.item.sgst_percentage, this.item.fsgst_amount,
-          this.item.cgst_percentage, this.item.fcgst_amount, this.item.igst_percentage, this.item.figst_amount,
-          this.item.ftotal_payable_amount, this.item.created_at, this.bill_detail )
-        .then( response => {
-          this.loadingLight = false;
-          let toast = this.$toasted.success( "Bill Creation Successful!", {
-            theme: "outline",
-            position: "top-center",
-            duration: 3000
-          } );
-          this.$router.push( {
-            name: 'Sample',
-            params: {
-              invoice_no: response.data.invoice_no
+          validate() {
+            return this.$validator.validateAll();
+          },
+
+          callMainDetailsAdd() {
+            this.hideInputs = !this.hideInputs;
+          },
+
+          userDetails() {
+            api.userDetails()
+            .then( ( response ) => {
+              this.item.admin_state_code = response.data.state_code;
+            } )
+          },
+
+        },
+        computed: {
+
+          getcgst_amount() {
+            this.item.cgst_amount = ( this.item.cgst_percentage / 100 ) * this.item.taxable_amount;
+            return parseFloat( ( this.item.cgst_amount ).toFixed( 2 ) );
+          },
+
+          getsgst_amount() {
+            this.item.sgst_amount = ( this.item.sgst_percentage / 100 ) * this.item.taxable_amount;
+            return parseFloat( ( this.item.sgst_amount ).toFixed( 2 ) );
+          },
+
+          getigst_amount() {
+            this.item.igst_amount = ( this.item.igst_percentage / 100 ) * this.item.taxable_amount;
+            return parseFloat( ( this.item.igst_amount ).toFixed( 2 ) );
+          },
+
+          getdiscount_amount() {
+            this.item.discount_amount = this.item.amount * ( this.item.discount_percentage / 100 );
+            return parseFloat( ( this.item.discount_amount ).toFixed( 2 ) );
+          },
+
+          getamount() {
+            this.item.amount = this.item.quantity * this.item.product.price;
+            return parseFloat( ( this.item.amount ).toFixed( 2 ) );
+          },
+
+          gettaxable_amount() {
+            this.item.taxable_amount = this.item.amount - this.item.discount_amount;
+            return parseFloat( ( this.item.taxable_amount ).toFixed( 2 ) );
+          },
+
+          gettotal_payable_amount() {
+            this.item.total_payable_amount = this.item.taxable_amount + this.item.cgst_amount + this.item.sgst_amount + this.item.igst_amount;
+            return parseFloat( ( this.item.total_payable_amount ).toFixed( 2 ) );
+          },
+
+          calculateFiscalYear() {
+            if((this.item.fiscal_year.start_year + '').replace('.', '').length === 4) {
+              // }
+              // if(this.item.fiscal_year.start_year.toString().length === 4) {
+              this.item.fiscal_year.end_year = this.item.fiscal_year.start_year-2000+1;
+              this.item.fiscal_year.year = this.item.fiscal_year.start_year + "-" + this.item.fiscal_year.end_year;
+              if(this.item.fiscal_year.start_year >= 2000 && this.item.fiscal_year.start_year <= 2008) {
+                this.item.fiscal_year.year = this.item.fiscal_year.start_year + "-0" + this.item.fiscal_year.end_year;
+              }
             }
-          } );
-        } )
-        .catch( error => {
-          this.loadingLight = false;
-          console.log( error );
-        } )
-      //send to another page, with nice invoice template and hit print
-      // window.print();
-
-    },
-
-    deleteItem( indexNo ) {
-      this.dataArr.splice( indexNo, 1 );
-      this.bill_detail.splice( indexNo, 1 );
-      this.calculateAmount();
-    },
-    userDetails() {
-      api.userDetails()
-        .then( ( response ) => {
-          this.item.admin_state_code = response.data.state_code;
-        } )
-    },
-    callMainDetailsAdd() {
-      this.hideInputs = !this.hideInputs;
-    },
-
-    addDataToItems() {
-      let {
-        quantity,
-        size,
-        amount,
-        discount_percentage,
-        discount_amount,
-        taxable_amount,
-        cgst_percentage,
-        cgst_amount,
-        sgst_percentage,
-        sgst_amount,
-        igst_percentage,
-        igst_amount,
-        total_payable_amount
-      } = this.item;
-      let {
-        product_id,
-        hsn_code,
-        product_name,
-        price
-      } = this.item.product;
-      //bill_detail complete
-      this.bill_detail.push( {
-        product_id,
-        quantity,
-        price,
-        size,
-        discount_percentage,
-        discount_amount
-      } );
-      //item detail complete
-      this.items.push( {
-        product_name,
-        size,
-        quantity,
-        price,
-        amount,
-        discount_percentage,
-        discount_amount,
-        taxable_amount,
-        cgst_percentage,
-        cgst_amount,
-        sgst_percentage,
-        sgst_amount,
-        igst_percentage,
-        igst_amount,
-        total_payable_amount
-      } );
-      this.computed_total_payable_amount();
-      this.hideInputs = true;
-      this.item.size = '';
-      this.item.quantity = 0;
-      this.item.discount_percentage = 0;
-    },
-
-    getLastBillInvoiceNumber() {
-      // this.loading = true;
-      // var myNumeral =  numeral(1).format('0000');
-      api.getLastBill()
-        .then( response => {
-          this.loading = false;
-          if ( isNaN( parseInt( response.data ) ) == true ) {
-            this.item.invoice_no = numeral( 1 ).format( '0000' );
-          } else {
-            this.item.invoice_no = numeral( response.data ).format( '0000' );
+            return 0;
           }
-        } )
-        .catch( error => {
-          console.log( error );
-        } )
-    }
-  },
-  computed: {
 
-    getcgst_amount() {
-      this.item.cgst_amount = ( this.item.cgst_percentage / 100 ) * this.item.taxable_amount;
-      return parseFloat( ( this.item.cgst_amount ).toFixed( 2 ) );
-    },
-
-    getsgst_amount() {
-      this.item.sgst_amount = ( this.item.sgst_percentage / 100 ) * this.item.taxable_amount;
-      return parseFloat( ( this.item.sgst_amount ).toFixed( 2 ) );
-    },
-
-    getigst_amount() {
-      this.item.igst_amount = ( this.item.igst_percentage / 100 ) * this.item.taxable_amount;
-      return parseFloat( ( this.item.igst_amount ).toFixed( 2 ) );
-    },
-
-    getdiscount_amount() {
-      this.item.discount_amount = this.item.amount * ( this.item.discount_percentage / 100 );
-      return parseFloat( ( this.item.discount_amount ).toFixed( 2 ) );
-    },
-
-    getamount() {
-      this.item.amount = this.item.quantity * this.item.product.price;
-      return parseFloat( ( this.item.amount ).toFixed( 2 ) );
-    },
-
-    gettaxable_amount() {
-      this.item.taxable_amount = this.item.amount - this.item.discount_amount;
-      return parseFloat( ( this.item.taxable_amount ).toFixed( 2 ) );
-    },
-
-    gettotal_payable_amount() {
-      this.item.total_payable_amount = this.item.taxable_amount + this.item.cgst_amount + this.item.sgst_amount + this.item.igst_amount;
-      return parseFloat( ( this.item.total_payable_amount ).toFixed( 2 ) );
-    }
-
-  }
-}
-</script>
-
-<style lang="scss">
-.dummy-bill {
-    margin-bottom: 2rem;
-    .box {
-        padding: 0;
-    }
-
-    .item-details {
-        .box {
-            background: #fbfbfd;
         }
-    }
+      }
+      </script>
 
-    .bill-wala-box {
-        margin-bottom: 0;
-    }
+      <style lang="scss">
+      .dummy-bill {
+        margin-bottom: 2rem;
+        .box {
+          padding: 0;
+        }
 
-    .head {
-        padding: 1rem;
-        border-bottom: solid 1px #ddd;
-    }
+        .item-details {
+          .box {
+            background: #fbfbfd;
+          }
+        }
 
-    .form {
-        .form-head {
+        .bill-wala-box {
+          margin-bottom: 0;
+        }
+
+        .head {
+          padding: 1rem;
+          border-bottom: solid 1px #ddd;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .title {
+            margin: 0;
+          }
+          .fiscal-year {
+            .title {
+              padding-top: 10px;
+            }
+            .columns {
+              margin-left: 0;
+              .column {
+                max-width: 6.1rem;
+              }
+              .column.first {
+                padding-right: 0;
+              }
+              .column.last {
+                padding-left: 0;
+                max-width: 3.5rem;
+              }
+            }
+          }
+        }
+
+        .form {
+          .form-head {
             padding: 1rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
             .title {
-                margin: 0;
+              margin: 0;
             }
-        }
-        .form-body {
+          }
+          .form-body {
             padding: 0.4rem;
             border-top: solid 1px #ddd;
             .columns {
-                margin: 0;
-                .customer-name {
-                    padding-top: 0;
-                }
+              margin: 0;
+              .customer-name {
+                padding-top: 0;
+              }
             }
+          }
         }
-    }
 
-    .control.is-mobile {
-        display: flex;
-        max-width: 52%;
-        .icon.is-medium {
+        .control.is-mobile {
+          display: flex;
+          max-width: 52%;
+          .icon.is-medium {
             padding-left: 0.5rem;
             padding-top: 0.3rem;
+          }
         }
-    }
 
-    .control.is-mobile.srno {
-        max-width: 49%;
-    }
+        .control.is-mobile.srno {
+          max-width: 49%;
+        }
 
-    .main-details {
-        padding: 1rem;
-        border-top: solid 1px #ddd;
-        border-bottom: solid 1px #ddd;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        .title {
+        .main-details {
+          padding: 1rem;
+          border-top: solid 1px #ddd;
+          border-bottom: solid 1px #ddd;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .title {
             margin: 0;
+          }
         }
-    }
 
-    .sr-no1 {
-        border-left: solid 1px #ddd;
-        max-width: 2.1rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        border-top: solid 1px #ddd;
-        text-align: center;
-        padding-left: 0.4rem;
-    }
-    .particulars1 {
-        max-width: 26rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        border-top: solid 1px #ddd;
-        text-align: center;
-    }
-    .numbers {
-        max-width: 5rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        border-top: solid 1px #ddd;
-    }
-    .discount1 {
-        max-width: 13rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        border-top: solid 1px #ddd;
-        text-align: center;
-    }
-    .cgst {
-        max-width: 8rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        border-top: solid 1px #ddd;
-        text-align: center;
-    }
-    .sgst {
-        max-width: 8rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        border-top: solid 1px #ddd;
-        text-align: center;
-    }
-    .igst {
-        max-width: 8rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        border-top: solid 1px #ddd;
-        text-align: center;
-    }
-    .size {
-        max-width: 6rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        text-align: center;
-    }
-    .sr-no {
-        border-left: solid 1px #ddd;
-        max-width: 2.1rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        text-align: center;
-        padding-left: 0.6rem;
-    }
-    .sr-no.edit {
-        z-index: 1026;
-    }
-    .particulars {
-        max-width: 15rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        text-align: center;
-    }
-    .qty {
-        max-width: 3rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        text-align: center;
-    }
-    .rate {
-        max-width: 3rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        text-align: center;
-    }
-    .amount {
-        max-width: 5rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        text-align: center;
-    }
-    .total {
-        max-width: 5rem;
-        border-bottom: solid 1px #ddd;
-        border-right: solid 1px #ddd;
-        text-align: center;
-    }
-    .edit-delete1 {
-        max-width: 3rem;
-    }
-    .edit-delete {
-        max-width: 4.2rem;
-    }
+        .sr-no1 {
+          border-left: solid 1px #ddd;
+          max-width: 2.1rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          border-top: solid 1px #ddd;
+          text-align: center;
+          padding-left: 0.4rem;
+        }
+        .particulars1 {
+          max-width: 26rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          border-top: solid 1px #ddd;
+          text-align: center;
+        }
+        .numbers {
+          max-width: 5rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          border-top: solid 1px #ddd;
+        }
+        .discount1 {
+          max-width: 13rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          border-top: solid 1px #ddd;
+          text-align: center;
+        }
+        .cgst {
+          max-width: 8rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          border-top: solid 1px #ddd;
+          text-align: center;
+        }
+        .sgst {
+          max-width: 8rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          border-top: solid 1px #ddd;
+          text-align: center;
+        }
+        .igst {
+          max-width: 8rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          border-top: solid 1px #ddd;
+          text-align: center;
+        }
+        .size {
+          max-width: 6rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          text-align: center;
+        }
+        .sr-no {
+          border-left: solid 1px #ddd;
+          max-width: 2.1rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          text-align: center;
+          padding-left: 0.6rem;
+        }
+        .sr-no.edit {
+          z-index: 1026;
+        }
+        .particulars {
+          max-width: 15rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          text-align: center;
+        }
+        .qty {
+          max-width: 3rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          text-align: center;
+        }
+        .rate {
+          max-width: 3rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          text-align: center;
+        }
+        .amount {
+          max-width: 5rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          text-align: center;
+        }
+        .total {
+          max-width: 5rem;
+          border-bottom: solid 1px #ddd;
+          border-right: solid 1px #ddd;
+          text-align: center;
+        }
+        .edit-delete1 {
+          max-width: 3rem;
+        }
+        .edit-delete {
+          max-width: 4.2rem;
+        }
 
-    .columns {
-        max-width: 100%;
-    }
+        .columns {
+          max-width: 100%;
+        }
 
-    .table {
-        padding: 2rem 1rem 1rem;
-    }
+        .table {
+          padding: 2rem 1rem 1rem;
+        }
 
-    .additional-details {
-        border-top: solid 1px #ddd;
-        display: flow-root;
-        .is-pulled-right {
+        .additional-details {
+          border-top: solid 1px #ddd;
+          display: flow-root;
+          .is-pulled-right {
             margin-right: 1rem;
+          }
         }
-    }
 
-    .submit-btn {
-        padding: 1rem;
-        border-top: solid 1px #ddd;
-    }
+        .submit-btn {
+          padding: 1rem;
+          border-top: solid 1px #ddd;
+          display: flex;
+          justify-content: flex-end;
+        }
 
-    .tile.is-ancestor {
-        margin: 0;
-        .tile.is-parent {
+        .tile.is-ancestor {
+          margin: 0;
+          .tile.is-parent {
             // padding-bottom: 0;
             .table.is-bordered.is-striped.is-narrow {
-                margin-bottom: 0;
+              margin-bottom: 0;
             }
+          }
         }
-    }
 
-    thead {
-        tr {
+        thead {
+          tr {
             align-items: center;
+          }
         }
-    }
 
-    td,
-    th {
-        text-align: center;
-    }
+        td,
+        th {
+          text-align: center;
+        }
 
-    .lower {
-        border-top: solid 1px #ddd;
-        width: 17rem;
-        margin-left: auto;
-        padding-right: 1rem;
-        padding-left: 0.5rem;
-        border-left: solid 1px #ddd;
-        border-bottom: solid 1px #ddd;
-        .left {}
-        .right {
+        .lower {
+          border-top: solid 1px #ddd;
+          width: 17rem;
+          margin-left: auto;
+          padding-right: 1rem;
+          padding-left: 0.5rem;
+          border-left: solid 1px #ddd;
+          border-bottom: solid 1px #ddd;
+          .left {}
+          .right {
             float: right;
+          }
         }
-    }
 
-    .lower-part-two {
-        width: fit-content;
-        margin-left: auto;
-    }
+        .lower-part-two {
+          width: fit-content;
+          margin-left: auto;
+        }
 
-    .item-details {
-        .box {
+        .item-details {
+          .box {
             border-bottom: solid 1px #ddd;
+          }
         }
-    }
 
-    .zero {
-        border: none;
-    }
+        .zero {
+          border: none;
+        }
 
-    .dash {
-        max-width: 2rem;
-        min-width: 2rem;
-    }
+        .dash {
+          max-width: 2rem;
+          min-width: 2rem;
+        }
 
-    .name {
-        min-width: 11rem;
-        width: 13rem;
-    }
-    .size {
-        min-width: 7rem;
-    }
-    .quantity {
-        min-width: 5rem;
-        max-width: 8rem;
-    }
-    .rate {
-        max-width: 6rem;
-    }
-    .discPerc {
-        min-width: 5rem;
-        width: 6rem;
-        max-width: 7rem;
-    }
-    .amount {
-        min-width: 8rem;
-        max-width: 8rem;
-    }
-    .discAmount {
-        min-width: 5rem;
-        max-width: 5rem;
-    }
+        .name {
+          min-width: 11rem;
+          width: 13rem;
+        }
+        .size {
+          min-width: 7rem;
+        }
+        .quantity {
+          min-width: 5rem;
+          max-width: 8rem;
+        }
+        .rate {
+          max-width: 6rem;
+        }
+        .discPerc {
+          min-width: 5rem;
+          width: 6rem;
+          max-width: 7rem;
+        }
+        .amount {
+          min-width: 8rem;
+          max-width: 8rem;
+        }
+        .discAmount {
+          min-width: 5rem;
+          max-width: 5rem;
+        }
 
-    .taxAmount {
-        min-width: 8rem;
-        max-width: 8rem;
-    }
+        .taxAmount {
+          min-width: 8rem;
+          max-width: 8rem;
+        }
 
-    .loading {
-        padding: 1rem;
-    }
+        .loading {
+          padding: 1rem;
+        }
 
-    .cross {
-        max-width: 1.5rem;
-        min-width: 2rem;
-    }
+        .cross {
+          max-width: 1.5rem;
+          min-width: 2rem;
+        }
 
-    .prod-name {
-        min-width: 12rem;
-        max-width: 16rem;
-    }
+        .prod-name {
+          min-width: 12rem;
+          max-width: 16rem;
+        }
 
-    .prod-size {
-        min-width: 3rem;
-        max-width: 5rem;
-    }
+        .prod-size {
+          min-width: 3rem;
+          max-width: 5rem;
+        }
 
-    .prod-qty {
-        min-width: 3rem;
-        max-width: 5rem;
-    }
+        .prod-qty {
+          min-width: 3rem;
+          max-width: 5rem;
+        }
 
-    .prod-price {
-        min-width: 4rem;
-        max-width: 5rem;
-    }
+        .prod-price {
+          min-width: 4rem;
+          max-width: 5rem;
+        }
 
-    .prod-amt {
-        min-width: 1rem;
-        max-width: 5rem;
-    }
+        .prod-amt {
+          min-width: 1rem;
+          max-width: 5rem;
+        }
 
-    .disc-rate {
-        min-width: 1rem;
-        max-width: 3rem;
-    }
+        .disc-rate {
+          min-width: 1rem;
+          max-width: 3rem;
+        }
 
-    .disc-amt {
-        min-width: 1rem;
-        max-width: 3rem;
-    }
+        .disc-amt {
+          min-width: 1rem;
+          max-width: 3rem;
+        }
 
-    .taxable-amt {
-        min-width: 1rem;
-        max-width: 3rem;
-    }
+        .taxable-amt {
+          min-width: 1rem;
+          max-width: 3rem;
+        }
 
-    .middle-box {
-        margin-bottom: 1rem;
-    }
+        .middle-box {
+          margin-bottom: 1rem;
+        }
 
-    .upper {
-        .tile.is-parent {
+        .upper {
+          .tile.is-parent {
             padding: 0;
+          }
         }
-    }
 
-    .add-new {
-        text-align: left;
-    }
+        .add-new {
+          text-align: left;
+        }
 
-    .item-table {
-        margin-top: 1rem;
-        .tile.is-parent {
+        .item-table {
+          margin-top: 1rem;
+          .tile.is-parent {
             padding: 0;
+          }
         }
-    }
 
-}
-</style>
+      }
+      </style>

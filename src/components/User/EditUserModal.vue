@@ -50,222 +50,210 @@
           </div>
           <div class="columns">
 
-            <!-- <div class="column gst">
-            <div class="field">
-            <label class="label">GST Number<span class="required">*</span></label>
-            <p class="control">
-            <input v-model="user.gst_no" name="gst_no" v-validate="'required'"
-            class="input" type="text" placeholder="GST Number">
-          </p>
-          <div v-show="errors.has('gst_no')" class="help is-danger">
-          The GST Number is required.
-        </div>
-      </div>
-    </div> -->
-    <div class="column gst">
-      <label class="label">GST Number<span class="required">*</span> </label>
-      <div class="field has-addons">
-        <p class="control">
-          <input v-model="user.gst_no" name="gst_no" v-validate="'required|min:15|max:15'"
-          class="input" type="text" placeholder="GST Number">
-        </p>
-        <div class="control">
-          <a class="button">
-            {{user.gst_no.length}}/15
-          </a>
-        </div>
-      </div>
-      <div v-show="errors.has('gst_no')" class="help is-danger">
-        The GST Number is required and should be exactly 15 characters.
-      </div>
-    </div>
+            <div class="column gst">
+              <label class="label">GST Number </label>
+              <div class="field has-addons">
+                <p class="control">
+                  <input v-model="user.gst_no" name="gst_no" v-validate="'min:15|max:15'"
+                  class="input" type="text" placeholder="GST Number">
+                </p>
+                <div class="control">
+                  <a v-if="user.gst_no" class="button">
+                    {{user.gst_no.length}}/15
+                  </a>
+                </div>
+              </div>
+              <div v-show="errors.has('gst_no')" class="help is-danger">
+                The GST Number should be exactly 15 characters.
+              </div>
+            </div>
 
-    <div class="column email">
-      <div class="field">
-        <label class="label">Email</label>
-        <p class="control">
-          <input v-model="user.email" name="billemail" v-validate="'required|email'"
-          type="email" placeholder="Email" class="input">
-        </p>
-        <div class="help is-danger" v-show="errors.has('billemail')">
-          The Email is required and should be a valid Email address.
-        </div>
-      </div>
-    </div>
+            <div class="column email">
+              <div class="field">
+                <label class="label">Email</label>
+                <p class="control">
+                  <input v-model="user.email" name="billemail" v-validate="'email'"
+                  type="email" placeholder="Email" class="input">
+                </p>
+                <div class="help is-danger" v-show="errors.has('billemail')">
+                  The Email should be a valid Email address.
+                </div>
+              </div>
+            </div>
 
+          </div>
+          <h3 class="title billing">Billing Address</h3>
+          <div class="columns">
+
+            <div class="column">
+              <div class="field">
+                <label class="label">Address<span class="required">*</span></label>
+                <p class="control">
+                  <textarea v-model="user.billing.address" name="billaddress" v-validate="'required'"
+                  class="textarea" placeholder="Address"></textarea>
+                </p>
+                <div v-show="errors.has('billaddress')" class="help is-danger">
+                  The Billing Address is a required.
+                </div>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="field">
+                <label class="label">Contact No(Mobile)</label>
+                <p class="control">
+                  <input v-model="user.billing.mobile" name="billmobile_no" v-validate="'numeric|min:8'"
+                  type="number" placeholder="Contact No" class="input">
+                </p>
+                <div class="help is-danger" v-show="errors.has('billmobile_no')">
+                  The Contact Number field should contain at least 8 numeric values.
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Contact No(Landline)</label>
+                <p class="control">
+                  <input v-model="user.billing.landline" name="billlandline_no" v-validate="'numeric|min:8'"
+                  type="number" placeholder="Contact No" class="input">
+                </p>
+                <div class="help is-danger" v-show="errors.has('billlandline_no')">
+                  The Contact Number field should contain at least 8 numeric values.
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="columns">
+
+            <div class="column">
+              <div class="field">
+                <label class="label">City<span class="required">*</span></label>
+                <p class="control">
+                  <input v-model="user.billing.city" name="billcity" v-validate="'required'"
+                  class="input" type="text" placeholder="City">
+                </p>
+                <div v-show="errors.has('billcity')" class="help is-danger">
+                  The City Name is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="field">
+                <label class="label">State<span class="required">*</span></label>
+                <p class="control">
+                  <StateDropdownNewCustomer :stateCode.sync="user.billing.state_code">
+                  </StateDropdownNewCustomer>
+                </p>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="field">
+                <label class="label">Pincode</label>
+                <p class="control">
+                  <input v-model="user.billing.pincode" name="billpincode"
+                  type="number" placeholder="Pincode" class="input">
+                </p>
+                <div class="help is-danger" v-show="errors.has('billpincode')">
+                  The Pincode is required.
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="shipping address">
+            <h3 class="title">Shipping Address</h3>
+            <button class="button is-primary" @click="sameAsBillingAddress()">Same as Above</button>
+          </div>
+          <div class="columns">
+
+            <div class="column">
+              <div class="field">
+                <label class="label">Address<span class="required">*</span></label>
+                <p class="control">
+                  <textarea v-model="user.shipping.address" name="shipaddress" v-validate="'required'"
+                  class="textarea" placeholder="Address"></textarea>
+                </p>
+                <div v-show="errors.has('shipaddress')" class="help is-danger">
+                  The Temporary Address is a required field with minimum of 10 letters.
+                </div>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="field">
+                <label class="label">Contact No(Mobile)</label>
+                <p class="control">
+                  <input v-model="user.shipping.mobile" name="shipmobile_no"
+                  v-validate="'numeric|min:8'" type="number" placeholder="Contact No" class="input">
+                </p>
+                <div class="help is-danger" v-show="errors.has('shipmobile_no')">
+                  The Contact Number field should contain at least 8 numeric values.
+                </div>
+              </div>
+              <div class="field">
+                <label class="label">Contact No(Landline)</label>
+                <p class="control">
+                  <input v-model="user.shipping.landline" name="shiplandline_no"
+                  v-validate="'numeric|min:8'" type="number" placeholder="Contact No" class="input">
+                </p>
+                <div class="help is-danger" v-show="errors.has('shiplandline_no')">
+                  The Contact Number field should contain at least 8 numeric values.
+                </div>
+              </div>
+            </div>
+
+          </div>
+          <div class="columns">
+
+            <div class="column">
+              <div class="field">
+                <label class="label">City<span class="required">*</span></label>
+                <p class="control">
+                  <input v-model="user.shipping.city" name="shipcity" v-validate="'required'"
+                  class="input" type="text" placeholder="City">
+                </p>
+                <div v-show="errors.has('shipcity')" class="help is-danger">
+                  The City Name is required.
+                </div>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="field">
+                <label class="label">State<span class="required">*</span></label>
+                <p class="control">
+                  <StateDropdownNewCustomer :stateCode.sync="user.shipping.state_code">
+                  </StateDropdownNewCustomer>
+                </p>
+              </div>
+            </div>
+
+            <div class="column">
+              <div class="field">
+                <label class="label">Pincode</label>
+                <p class="control">
+                  <input v-model="user.shipping.pincode" name="shippincode"
+                  type="number" placeholder="Pincode" class="input">
+                </p>
+                <div class="help is-danger" v-show="errors.has('shippincode')">
+                  The Email is required and should be a valid Email address.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </section>
+        <footer class="modal-card-foot">
+          <a class="button is-success" @click="validateAndUpdateUser()">Update</a>
+          <a class="button" @click="isOpen=!isOpen">Cancel</a>
+        </footer>
+
+      </div>
+
+    </div>
   </div>
-  <h3 class="title billing">Billing Address</h3>
-  <div class="columns">
-
-    <div class="column">
-      <div class="field">
-        <label class="label">Address<span class="required">*</span></label>
-        <p class="control">
-          <textarea v-model="user.billing.address" name="billaddress" v-validate="'required'"
-          class="textarea" placeholder="Address"></textarea>
-        </p>
-        <div v-show="errors.has('billaddress')" class="help is-danger">
-          The Billing Address is a required.
-        </div>
-      </div>
-    </div>
-
-    <div class="column">
-      <div class="field">
-        <label class="label">Contact No(Mobile)</label>
-        <p class="control">
-          <input v-model="user.billing.mobile" name="billmobile_no" v-validate="'numeric|min:8'"
-          type="number" placeholder="Contact No" class="input">
-        </p>
-        <div class="help is-danger" v-show="errors.has('billmobile_no')">
-          The Contact Number field should contain at least 8 numeric values.
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Contact No(Landline)</label>
-        <p class="control">
-          <input v-model="user.billing.landline" name="billlandline_no" v-validate="'numeric|min:8'"
-          type="number" placeholder="Contact No" class="input">
-        </p>
-        <div class="help is-danger" v-show="errors.has('billlandline_no')">
-          The Contact Number field should contain at least 8 numeric values.
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <div class="columns">
-
-    <div class="column">
-      <div class="field">
-        <label class="label">City<span class="required">*</span></label>
-        <p class="control">
-          <input v-model="user.billing.city" name="billcity" v-validate="'required'"
-          class="input" type="text" placeholder="City">
-        </p>
-        <div v-show="errors.has('billcity')" class="help is-danger">
-          The City Name is required.
-        </div>
-      </div>
-    </div>
-
-    <div class="column">
-      <div class="field">
-        <label class="label">State<span class="required">*</span></label>
-        <p class="control">
-          <StateDropdownNewCustomer :stateCode.sync="user.billing.state_code">
-          </StateDropdownNewCustomer>
-        </p>
-      </div>
-    </div>
-
-    <div class="column">
-      <div class="field">
-        <label class="label">Pincode</label>
-        <p class="control">
-          <input v-model="user.billing.pincode" name="billpincode"
-          type="number" placeholder="Pincode" class="input">
-        </p>
-        <div class="help is-danger" v-show="errors.has('billpincode')">
-          The Pincode is required.
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <div class="shipping address">
-    <h3 class="title">Shipping Address</h3>
-    <button class="button is-primary" @click="sameAsBillingAddress()">Same as Above</button>
-  </div>
-  <div class="columns">
-
-    <div class="column">
-      <div class="field">
-        <label class="label">Address<span class="required">*</span></label>
-        <p class="control">
-          <textarea v-model="user.shipping.address" name="shipaddress" v-validate="'required'"
-          class="textarea" placeholder="Address"></textarea>
-        </p>
-        <div v-show="errors.has('shipaddress')" class="help is-danger">
-          The Temporary Address is a required field with minimum of 10 letters.
-        </div>
-      </div>
-    </div>
-
-    <div class="column">
-      <div class="field">
-        <label class="label">Contact No(Mobile)</label>
-        <p class="control">
-          <input v-model="user.shipping.mobile" name="shipmobile_no"
-          v-validate="'numeric|min:8'" type="number" placeholder="Contact No" class="input">
-        </p>
-        <div class="help is-danger" v-show="errors.has('shipmobile_no')">
-          The Contact Number field should contain at least 8 numeric values.
-        </div>
-      </div>
-      <div class="field">
-        <label class="label">Contact No(Landline)</label>
-        <p class="control">
-          <input v-model="user.shipping.landline" name="shiplandline_no"
-          v-validate="'numeric|min:8'" type="number" placeholder="Contact No" class="input">
-        </p>
-        <div class="help is-danger" v-show="errors.has('shiplandline_no')">
-          The Contact Number field should contain at least 8 numeric values.
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <div class="columns">
-
-    <div class="column">
-      <div class="field">
-        <label class="label">City<span class="required">*</span></label>
-        <p class="control">
-          <input v-model="user.shipping.city" name="shipcity" v-validate="'required'"
-          class="input" type="text" placeholder="City">
-        </p>
-        <div v-show="errors.has('shipcity')" class="help is-danger">
-          The City Name is required.
-        </div>
-      </div>
-    </div>
-
-    <div class="column">
-      <div class="field">
-        <label class="label">State<span class="required">*</span></label>
-        <p class="control">
-          <StateDropdownNewCustomer :stateCode.sync="user.shipping.state_code">
-          </StateDropdownNewCustomer>
-        </p>
-      </div>
-    </div>
-
-    <div class="column">
-      <div class="field">
-        <label class="label">Pincode</label>
-        <p class="control">
-          <input v-model="user.shipping.pincode" name="shippincode"
-          type="number" placeholder="Pincode" class="input">
-        </p>
-        <div class="help is-danger" v-show="errors.has('shippincode')">
-          The Email is required and should be a valid Email address.
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-</section>
-<footer class="modal-card-foot">
-  <a class="button is-success" @click="validateAndUpdateUser()">Update</a>
-  <a class="button" @click="isOpen=!isOpen">Cancel</a>
-</footer>
-
-</div>
-
-</div>
-</div>
 </template>
 
 <script>

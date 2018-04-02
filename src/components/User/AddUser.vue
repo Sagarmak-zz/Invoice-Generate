@@ -32,10 +32,10 @@
     <div class="columns">
 
       <div class="column gst">
-        <label class="label">GST Number<span class="required">*</span> </label>
+        <label class="label">GST Number</label>
         <div class="field has-addons">
           <p class="control">
-            <input v-model="user.gst_no" name="gst_no" v-validate="'required|min:15|max:15'"
+            <input v-model="user.gst_no" name="gst_no" v-validate="'min:15|max:15'"
             class="input" type="text" placeholder="GST Number">
           </p>
           <div class="control">

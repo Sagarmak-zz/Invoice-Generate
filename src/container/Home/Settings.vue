@@ -79,7 +79,7 @@ export default {
   created() {
     this.getStates();
     this.getUser();
-    this.decodeToken();
+    this.adminId = Auth.getUserId();
     this.$bus.$on( 'add-admin-close', () => {
       this.addUser = false;
     } );
@@ -95,10 +95,6 @@ export default {
     });
   },
   methods: {
-    decodeToken() {
-      var decoded = jwt_decode( Auth.getToken() );
-      this.adminId = decoded.sub;
-    },
     getUser() {
       this.loading = true;
       api.userDetails()

@@ -1,14 +1,15 @@
 <template lang="html">
   <div class="products-name-dropdown">
     <div class="" v-if="!message">
-      <span :class="{'select is-fullwidth': true, 'is-danger': errors.has('products') }">
-        <select v-model="product" v-validate="'required|not_in:null'" @change="productChange()" name="products">
+      <span :class="{'select is-fullwidth': true, 'is-danger': errors.has('product') }">
+        <select v-model="product" v-validate="'required|not_in:null'"
+        @change="productChange()" name="product">
           <option value=null>Select dropdown</option>
           <option v-for="pro in products" :value="pro">{{pro.product_name}} - {{pro.hsn_code}}</option>
         </select>
       </span>
     </div>
-    <div class="box" v-if="message == 'No Products'">
+    <div v-if="message == 'No Products'">
       No Products
     </div>
   </div>
@@ -17,6 +18,7 @@
 <script>
 import api from '@/api/main';
 export default {
+  inject: ['$validator'],
   name: 'products-name-dropdown',
   created() {
     this.getProducts();

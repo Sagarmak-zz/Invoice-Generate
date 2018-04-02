@@ -1,11 +1,62 @@
 <template lang="html">
   <div class="history">
+
     <div class="box">
+
       <div class="history-head">
         <h3 class="title">History</h3>
+        <ChangeInvoiceType :invoice_type.sync="invoice.invoice_type"></ChangeInvoiceType>
       </div>
 
-      <div class="columns is-multiline need-padding" v-if="!noData">
+      <!-- Bills -->
+      <div class="columns is-multiline need-padding bills"
+      v-if="invoice.invoice_type == 'Bills' && invoice.isData == true">
+        <div class="column is-one-third" v-for="bill in bills" v-if="!loading">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">
+                <span>
+                  <span>To,</span>
+                  <span>{{bill.firm_name}}</span>
+                  <span></span>
+                </span>
+                <span class="tag is-info is-pulled-right">{{bill.invoice_no}}</span>
+              </p>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                <small>Date Created: <b>{{moment(bill.created_at.date).format('LL')}}</b></small><br>
+                <span>Taxable Amount: <b>&#8377;{{bill.taxable_amount}}</b></span> <br>
+                <div class="taxes">
+                  <span>SGST <b>&#8377;{{bill.sgst_amount}}</b></span>
+                  <span>CGST <b>&#8377;{{bill.cgst_amount}}</b></span>
+                  <span>IGST <b>&#8377;{{bill.igst_amount}}</b></span> <br>
+                </div>
+                <span>Total Amount: <b>&#8377;{{bill.total_payable_amount}}</b></span>
+              </div>
+            </div>
+            <footer class="card-footer">
+              <router-link :to="{ name:'PrintBillTemplate',
+              params: {
+                invoice_no: bill.invoice_no,
+
+                } }" class="card-footer-item">View</router-link>
+              <a @click="askHistoryDelete(bill.id)" class="card-footer-item">Delete</a>
+            </footer>
+          </div>
+        </div>
+        <div class="loading" v-show="loading">
+          <span class="title is-4">Please wait while we load the data...</span>
+          <div class="fa fa-spinner fa-spin"> </div>
+        </div>
+      </div>
+      <div class="isData" v-if="invoice.invoice_type == 'Bills' && invoice.isData == false">
+        <span class="title">No Bills at the Moment!</span>
+      </div>
+
+      <!-- Chalan -->
+      <div class="columns is-multiline need-padding bills"
+      v-if="invoice.invoice_type == 'Chalans' && invoice.isData == true">
         <div class="column is-one-third" v-for="bill in bills" v-if="!loading">
           <div class="card">
             <header class="card-header">
@@ -41,9 +92,10 @@
           <div class="fa fa-spinner fa-spin"> </div>
         </div>
       </div>
-      <div class="noData" v-if="noData">
-        <span class="title">No Bills at the moment</span>
+      <div class="isData" v-if="invoice.invoice_type == 'Chalans' && invoice.isData == false">
+        <span class="title">No Chalans at the Moment!</span>
       </div>
+
     </div>
     <simplert :useRadius="true"
     :useIcon="true"
@@ -55,13 +107,20 @@
 <script>
 import api from '@/api/main';
 import BillsViewModal from '@/components/BillsViewModal';
+import ChangeInvoiceType from '@/components/History/ChangeInvoiceType';
 import Simplert from 'vue2-simplert';
 export default {
   name: 'history',
   data() {
     return {
+      invoice: {
+        invoice_type: 'Bills',
+        isData: false,
+        history_year: ''
+      },
       bills: [],
-      noData: false,
+      chalans: [],
+      history_years: [],
       showBillViewData: false,
       loading: false,
       obj: {
@@ -76,18 +135,22 @@ export default {
     };
   },
   created() {
+    // to be implemented today
+    // this.getHistoryYearsForBills();
+    // this.getHistoryYearsForChalans();
     this.getBill();
   },
   methods: {
     getBill() {
       this.loading = true;
-      api.getBills()
+      api.getAllBills()
       .then( response => {
+        console.log(response);
         this.loading = false;
         if ( response.data.message == "No data found" || response.data.message == "bill not found" ) {
-          this.noData = true;
+          this.invoice.isData = false;
         } else {
-          this.noData = false;
+          this.invoice.isData = true;
           this.bills = response.data;
         }
       } )
@@ -122,9 +185,12 @@ export default {
       } )
     }
   },
+  computed: {
+  },
   components: {
     // BillsViewModal
-    Simplert
+    Simplert,
+    ChangeInvoiceType
   }
 }
 </script>
@@ -144,6 +210,12 @@ export default {
   .history-head {
     padding: 1rem;
     border-bottom: solid 1px #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .title {
+      margin: 0;
+    }
   }
 
   .top-head {
@@ -180,7 +252,7 @@ export default {
     padding: 1rem;
   }
 
-  .noData {
+  .isData {
     padding: 1rem;
   }
 
@@ -199,6 +271,10 @@ export default {
   .loading {
     margin-top: 0.3rem;
     margin-left: 0.3rem;
+  }
+
+  .button.is-info {
+    background-color: #dc6932;
   }
 }
 </style>

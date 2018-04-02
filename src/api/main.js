@@ -9,11 +9,14 @@ export default {
     });
   },
 
-  //bill
+  //1 dashboard
+
+  //2 bill
   createBill(
     user_id,
     firm_id,
     invoice_no,
+    invoiceYear,
     taxable_amount,
     sgst_percentage,
     sgst_amount,
@@ -29,6 +32,7 @@ export default {
       user_id: user_id,
       firm_id: firm_id,
       invoice_no: invoice_no,
+      invoiceYear: invoiceYear,
       taxable_amount: taxable_amount,
       sgst_percentage: sgst_percentage,
       sgst_amount: sgst_amount,
@@ -46,78 +50,15 @@ export default {
     return HTTP.delete("/deleteBill/" + bill_id);
   },
 
-  //history page
-  getBills() {
-    return HTTP.get("/getBill");
+  checkInvoice(invoice_no, fiscal_year) {
+    return HTTP.get("/checkInvoice/" + invoice_no + "/" + fiscal_year);
   },
 
-  getLastBill() {
-    return HTTP.get("/invoiceNumber");
-  },
+  //3 chalan
 
-  getBillByInvoiceNo(invoice_no) {
-    return HTTP.get("/getBill/" + invoice_no);
-  },
 
-  //admin Details
-  userDetails() {
-    return HTTP.get("/userDetails");
-  },
 
-  createAdminUser(name, email, password) {
-    let url = "/userDetails/create";
-    return HTTP.post(url, {
-      name: name,
-      email: email,
-      password: password
-    });
-  },
-
-  updateUserDetails(
-    user_id,
-    username,
-    email,
-    name,
-    gst_number,
-    address,
-    cityname,
-    state_code,
-    pincode,
-    mobile_number,
-    landline_number,
-    bank_name,
-    branch_name,
-    ifsc_code,
-    account_no
-  ) {
-    let url = "/userDetails/" + user_id;
-    return HTTP.patch(url, {
-      username: username,
-      email: email,
-      name: name,
-      gst_number: gst_number,
-      address: address,
-      cityname: cityname,
-      state_code: state_code,
-      pincode: pincode,
-      mobile_number: mobile_number,
-      landline_number: landline_number,
-      bank_name: bank_name,
-      branch_name: branch_name,
-      ifsc_code: ifsc_code,
-      account_no: account_no
-    });
-  },
-
-  updateAdminPassword(password) {
-    console.log(password);
-    let url = "/userDetail/updatePassword";
-    return HTTP.patch(url, {
-      password: password
-    });
-  },
-
-  //customer
+  //4 user
   getCustomer() {
     return HTTP.get("/getCustomer");
   },
@@ -203,6 +144,114 @@ export default {
     return HTTP.get("/listCustomer");
   },
 
+
+  //5 product
+  addProduct(product_name, hsn_code, product_price) {
+    return HTTP.post("/addProduct", {
+      product_name: product_name,
+      hsn_code: hsn_code,
+      product_price: product_price
+    });
+  },
+
+  getProducts() {
+    return HTTP.get("/getProducts");
+  },
+
+  updateProduct(product_id, product_name, hsn_code, product_price) {
+    return HTTP.patch("/updateProduct/" + product_id, {
+      product_name: product_name,
+      hsn_code: hsn_code,
+      product_price: product_price
+    });
+  },
+
+  //6 history page
+  getAllBills() {
+    return HTTP.get("/getBills");
+  },
+
+  getBillsByYear(fiscal_year) {
+    return HTTP.get("/getBills/" + fiscal_year);
+  },
+
+  getBillByInvoiceNo(invoice_no, fiscalYear) {
+    // /getBill/1/2018-19
+    let url = "/getBill/" + invoice_no + "/" + fiscalYear
+    return HTTP.get(url);
+  },
+
+  getLastBill() {
+    return HTTP.get("/invoiceNumber");
+  },
+
+  //7 report
+  betweenDate(start_date, end_date) {
+    return HTTP.post("/betweenDate", {
+      start_date: start_date,
+      end_date: end_date
+    });
+  },
+
+  //8 settings
+  //admin Details
+  userDetails() {
+    return HTTP.get("/userDetails");
+  },
+
+  createAdminUser(name, email, password) {
+    let url = "/userDetails/create";
+    return HTTP.post(url, {
+      name: name,
+      email: email,
+      password: password
+    });
+  },
+
+  updateUserDetails(
+    user_id,
+    username,
+    email,
+    name,
+    gst_number,
+    address,
+    cityname,
+    state_code,
+    pincode,
+    mobile_number,
+    landline_number,
+    bank_name,
+    branch_name,
+    ifsc_code,
+    account_no
+  ) {
+    let url = "/userDetails/" + user_id;
+    return HTTP.patch(url, {
+      username: username,
+      email: email,
+      name: name,
+      gst_number: gst_number,
+      address: address,
+      cityname: cityname,
+      state_code: state_code,
+      pincode: pincode,
+      mobile_number: mobile_number,
+      landline_number: landline_number,
+      bank_name: bank_name,
+      branch_name: branch_name,
+      ifsc_code: ifsc_code,
+      account_no: account_no
+    });
+  },
+
+  updateAdminPassword(password) {
+    console.log(password);
+    let url = "/userDetail/updatePassword";
+    return HTTP.patch(url, {
+      password: password
+    });
+  },
+
   //states
   getState() {
     return HTTP.get("/getStates");
@@ -227,37 +276,4 @@ export default {
     // /deleteState/{state_code}
     return HTTP.delete("/deleteState/" + state_code);
   },
-
-  //product
-  addProduct(product_name, hsn_code, product_price) {
-    return HTTP.post("/addProduct", {
-      product_name: product_name,
-      hsn_code: hsn_code,
-      product_price: product_price
-    });
-  },
-
-  getProducts() {
-    return HTTP.get("/getProducts");
-  },
-
-  updateProduct(product_id, product_name, hsn_code, product_price) {
-    return HTTP.patch("/updateProduct/" + product_id, {
-      product_name: product_name,
-      hsn_code: hsn_code,
-      product_price: product_price
-    });
-  },
-
-  //reports
-  betweenDate(start_date, end_date) {
-    return HTTP.post("/betweenDate", {
-      start_date: start_date,
-      end_date: end_date
-    });
-  },
-
-  getBill(invoice_number) {
-    return HTTP.get("/getBill/" + invoice_number);
-  }
 };

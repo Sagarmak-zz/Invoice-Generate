@@ -27,7 +27,6 @@
                       <th>Firm Name</th>
                       <th>Contact Person Name</th>
                       <th>GST</th>
-                      <th>Email</th>
                       <th>Mobile No-Landline No</th>
                       <th>Edit</th>
                     </tr>
@@ -37,7 +36,6 @@
                       <td>{{user.name}}</td>
                       <td>{{user.person_name}}</td>
                       <td>{{user.gst_number}}</td>
-                      <td>{{user.email}}</td>
                       <td> {{user.billing_mobile_number}} - {{user.billing_landline_number}} </td>
                       <td>
                         <a class="icon">
@@ -136,7 +134,6 @@ export default {
         this.user.billing.address, this.user.billing.city, this.user.billing.state_code, this.user.billing.pincode, this.user.billing.mobile, this.user.billing.landline,
         this.user.shipping.address, this.user.shipping.city, this.user.shipping.state_code, this.user.shipping.pincode, this.user.shipping.mobile, this.user.shipping.landline)
         .then((response) => {
-          console.log(response);
           this.loadingLight = false;
           if(response.status == 200) {
             this.getCustomer();
@@ -149,10 +146,9 @@ export default {
           }
         })
         .catch((error) => {
-          console.log(error);
           this.loadingLight = false;
           console.log(error);
-          let toast = this.$toasted.error(error.response.data.message, {
+          let toast = this.$toasted.error("Back: "+ error.response.data.message, {
             theme: "outline",
             position: "bottom-center",
             duration : 3000

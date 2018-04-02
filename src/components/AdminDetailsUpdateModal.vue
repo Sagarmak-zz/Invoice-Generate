@@ -150,7 +150,7 @@ export default {
   name: 'admin-update-modal',
   props: ['data'],
   created() {
-    this.decodeToken();
+    this.userId = Auth.getUserId();
     this.$bus.$on('state-change', (data) => {
       this.state_code = data.state_id;
     })
@@ -174,10 +174,6 @@ export default {
     };
   },
   methods: {
-    decodeToken() {
-      var decoded = jwt_decode(Auth.getToken());
-      this.userId = decoded.sub;
-    },
     validateAndUpdateDetails() {
       this.validate()
       if (!this.errors.any()) {
