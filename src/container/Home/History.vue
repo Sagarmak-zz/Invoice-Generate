@@ -36,10 +36,10 @@
               </div>
             </div>
             <footer class="card-footer">
-              <router-link :to="{ name:'PrintBillTemplate',
+              <router-link :to="{ name:'BillTemplate',
               params: {
                 invoice_no: bill.invoice_no,
-
+                fiscal_year: bill.invoiceYear
                 } }" class="card-footer-item">View</router-link>
               <a @click="askHistoryDelete(bill.id)" class="card-footer-item">Delete</a>
             </footer>
@@ -82,7 +82,10 @@
               </div>
             </div>
             <footer class="card-footer">
-              <router-link :to="{ name:'BillTemplate', params: { invoice_no: bill.invoice_no } }" class="card-footer-item">View</router-link>
+              <router-link :to="{ name:'BillTemplate',
+              params: {
+                invoice_no: bill.invoice_no
+                } }" class="card-footer-item">View</router-link>
               <a @click="askHistoryDelete(bill.id)" class="card-footer-item">Delete</a>
             </footer>
           </div>
@@ -145,7 +148,6 @@ export default {
       this.loading = true;
       api.getAllBills()
       .then( response => {
-        console.log(response);
         this.loading = false;
         if ( response.data.message == "No data found" || response.data.message == "bill not found" ) {
           this.invoice.isData = false;

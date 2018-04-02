@@ -16,7 +16,7 @@
                   <input @input="calculateFiscalYear" v-model="item.fiscal_year.start_year"
                   name="start_year" v-validate="'required|numeric|min:4|max:4'"
                   :class="{'input': true, 'is-danger': errors.has('start_year') }"
-                  type="text" placeholder="Start Year">
+                  type="number" placeholder="Start Year">
                 </p>
               </div>
             </div>
@@ -53,11 +53,12 @@
               </div>
             </div>
             <div class="column">
-              <div :class="{'has-error': errors.has('invoice_no') }">
+              <div :class="{'has-error': errors.has('invoice_no') && isChalanValid }">
                 <label class="label">Chalan Number<span class="required">*</span></label>
                 <p class="control">
-                  <input v-model="item.invoice_no" :class="{'input': true, 'is-danger': errors.has('invoice_no') }"
-                  name="invoice_no" v-validate="'required'" type="text" placeholder="Invoice Number">
+                  <input v-model="item.chalan_no" name="invoice_no" v-validate="'required|numeric'"
+                  :class="{'input': true, 'is-danger': errors.has('invoice_no') }"
+                  @blur="checkChalan" type="number" placeholder="Invoice Number">
                 </p>
                 <div v-show="errors.has('invoice_no')" class="help is-danger">
                   The Chalan Number is required.
@@ -300,7 +301,7 @@ export default {
     this.item.userId = Auth.getUserId();
     // var numeral = require('numeral');
     // var myNumeral =  numeral(1).format('0000');
-    this.getLastBillInvoiceNumber();
+    this.getLastChalanNumber();
     this.getCurrentFiscalYear();
     // for calculate fiscal year computed property ex: 2018-19
     this.calculateFiscalYear;
@@ -364,7 +365,8 @@ export default {
       },
       hideInputs2: false,
       loading: false,
-      loadingLight: false
+      loadingLight: false,
+      isChalanValid: true
     };
   },
   methods: {
@@ -427,7 +429,6 @@ export default {
         taxable_amount,
         total_payable_amount
       } );
-      console.log(this.item.total_payable_amount);
       this.computed_total_payable_amount();
       this.item.size = '';
       this.item.quantity = 0;
@@ -463,20 +464,52 @@ export default {
       } )
     },
 
-    getLastBillInvoiceNumber() {
-      // this.loading = true;
+    getLastChalanNumber() {
+      this.loading = true;
       // var myNumeral =  numeral(1).format('0000');
-      api.getLastBill()
+      api.getLastChalan()
       .then( response => {
         this.loading = false;
-        if ( isNaN( parseInt( response.data ) ) == true ) {
-          this.item.invoice_no = numeral( 1 ).format( '0000' );
-        } else {
-          this.item.invoice_no = numeral( response.data ).format( '0000' );
-        }
+        this.item.chalan_no = response.data.challanNumber
+        this.item.fiscal_year.year = response.data.year
       } )
       .catch( error => {
+        this.loading = false;
         console.log( error );
+      } )
+    },
+
+    checkChalan() {
+      this.item.chalan_no = +this.item.chalan_no.toString();
+      api.checkChalan(this.item.chalan_no, this.item.fiscal_year.year)
+      .then( response => {
+        if(response.data.message == "proceed") {
+          let toast = this.$toasted.success( "Invoice Number available!", {
+            theme: "outline",
+            position: "bottom-center",
+            duration: 3000
+          } );
+          this.isChalanValid = true;
+          return true;
+        }
+        else if(response.data.message == "challan already exists") {
+          let toast = this.$toasted.error( 'Something is wrong with the Chalan Number', {
+            theme: "outline",
+            position: "bottom-center",
+            duration: 3000
+          } );
+          this.isChalanValid = false;
+          return false;
+        }
+      })
+      .catch( error => {
+        return false;
+        console.log("checkInvoice: ", error);
+        let toast = this.$toasted.error( 'Something is wrong with the Chalan Number', {
+          theme: "outline",
+          position: "bottom-center",
+          duration: 3000
+        } );
       } )
     },
 
@@ -493,466 +526,465 @@ export default {
     },
 
     makeChalan() {
-      console.log('Make Chalan');
-      this.loadingLight = true;
-      //api call to submit the bill
-      // api.createBill( this.item.userId, this.item.firm.firm_id, this.item.invoice_no,
-      //   this.item.final_taxable_amount,
-      //   this.item.sgst_percentage, this.item.fsgst_amount,
-      //   this.item.cgst_percentage, this.item.fcgst_amount, this.item.igst_percentage,
-      //   this.item.figst_amount,
-      //   this.item.final_total_payable_amount, this.item.created_at, this.bill_items )
-      //   .then( response => {
-      //     this.loadingLight = false;
-      //     let toast = this.$toasted.success( "Bill Creation Successful!", {
-      //       theme: "outline",
-      //       position: "top-center",
-      //       duration: 3000
-      //     } );
-      //     this.$router.push( {
-      //       name: 'PrintChalanTemplate',
-      //       params: {
-      //         invoice_no: response.data.invoice_no
-      //       }
-      //     } );
-      //   } )
-      //   .catch( error => {
-      //     this.loadingLight = false;
-      //     console.log( error );
-      //   } )
-      //send to another page, with nice invoice template and hit print
-      // window.print();
+        this.loadingLight = true;
+        // api call to submit the bill
+        api.createChalan( this.item.userId, this.item.firm.firm_id, this.item.chalan_no,
+          this.item.fiscal_year.year, this.item.final_total_payable_amount,
+          this.item.created_at, this.bill_items )
+          .then( response => {
+            this.loadingLight = false;
+            let toast = this.$toasted.success( "Bill Creation Successful!", {
+              theme: "outline",
+              position: "top-center",
+              duration: 3000
+            } );
+            this.$router.push( {
+              name: 'PrintChalanTemplate',
+              params: {
+                invoice_no: response.data.challan_no,
+                fiscal_year: response.data.challanYear
+              }
+            } );
+          } )
+          .catch( error => {
+            this.loadingLight = false;
+            console.log( error );
+          } )
 
-    },
-    validate() {
-      return this.$validator.validateAll();
-    },
+          //send to another page, with nice invoice template and hit print
+          // window.print();
 
-    gettotal_payable_amount() {
-      this.item.total_payable_amount = this.item.taxable_amount;
-      return parseFloat( ( this.item.total_payable_amount ).toFixed( 2 ) );
-    },
-    getCurrentFiscalYear() {
-      this.item.fiscal_year.start_year = dates.getCurrentYear().currentFullYear;
-      this.item.fiscal_year.end_year = +dates.getCurrentYear().currentShortYear+1;
-      return dates.calculateCurrentFiscalYear();
-    },
-  },
-  computed: {
+        },
+        validate() {
+          return this.$validator.validateAll();
+        },
 
-    getdiscount_amount() {
-      this.item.discount_amount = this.item.amount * ( this.item.discount_percentage / 100 );
-      return parseFloat( ( this.item.discount_amount ).toFixed( 2 ) );
-    },
+        gettotal_payable_amount() {
+          this.item.total_payable_amount = this.item.taxable_amount;
+          return parseFloat( ( this.item.total_payable_amount ).toFixed( 2 ) );
+        },
+        getCurrentFiscalYear() {
+          this.item.fiscal_year.start_year = dates.getCurrentYear().currentFullYear;
+          this.item.fiscal_year.end_year = +dates.getCurrentYear().currentShortYear+1;
+          return dates.calculateCurrentFiscalYear();
+        },
+      },
+      computed: {
 
-    getamount() {
-      this.item.amount = this.item.quantity * this.item.product.price;
-      return parseFloat( ( this.item.amount ).toFixed( 2 ) );
-    },
+        getdiscount_amount() {
+          this.item.discount_amount = this.item.amount * ( this.item.discount_percentage / 100 );
+          return parseFloat( ( this.item.discount_amount ).toFixed( 2 ) );
+        },
 
-    gettaxable_amount() {
-      this.item.taxable_amount = this.item.amount - this.item.discount_amount;
-      return parseFloat( ( this.item.taxable_amount ).toFixed( 2 ) );
-    },
+        getamount() {
+          this.item.amount = this.item.quantity * this.item.product.price;
+          return parseFloat( ( this.item.amount ).toFixed( 2 ) );
+        },
 
-    calculateFiscalYear() {
-      if((this.item.fiscal_year.start_year + '').replace('.', '').length === 4) {
-      // }
-      // if(this.item.fiscal_year.start_year.toString().length === 4) {
-        this.item.fiscal_year.end_year = this.item.fiscal_year.start_year-2000+1;
-        this.item.fiscal_year.year = this.item.fiscal_year.start_year + "-" + this.item.fiscal_year.end_year;
-        if(this.item.fiscal_year.start_year >= 2000 && this.item.fiscal_year.start_year <= 2008) {
-          this.item.fiscal_year.year = this.item.fiscal_year.start_year + "-0" + this.item.fiscal_year.end_year;
+        gettaxable_amount() {
+          this.item.taxable_amount = this.item.amount - this.item.discount_amount;
+          return parseFloat( ( this.item.taxable_amount ).toFixed( 2 ) );
+        },
+
+        calculateFiscalYear() {
+          if((this.item.fiscal_year.start_year + '').replace('.', '').length === 4) {
+            // }
+            // if(this.item.fiscal_year.start_year.toString().length === 4) {
+            this.item.fiscal_year.end_year = this.item.fiscal_year.start_year-2000+1;
+            this.item.fiscal_year.year = this.item.fiscal_year.start_year + "-" + this.item.fiscal_year.end_year;
+            if(this.item.fiscal_year.start_year >= 2000 && this.item.fiscal_year.start_year <= 2008) {
+              this.item.fiscal_year.year = this.item.fiscal_year.start_year + "-0" + this.item.fiscal_year.end_year;
+            }
+          }
+          return 0;
         }
-      }
-      return 0;
-    }
 
-  }
-}
-</script>
-
-<style lang="scss">
-.chalan {
-  margin-bottom: 2rem;
-  .box {
-    padding: 0;
-  }
-
-  .item-details {
-    .box {
-      background: #fbfbfd;
-    }
-  }
-
-  .top-box {
-    margin-bottom: 0;
-  }
-
-  .head {
-    padding: 1rem;
-    border-bottom: solid 1px #ddd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .title {
-      margin: 0;
-    }
-    .fiscal-year {
-      .title {
-        padding-top: 10px;
-      }
-      .columns {
-        margin-left: 0;
-        .column {
-          max-width: 5rem;
-        }
-        .column.first {
-          padding-right: 0;
-        }
-        .column.last {
-          padding-left: 0;
-          max-width: 3.5rem;
-        }
       }
     }
-  }
+    </script>
 
-  .form {
-    .form-head {
-      padding: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .title {
-        margin: 0;
+    <style lang="scss">
+    .chalan {
+      margin-bottom: 2rem;
+      .box {
+        padding: 0;
       }
-    }
-    .form-body {
-      padding: 0.4rem;
-      border-top: solid 1px #ddd;
-      .columns {
-        margin: 0;
-        .customer-name {
-          padding-top: 0;
+
+      .item-details {
+        .box {
+          background: #fbfbfd;
         }
       }
-    }
-  }
 
-  .control.is-mobile {
-    display: flex;
-    max-width: 52%;
-    .icon.is-medium {
-      padding-left: 0.5rem;
-      padding-top: 0.3rem;
-    }
-  }
-
-  .control.is-mobile.srno {
-    max-width: 49%;
-  }
-
-  .main-details {
-    padding: 1rem;
-    border-top: solid 1px #ddd;
-    border-bottom: solid 1px #ddd;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .title {
-      margin: 0;
-    }
-  }
-
-  .sr-no1 {
-    border-left: solid 1px #ddd;
-    max-width: 2.1rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    text-align: center;
-    padding-left: 0.4rem;
-  }
-  .particulars1 {
-    max-width: 26rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    text-align: center;
-  }
-  .numbers {
-    max-width: 5rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-  }
-  .discount1 {
-    max-width: 13rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    text-align: center;
-  }
-  .cgst {
-    max-width: 8rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    text-align: center;
-  }
-  .sgst {
-    max-width: 8rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    text-align: center;
-  }
-  .igst {
-    max-width: 8rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    border-top: solid 1px #ddd;
-    text-align: center;
-  }
-  .size {
-    max-width: 6rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align: center;
-  }
-  .sr-no {
-    border-left: solid 1px #ddd;
-    max-width: 2.1rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align: center;
-    padding-left: 0.6rem;
-  }
-  .sr-no.edit {
-    z-index: 1026;
-  }
-  .particulars {
-    max-width: 15rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align: center;
-  }
-  .qty {
-    max-width: 3rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align: center;
-  }
-  .rate {
-    max-width: 3rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align: center;
-  }
-  .amount {
-    max-width: 5rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align: center;
-  }
-  .total {
-    max-width: 5rem;
-    border-bottom: solid 1px #ddd;
-    border-right: solid 1px #ddd;
-    text-align: center;
-  }
-  .edit-delete1 {
-    max-width: 3rem;
-  }
-  .edit-delete {
-    max-width: 4.2rem;
-  }
-
-  .columns {
-    max-width: 100%;
-  }
-
-  .table {
-    padding: 2rem 1rem 1rem;
-  }
-
-  .additional-details {
-    border-top: solid 1px #ddd;
-    display: flow-root;
-    .is-pulled-right {
-      margin-right: 1rem;
-    }
-  }
-
-  .submit-btn {
-    padding: 1rem;
-    border-top: solid 1px #ddd;
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  .tile.is-ancestor {
-    margin: 0;
-    .tile.is-parent {
-      // padding-bottom: 0;
-      .table.is-bordered.is-striped.is-narrow {
+      .top-box {
         margin-bottom: 0;
       }
+
+      .head {
+        padding: 1rem;
+        border-bottom: solid 1px #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .title {
+          margin: 0;
+        }
+        .fiscal-year {
+          .title {
+            padding-top: 10px;
+          }
+          .columns {
+            margin-left: 0;
+            .column {
+              max-width: 5rem;
+            }
+            .column.first {
+              padding-right: 0;
+              max-width: 6.1rem;
+            }
+            .column.last {
+              padding-left: 0;
+              max-width: 3.5rem;
+            }
+          }
+        }
+      }
+
+      .form {
+        .form-head {
+          padding: 1rem;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          .title {
+            margin: 0;
+          }
+        }
+        .form-body {
+          padding: 0.4rem;
+          border-top: solid 1px #ddd;
+          .columns {
+            margin: 0;
+            .customer-name {
+              padding-top: 0;
+            }
+          }
+        }
+      }
+
+      .control.is-mobile {
+        display: flex;
+        max-width: 52%;
+        .icon.is-medium {
+          padding-left: 0.5rem;
+          padding-top: 0.3rem;
+        }
+      }
+
+      .control.is-mobile.srno {
+        max-width: 49%;
+      }
+
+      .main-details {
+        padding: 1rem;
+        border-top: solid 1px #ddd;
+        border-bottom: solid 1px #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        .title {
+          margin: 0;
+        }
+      }
+
+      .sr-no1 {
+        border-left: solid 1px #ddd;
+        max-width: 2.1rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+        text-align: center;
+        padding-left: 0.4rem;
+      }
+      .particulars1 {
+        max-width: 26rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+        text-align: center;
+      }
+      .numbers {
+        max-width: 5rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+      }
+      .discount1 {
+        max-width: 13rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+        text-align: center;
+      }
+      .cgst {
+        max-width: 8rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+        text-align: center;
+      }
+      .sgst {
+        max-width: 8rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+        text-align: center;
+      }
+      .igst {
+        max-width: 8rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        border-top: solid 1px #ddd;
+        text-align: center;
+      }
+      .size {
+        max-width: 6rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+      }
+      .sr-no {
+        border-left: solid 1px #ddd;
+        max-width: 2.1rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+        padding-left: 0.6rem;
+      }
+      .sr-no.edit {
+        z-index: 1026;
+      }
+      .particulars {
+        max-width: 15rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+      }
+      .qty {
+        max-width: 3rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+      }
+      .rate {
+        max-width: 3rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+      }
+      .amount {
+        max-width: 5rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+      }
+      .total {
+        max-width: 5rem;
+        border-bottom: solid 1px #ddd;
+        border-right: solid 1px #ddd;
+        text-align: center;
+      }
+      .edit-delete1 {
+        max-width: 3rem;
+      }
+      .edit-delete {
+        max-width: 4.2rem;
+      }
+
+      .columns {
+        max-width: 100%;
+      }
+
+      .table {
+        padding: 2rem 1rem 1rem;
+      }
+
+      .additional-details {
+        border-top: solid 1px #ddd;
+        display: flow-root;
+        .is-pulled-right {
+          margin-right: 1rem;
+        }
+      }
+
+      .submit-btn {
+        padding: 1rem;
+        border-top: solid 1px #ddd;
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .tile.is-ancestor {
+        margin: 0;
+        .tile.is-parent {
+          // padding-bottom: 0;
+          .table.is-bordered.is-striped.is-narrow {
+            margin-bottom: 0;
+          }
+        }
+      }
+
+      thead {
+        tr {
+          align-items: center;
+        }
+      }
+
+      td,
+      th {
+        text-align: center;
+      }
+
+      .lower {
+        border-top: solid 1px #ddd;
+        width: 17rem;
+        margin-left: auto;
+        padding-right: 1rem;
+        padding-left: 0.5rem;
+        border-left: solid 1px #ddd;
+        border-bottom: solid 1px #ddd;
+        .left {}
+        .right {
+          float: right;
+        }
+      }
+
+      .lower-part-two {
+        width: fit-content;
+        margin-left: auto;
+      }
+
+      .item-details {
+        .box {
+          border-bottom: solid 1px #ddd;
+        }
+      }
+
+      .zero {
+        border: none;
+      }
+
+      .dash {
+        max-width: 2rem;
+        min-width: 2rem;
+      }
+
+      .name {
+        min-width: 11rem;
+        width: 13rem;
+      }
+      .size {
+        min-width: 7rem;
+      }
+      .quantity {
+        min-width: 5rem;
+        max-width: 8rem;
+      }
+      .rate {
+        max-width: 6rem;
+      }
+      .discPerc {
+        min-width: 5rem;
+        width: 6rem;
+        max-width: 7rem;
+      }
+      .amount {
+        min-width: 8rem;
+        max-width: 8rem;
+      }
+      .discAmount {
+        min-width: 5rem;
+        max-width: 5rem;
+      }
+
+      .taxAmount {
+        min-width: 8rem;
+        max-width: 8rem;
+      }
+
+      .loading {
+        padding: 1rem;
+      }
+
+      .cross {
+        max-width: 1.5rem;
+        min-width: 2rem;
+      }
+
+      .prod-name {
+        min-width: 12rem;
+        max-width: 16rem;
+      }
+
+      .prod-size {
+        min-width: 3rem;
+        max-width: 5rem;
+      }
+
+      .prod-qty {
+        min-width: 3rem;
+        max-width: 5rem;
+      }
+
+      .prod-price {
+        min-width: 4rem;
+        max-width: 5rem;
+      }
+
+      .prod-amt {
+        min-width: 1rem;
+        max-width: 5rem;
+      }
+
+      .disc-rate {
+        min-width: 1rem;
+        max-width: 3rem;
+      }
+
+      .disc-amt {
+        min-width: 1rem;
+        max-width: 3rem;
+      }
+
+      .taxable-amt {
+        min-width: 1rem;
+        max-width: 3rem;
+      }
+
+      .middle-box {
+        margin-bottom: 1rem;
+      }
+
+      .upper {
+        .tile.is-parent {
+          padding: 0;
+        }
+      }
+
+      .add-new {
+        text-align: left;
+      }
+
+      .item-table {
+        margin-top: 1rem;
+        .tile.is-parent {
+          padding: 0;
+        }
+      }
+
+      .button.is-info {
+        background-color: #dc6932;
+      }
+
     }
-  }
-
-  thead {
-    tr {
-      align-items: center;
-    }
-  }
-
-  td,
-  th {
-    text-align: center;
-  }
-
-  .lower {
-    border-top: solid 1px #ddd;
-    width: 17rem;
-    margin-left: auto;
-    padding-right: 1rem;
-    padding-left: 0.5rem;
-    border-left: solid 1px #ddd;
-    border-bottom: solid 1px #ddd;
-    .left {}
-    .right {
-      float: right;
-    }
-  }
-
-  .lower-part-two {
-    width: fit-content;
-    margin-left: auto;
-  }
-
-  .item-details {
-    .box {
-      border-bottom: solid 1px #ddd;
-    }
-  }
-
-  .zero {
-    border: none;
-  }
-
-  .dash {
-    max-width: 2rem;
-    min-width: 2rem;
-  }
-
-  .name {
-    min-width: 11rem;
-    width: 13rem;
-  }
-  .size {
-    min-width: 7rem;
-  }
-  .quantity {
-    min-width: 5rem;
-    max-width: 8rem;
-  }
-  .rate {
-    max-width: 6rem;
-  }
-  .discPerc {
-    min-width: 5rem;
-    width: 6rem;
-    max-width: 7rem;
-  }
-  .amount {
-    min-width: 8rem;
-    max-width: 8rem;
-  }
-  .discAmount {
-    min-width: 5rem;
-    max-width: 5rem;
-  }
-
-  .taxAmount {
-    min-width: 8rem;
-    max-width: 8rem;
-  }
-
-  .loading {
-    padding: 1rem;
-  }
-
-  .cross {
-    max-width: 1.5rem;
-    min-width: 2rem;
-  }
-
-  .prod-name {
-    min-width: 12rem;
-    max-width: 16rem;
-  }
-
-  .prod-size {
-    min-width: 3rem;
-    max-width: 5rem;
-  }
-
-  .prod-qty {
-    min-width: 3rem;
-    max-width: 5rem;
-  }
-
-  .prod-price {
-    min-width: 4rem;
-    max-width: 5rem;
-  }
-
-  .prod-amt {
-    min-width: 1rem;
-    max-width: 5rem;
-  }
-
-  .disc-rate {
-    min-width: 1rem;
-    max-width: 3rem;
-  }
-
-  .disc-amt {
-    min-width: 1rem;
-    max-width: 3rem;
-  }
-
-  .taxable-amt {
-    min-width: 1rem;
-    max-width: 3rem;
-  }
-
-  .middle-box {
-    margin-bottom: 1rem;
-  }
-
-  .upper {
-    .tile.is-parent {
-      padding: 0;
-    }
-  }
-
-  .add-new {
-    text-align: left;
-  }
-
-  .item-table {
-    margin-top: 1rem;
-    .tile.is-parent {
-      padding: 0;
-    }
-  }
-
-  .button.is-info {
-    background-color: #dc6932;
-  }
-
-}
-</style>
+    </style>

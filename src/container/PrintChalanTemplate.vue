@@ -19,7 +19,7 @@
                       <tbody>
                         <tr>
                           <th>M/S:</th>
-                          <td>Firm Name</td>
+                          <td>{{bill_details.firm_name}}</td>
                         </tr>
                         <tr>
                           <th>Address:</th>
@@ -49,7 +49,7 @@
                         </tr>
                         <tr>
                           <th>Chalan No:</th>
-                          <td>0001</td>
+                          <td>{{printableChalanNumber}}</td>
                         </tr>
                         <tr>
                           <th>Date:</th>
@@ -186,47 +186,52 @@
 import api from "@/api/main";
 import num2Word from "num2Word";
 import LoadingLight from "@/components/LoadingLight";
+var numeral = require( 'numeral' );
 export default {
   name: "print-chalan-template",
-  updated() {
-    window.print();
-  },
+  // updated() {
+  //   window.print();
+  // },
   created() {
-    this.invoice_no = this.$route.params.invoice_no;
-    this.getBillByInvoiceNo();
+    this.chalan_no = this.$route.params.chalan_no;
+    this.fiscal_year = this.$route.params.fiscal_year;
+    this.getBillByChalanNo();
+    this.printableChalanNumber = numeral( this.chalan_no ).format( '0000' );
     // console.log(num2Word('1,234'));
   },
   data() {
     return {
-      invoice_no: "",
+      chalan_no: '',
+      fiscal_year: '',
+      printableChalanNumber: '',
       bill_details: {},
       amountInWords: null,
       loadingLight: false
     };
   },
   methods: {
-    getBillByInvoiceNo() {
-      // this.loadingLight = true;
-      // api.getBillByInvoiceNo(this.invoice_no, this.fiscalYear)
-      // .then(response => {
-      //   // console.log(response);
-      //   this.loadingLight = false;
-      //   if (response.data.invoice_no == this.invoice_no) {
-      //     this.bill_details = response.data;
-      //     this.amountInWords = this.toUpper(
-      //       num2Word(this.bill_details.total_payable_amount)
-      //     );
-      //   } else {
-      //     this.loadingLight = false;
-      //     this.$router.push({
-      //       name: "Page404"
-      //     });
-      //   }
-      // })
-      // .catch(error => {
-      //   this.loadingLight = false;
-      //   console.log(error);
-      // });
+    getBillByChalanNo() {
+      this.loadingLight = true;
+      api.getBillByChalanNo(this.chalan_no, this.fiscal_year)
+      .then(response => {
+        console.log(response.data);
+        this.loadingLight = false;
+        if (response.data.invoice_no == this.invoice_no) {
+          this.bill_details = response.data;
+          this.amountInWords = this.toUpper(
+            num2Word(this.bill_details.total_payable_amount)
+          );
+        } else {
+          this.loadingLight = false;
+          // this.$router.push({
+          //   name: "Page404"
+          // });
+        }
+      })
+      .catch(error => {
+        this.loadingLight = false;
+        console.log(error);
+      });
     },
     toUpper(str) {
       return str
@@ -236,11 +241,6 @@ export default {
         return word[0].toUpperCase() + word.substr(1);
       })
       .join(" ");
-    }
-  },
-  computed: {
-    getTableLinesFromBillDetails() {
-
     }
   },
   components: {

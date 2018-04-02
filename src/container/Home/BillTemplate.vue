@@ -7,7 +7,11 @@
           <router-link :to="{name:'History'}" class="icon"><i class="fa fa-arrow-left" aria-hidden="true"></i></router-link>
           <h1 class="title">Bill Template</h1>
         </div>
-        <router-link :to="{ name: 'PrintBillTemplate' }" class="button is-primary">Print</router-link>
+        <router-link :to="{ name:'PrintBillTemplate',
+        params: {
+          invoice_no: invoice_no,
+          fiscal_year: fiscal_year
+          } }" class="button is-primary">Print</router-link>
       </div>
 
       <div class="template-body-main">
@@ -19,7 +23,7 @@
                 <div class="table-responsive">
                   <table class="table is-bordered is-striped is-narrow">
                     <tbody>
-                      <tr>
+                      <tr v-if="bill_details.admin_gst">
                         <th>GST NO:</th>
                         <td>{{bill_details.admin_gst}}</td>
                       </tr>
@@ -52,10 +56,10 @@
           <p class="invoice-details-copy"><b>Original Copy</b></p>
           <p class="invoice-head">INVOICE</p>
           <div class="invoice-no-date">
-            <span class="invoice-details">Invoice No: {{bill_details.invoice_no}}</span>
+            <span class="invoice-details">Invoice No: {{printableInvoiceNumber}}</span>
             <span class="invoice-details" v-if="bill_details.created_at">Date: {{moment(bill_details.created_at.date).format('D/MM/YYYY')}}</span>
           </div>
-          <div class="tile is-ancestor">
+          <div class="tile is-ancestor" v-if="bill_details.admin_account_no">
             <div class="tile is-parent">
               <article class="tile is-child">
                 <div class="table-responsive">
@@ -98,7 +102,7 @@
                       <th>M/S:</th>
                       <td>{{bill_details.firm_name}}</td>
                     </tr>
-                    <tr>
+                    <tr v-if="bill_details.customer_gst">
                       <th>GST NO:</th>
                       <td>{{bill_details.customer_gst}}</td>
                     </tr>
@@ -122,11 +126,11 @@
                 <table class="table is-bordered is-striped is-narrow">
                   <tbody>
                     <!-- <tr> <th>Agent:</th> <td>Dummy Name</td> </tr> -->
-                    <tr>
+                    <tr v-if="bill_details.billing_landline_number">
                       <th>Phone:</th>
                       <td>{{bill_details.billing_landline_number}}</td>
                     </tr>
-                    <tr>
+                    <tr v-if="bill_details.customer_email">
                       <th>Email:</th>
                       <td>{{bill_details.customer_email}}</td>
                     </tr>
@@ -259,7 +263,7 @@
           <p class="spacing">Subject to Ahmedabad Jurisdiction</p>
         </div>
         <div class="part-two">
-          <p>For, Siddhartha Wear</p>
+          <p>For, {{bill_details.admin_firm}}</p>
           <p class="take-me-to-the-bottom">Authorised Signature</p>
         </div>
       </div>
@@ -273,35 +277,40 @@
   import api from '@/api/main';
   import num2Word from 'num2Word';
   import LoadingLight from '@/components/LoadingLight';
+  var numeral = require( 'numeral' );
   export default {
     name: 'bill-template',
     created() {
       this.invoice_no = this.$route.params.invoice_no;
+      this.fiscal_year = this.$route.params.fiscal_year;
       this.getBillByInvoiceNo();
+      this.printableInvoiceNumber = numeral( this.invoice_no ).format( '0000' );
       // var numeral = require('numeral');
       // var myNumeral =  numeral(1).format('0000');
     },
     data() {
       return {
         invoice_no: '',
+        fiscal_year: '',
         bill_details: {},
         amountInWords: null,
-        loadingLight: false
+        loadingLight: false,
+        printableInvoiceNumber: ''
       };
     },
     methods: {
       getBillByInvoiceNo() {
         this.loadingLight = true;
-        api.getBillByInvoiceNo(this.invoice_no)
+        api.getBillByInvoiceNo(this.invoice_no, this.fiscal_year)
           .then(response => {
             this.loadingLight = false;
             if (response.data.invoice_no == this.invoice_no) {
               this.bill_details = response.data;
               this.amountInWords = this.toUpper(num2Word(this.bill_details.total_payable_amount));
             } else {
-              this.$router.push({
-                name: 'Page404'
-              });
+              // this.$router.push({
+              //   name: 'Page404'
+              // });
             }
           })
           .catch(error => {

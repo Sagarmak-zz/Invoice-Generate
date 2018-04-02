@@ -232,18 +232,6 @@
                       <td></td>
                     </tr>
 
-                    <tr v-if="bill_details.product_detail.length > 5" v-for="i in 10">
-                      <td>&nbsp;</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                    </tr>
-
                   </tbody>
                 </table>
               </div>
@@ -318,7 +306,7 @@ var numeral = require( 'numeral' );
 export default {
   name: "print-bill-template",
   updated() {
-    // window.print();
+    window.print();
   },
   created() {
     this.invoice_no = this.$route.params.invoice_no;
@@ -329,8 +317,8 @@ export default {
   },
   data() {
     return {
-      invoice_no: "",
-      fiscal_year: "",
+      invoice_no: '',
+      fiscal_year: '',
       bill_details: {},
       amountInWords: null,
       loadingLight: false,

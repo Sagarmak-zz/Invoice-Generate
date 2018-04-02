@@ -355,10 +355,6 @@
             </div>
           </div>
 
-          <pre>
-            {{$data}}
-          </pre>
-
         </div>
       </div>
     </template>
@@ -637,7 +633,12 @@
               this.isInvoiceValid = true;
               return true;
             }
-            else {
+            else if(response.data.message == "invoice already exists") {
+              let toast = this.$toasted.error( 'Something is wrong with the Invoice Number', {
+                theme: "outline",
+                position: "bottom-center",
+                duration: 3000
+              } );
               this.isInvoiceValid = false;
               return false;
             }

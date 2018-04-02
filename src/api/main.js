@@ -46,17 +46,46 @@ export default {
     });
   },
 
-  deleteBill(bill_id) {
-    return HTTP.delete("/deleteBill/" + bill_id);
-  },
+  // deleteBill(bill_id) {
+  //   return HTTP.delete("/deleteBill/" + bill_id);
+  // },
 
   checkInvoice(invoice_no, fiscal_year) {
     return HTTP.get("/checkInvoice/" + invoice_no + "/" + fiscal_year);
   },
 
   //3 chalan
+  createChalan(
+    user_id,
+    firm_id,
+    challan_no,
+    challanYear,
+    total_payable_amount,
+    created_at,
+    challan_detail
+  ) {
+    return HTTP.post("/createChallan", {
+      user_id: user_id,
+      firm_id: firm_id,
+      challan_no: challan_no,
+      challanYear: challanYear,
+      total_payable_amount: total_payable_amount,
+      created_at: created_at,
+      challan_detail: challan_detail
+    });
+  },
 
+  // deleteChalan(bill_id) {
+  //   return HTTP.delete("/deleteChalan/" + bill_id);
+  // },
 
+  checkChalan(challan_no, fiscal_year) {
+    return HTTP.get("/checkChallan/" + challan_no + "/" + fiscal_year);
+  },
+
+  getLastChalan() {
+    return HTTP.get("/challanNumber");
+  },
 
   //4 user
   getCustomer() {
@@ -167,6 +196,7 @@ export default {
   },
 
   //6 history page
+  //bills
   getAllBills() {
     return HTTP.get("/getBills");
   },
@@ -176,13 +206,26 @@ export default {
   },
 
   getBillByInvoiceNo(invoice_no, fiscalYear) {
-    // /getBill/1/2018-19
     let url = "/getBill/" + invoice_no + "/" + fiscalYear
     return HTTP.get(url);
   },
 
   getLastBill() {
     return HTTP.get("/invoiceNumber");
+  },
+
+  //chalans
+  getAllChalans() {
+    return HTTP.get("/getChallans");
+  },
+
+  getChalansByYear(fiscal_year) {
+    return HTTP.get("/getChallans/" + fiscal_year);
+  },
+
+  getBillByChalanNo(challan_no, fiscalYear) {
+    let url = "/getChallan/" + challan_no + "/" + fiscalYear
+    return HTTP.get(url);
   },
 
   //7 report

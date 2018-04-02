@@ -37,9 +37,21 @@ let router = new Router({
           meta: { requiresAuth: true }
         },
         {
+          path: "/billTemplate/:invoice_no/:fiscal_year",
+          name: "BillTemplate",
+          component: require("@/container/Home/BillTemplate"),
+          meta: { requiresAuth: true }
+        },
+        {
           path: "/chalan",
           name: "Chalan",
           component: require("@/container/Home/Chalan"),
+          meta: { requiresAuth: true }
+        },
+        {
+          path: "/chalanTemplate/:chalan_no/:fiscal_year",
+          name: "ChalanTemplate",
+          component: require("@/container/Home/ChalanTemplate"),
           meta: { requiresAuth: true }
         },
         {
@@ -58,12 +70,6 @@ let router = new Router({
           path: "/history",
           name: "History",
           component: require("@/container/Home/History"),
-          meta: { requiresAuth: true }
-        },
-        {
-          path: "/template/:invoice_no",
-          name: "BillTemplate",
-          component: require("@/container/Home/Billtemplate"),
           meta: { requiresAuth: true }
         },
         {
@@ -93,7 +99,7 @@ let router = new Router({
       meta: { requiresAuth: true }
     },
     {
-      path: "/printChalan/:invoice_no/:fiscal_year",
+      path: "/printChalan/:chalan_no/:fiscal_year",
       name: "PrintChalanTemplate",
       component: require("@/container/PrintChalanTemplate"),
       meta: { requiresAuth: true }
