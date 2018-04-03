@@ -50,6 +50,10 @@ export default {
   //   return HTTP.delete("/deleteBill/" + bill_id);
   // },
 
+  getLastBill() {
+    return HTTP.get("/invoiceNumber");
+  },
+
   checkInvoice(invoice_no, fiscal_year) {
     return HTTP.get("/checkInvoice/" + invoice_no + "/" + fiscal_year);
   },
@@ -208,10 +212,6 @@ export default {
   getBillByInvoiceNo(invoice_no, fiscalYear) {
     let url = "/getBill/" + invoice_no + "/" + fiscalYear
     return HTTP.get(url);
-  },
-
-  getLastBill() {
-    return HTTP.get("/invoiceNumber");
   },
 
   //chalans

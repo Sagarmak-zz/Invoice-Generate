@@ -17,13 +17,13 @@
 <script>
 export default {
   name: 'change-invoice-type',
-  prosp: ['invoice_type'],
+  props: ['invoice_type'],
   created() {
   },
   data() {
     return {
       invoice_types: ['Bills', 'Chalans'],
-      invoice_type: ''
+      invoice_type_name: ''
     }
   },
   methods: {
