@@ -271,10 +271,6 @@
       </div>
     </div>
 
-    <pre>
-      {{$data}}
-    </pre>
-
   </div>
 </div>
 </template>
