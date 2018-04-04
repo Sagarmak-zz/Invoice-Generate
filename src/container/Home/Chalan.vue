@@ -251,10 +251,6 @@
                   <table class="table is-bordered is-striped is-narrow">
                     <tbody>
                       <tr>
-                        <td>Total Taxable Amount:</td>
-                        <th> &#8377; {{item.final_taxable_amount.toLocaleString('en-IN')}} </th>
-                      </tr>
-                      <tr>
                         <td>Total Invoice Value:</td>
                         <th> &#8377; {{item.final_total_payable_amount.toLocaleString('en-IN')}} </th>
                       </tr>
@@ -537,7 +533,7 @@ export default {
             this.$router.push( {
               name: 'PrintChalanTemplate',
               params: {
-                invoice_no: response.data.challan_no,
+                chalan_no: response.data.challan_no,
                 fiscal_year: response.data.challanYear
               }
             } );

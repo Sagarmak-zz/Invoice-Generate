@@ -45,12 +45,6 @@
           <p v-if="i == 1" class="invoice-details-copy">
             <b>Original Copy</b>
           </p>
-          <p v-if="i == 2" class="invoice-details-copy">
-            <b>Customer Copy</b>
-          </p>
-          <p v-if="i == 3" class="invoice-details-copy">
-            <b>Triplet Copy</b>
-          </p>
           <p class="invoice-head">INVOICE</p>
           <div class="invoice-no-date">
             <span class="invoice-details">Invoice No: {{ printableInvoiceNumber }}</span>
@@ -284,7 +278,8 @@
       <div class="template-bottom">
         <div class="part-one">
           <span><b>N.B.</b></span>
-          <p><b>(1)</b> Interest will be charged @ 18% from the date of bill <br><b>(2)</b> Goods are sent on your account & risk and according to
+          <p><b>(1)</b> We declare that this invoice shows the actual price of the goods described and that all particulars are true and correct.
+            <b>(2)</b> Goods are sent on your account & risk and according to
             the rules of the Gujarat Garment Manufacturer Association(GGMA).</p>
           <p class="spacing">Subject to Ahmedabad Jurisdiction</p>
         </div>

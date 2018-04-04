@@ -55,13 +55,16 @@
                 <label class="label">Invoice Number</label>
                 <p class="control">
                   <input v-model="item.invoice_no"
-                  :class="{'input': true, 'is-danger': errors.has('invoice_no') && isInvoiceValid }"
+                  :class="{'input': true, 'is-danger': errors.has('invoice_no'), 'is-danger': !isInvoiceValid }"
                   name="invoice_no" v-validate="'required|numeric'" @keyup.enter="callMainDetailsAdd()"
                   @blur="checkInvoice"
                   type="number" placeholder="Invoice Number">
                 </p>
                 <div v-show="errors.has('invoice_no')" class="help is-danger">
-                  The Invoice Number is required.
+                  The Invoice Number is required and should be unique.
+                </div>
+                <div v-if="!isInvoiceValid" class="help is-danger">
+                  The Invoice Number should be unique.
                 </div>
               </div>
             </div>
@@ -467,7 +470,7 @@
           hideInputs2: false,
           loading: false,
           loadingLight: false,
-          isInvoiceValid: false
+          isInvoiceValid: true
         };
       },
       methods: {

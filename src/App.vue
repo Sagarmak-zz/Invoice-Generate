@@ -14,7 +14,6 @@ export default {
 
 <style lang="scss">
 html {
-  background-color: whitesmoke;
   span.required {
     color: red;
   }

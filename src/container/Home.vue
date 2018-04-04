@@ -87,7 +87,7 @@
 
 <style lang="scss">
   .home {
-
+    background-color: whitesmoke;
     .app-main {
       padding-left: 12rem;
       padding-top: 1rem;

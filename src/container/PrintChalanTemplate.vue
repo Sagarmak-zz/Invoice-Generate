@@ -2,7 +2,7 @@
   <div class="print-chalan-template">
     <LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
     <!-- part 1 -->
-    <div class="box a5size" v-for="i in 3">
+    <div class="box a5size" v-for="indexMain in 4">
       <div class="template-body-main">
 
         <div class="top">
@@ -76,7 +76,13 @@
                 <div class="table-responsive">
                   <table class="table is-bordered is-striped is-narrow">
                     <thead>
-                      <tr>
+                      <tr v-if="indexMain == 1">
+                        <th>SR</th>
+                        <th colspan="3">Particulars</th>
+                        <!-- <th colspan="2">Discount</th> -->
+                        <!-- <th>Amount</th> -->
+                      </tr>
+                      <tr v-if="indexMain != 1">
                         <th>SR</th>
                         <th colspan="5">Particulars</th>
                         <th colspan="2">Discount</th>
@@ -89,11 +95,11 @@
                         <th>Name</th>
                         <th>Size</th>
                         <th>Qty</th>
-                        <th>Rate</th>
-                        <th>Amount</th>
-                        <th>%</th>
-                        <th>Amount</th>
-                        <th></th>
+                        <th v-if="indexMain != 1">Rate</th>
+                        <th v-if="indexMain != 1">Amount</th>
+                        <th v-if="indexMain != 1">%</th>
+                        <th v-if="indexMain != 1">Amount</th>
+                        <th v-if="indexMain != 1"></th>
                       </tr>
                     </thead>
                     <tbody v-if="bill_details.product_detail">
@@ -102,11 +108,11 @@
                         <td>{{products.product_name}} - {{products.hsn_code}} </td>
                         <td>{{products.size}}</td>
                         <td>{{products.quantity}}</td>
-                        <td>{{products.price}}</td>
-                        <td>{{(products.quantity * products.price).toLocaleString('en-IN') }}</td>
-                        <td>{{products.discount_percentage}}</td>
-                        <td>{{products.discount_amount}}</td>
-                        <td>{{((products.quantity * products.price) - products.discount_amount).toLocaleString('en-IN') }}</td>
+                        <td v-if="indexMain != 1">{{products.price}}</td>
+                        <td v-if="indexMain != 1">{{(products.quantity * products.price).toLocaleString('en-IN') }}</td>
+                        <td v-if="indexMain != 1">{{products.discount_percentage}}</td>
+                        <td v-if="indexMain != 1">{{products.discount_amount}}</td>
+                        <td v-if="indexMain != 1">{{((products.quantity * products.price) - products.discount_amount).toLocaleString('en-IN') }}</td>
                       </tr>
 
                       <tr v-if="bill_details.product_detail.length == 1" v-for="i in 10">
@@ -114,11 +120,11 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
                       </tr>
 
                       <tr v-if="bill_details.product_detail.length == 2" v-for="i in 9">
@@ -126,11 +132,11 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
                       </tr>
 
                       <tr v-if="bill_details.product_detail.length == 3" v-for="i in 8">
@@ -138,11 +144,11 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
                       </tr>
 
                       <tr v-if="bill_details.product_detail.length == 4" v-for="i in 7">
@@ -150,11 +156,11 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
                       </tr>
 
                       <tr v-if="bill_details.product_detail.length == 5" v-for="i in 6">
@@ -162,69 +168,69 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
                       </tr>
                       <tr v-if="bill_details.product_detail.length == 6" v-for="i in 5">
                         <td>&nbsp;</td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
                       </tr>
                       <tr v-if="bill_details.product_detail.length == 7" v-for="i in 4">
                         <td>&nbsp;</td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
                       </tr>
                       <tr v-if="bill_details.product_detail.length == 8" v-for="i in 3">
                         <td>&nbsp;</td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
                       </tr>
                       <tr v-if="bill_details.product_detail.length == 9" v-for="i in 2">
                         <td>&nbsp;</td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
                       </tr>
                       <tr v-if="bill_details.product_detail.length == 10" v-for="i in 1">
                         <td>&nbsp;</td>
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
+                        <td v-if="indexMain != 1"></td>
                       </tr>
 
-                      <tr>
+                      <tr v-if="indexMain != 1">
                         <td colspan="9">
                           <span>Total Invoice Amount In Words:</span>
                           <b>{{amountInWords}}</b>
@@ -247,7 +253,7 @@
             <p>Received By: </p>
 
           </div>
-          <div class="part-two">
+          <div class="part-two" v-if="indexMain != 1">
 
             <div class="tile is-ancestor">
               <div class="tile is-parent">

@@ -20,11 +20,10 @@ export default {
   name: 'fiscal-year-dropdown',
   props: ['year'],
   creted() {
-    console.log(this.year);
   },
   data() {
     return {
-      years: ['2017-18', '2018-19']
+      years: ['2018-19', 'All']
     };
   },
   methods: {

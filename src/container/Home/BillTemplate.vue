@@ -283,6 +283,7 @@
     created() {
       this.invoice_no = this.$route.params.invoice_no;
       this.fiscal_year = this.$route.params.fiscal_year;
+      console.log(this.invoice_no, this.fiscal_year);
       this.getBillByInvoiceNo();
       this.printableInvoiceNumber = numeral( this.invoice_no ).format( '0000' );
       // var numeral = require('numeral');
