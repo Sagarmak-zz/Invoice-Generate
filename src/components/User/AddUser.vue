@@ -225,7 +225,6 @@ import StateDropdownNewCustomer from '@/components/User/StateDropdownNewCustomer
 export default {
   name: 'add-user',
   created() {
-    console.log();
   },
   data() {
     return {
@@ -257,7 +256,6 @@ export default {
     validateUser() {
       this.validate()
       if (!this.errors.any()) {
-        console.log(this.user);
         this.$bus.$emit('add-user', { user: this.user });
       }
       else {

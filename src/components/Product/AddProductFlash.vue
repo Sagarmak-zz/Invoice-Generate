@@ -34,7 +34,7 @@
           <div class="field">
             <label class="label">Price<span class="required">*</span></label>
             <p class="control">
-              <input v-model="product.product_price" v-validate="'required'" name="product_price"
+              <input v-model="product.product_price" v-validate="'required|numeric'" name="product_price"
               class="input" type="number" placeholder="Price">
             </p>
             <div v-show="errors.has('product_price')" class="help is-danger">

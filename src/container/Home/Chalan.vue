@@ -53,15 +53,18 @@
               </div>
             </div>
             <div class="column">
-              <div :class="{'has-error': errors.has('invoice_no') && isChalanValid }">
+              <div :class="{'has-error': errors.has('invoice_no') }">
                 <label class="label">Chalan Number<span class="required">*</span></label>
                 <p class="control">
                   <input v-model="item.chalan_no" name="invoice_no" v-validate="'required|numeric'"
-                  :class="{'input': true, 'is-danger': errors.has('invoice_no') }"
+                  :class="{'input': true, 'is-danger': errors.has('invoice_no'), 'is-danger': !isChalanValid }"
                   @blur="checkChalan" type="number" placeholder="Invoice Number">
                 </p>
                 <div v-show="errors.has('invoice_no')" class="help is-danger">
                   The Chalan Number is required.
+                </div>
+                <div v-if="!isChalanValid" class="help is-danger">
+                  The Chalan Number should be unique.
                 </div>
               </div>
             </div>

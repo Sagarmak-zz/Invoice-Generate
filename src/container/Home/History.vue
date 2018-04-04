@@ -6,7 +6,6 @@
       <div class="history-head">
         <div class="one">
           <h3 class="title">History:</h3>
-          {{invoice.fiscal_year}}
           <ChangeInvoiceType :invoice_type.sync="invoice.invoice_type"></ChangeInvoiceType>
           <FiscalYearDropdown :year.sync="invoice.fiscal_year"></FiscalYearDropdown>
           <button class="button is-primary" @click="getInvoices">Submit</button>
@@ -15,7 +14,7 @@
           <GridListDropdown v-if="invoice.invoice_type != 'Chalans'" :type.sync="type"></GridListDropdown>
         </div>
       </div>
-      
+
       <!-- Bills -->
       <div class="bills" v-if="invoice.invoice_type == 'Bills' && invoice.isData == true">
         <div class="grid" v-if="type == 'Grid'">
@@ -254,7 +253,7 @@ export default {
       this.loading = true;
       api.getAllBills().then(response => {
         this.loading = false;
-        if ( response.data.message == "No data found" || response.data.message == "bill not found" ) {
+        if ( response.data.message == "No data found" || response.data.message == "bill not found" || response.data.message == "Data not found" ) {
           this.invoice.isData = false;
         }
         else {
@@ -272,7 +271,7 @@ export default {
       this.loading = true;
       api.getBillsByYear(fiscal_year).then(response => {
         this.loading = false;
-        if ( response.data.message == "No data found" || response.data.message == "bill not found" ) {
+        if ( response.data.message == "No data found" || response.data.message == "bill not found" || response.data.message == "Data not found" ) {
           this.invoice.isData = false;
         }
         else {
@@ -290,7 +289,7 @@ export default {
       this.loading = true;
       api.getAllChalans().then(response => {
         this.loading = false;
-        if ( response.data.message == "No data found" || response.data.message == "bill not found" ) {
+        if ( response.data.message == "No data found" || response.data.message == "bill not found" || response.data.message == "Data not found" ) {
           this.invoice.isData = false;
         }
         else {
@@ -308,7 +307,7 @@ export default {
       this.loading = true;
       api.getChalansByYear(fiscal_year).then(response => {
         this.loading = false;
-        if ( response.data.message == "No data found" || response.data.message == "bill not found" ) {
+        if ( response.data.message == "No data found" || response.data.message == "bill not found" || response.data.message == "Data not found" ) {
           this.invoice.isData = false;
         }
         else {

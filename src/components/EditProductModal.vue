@@ -38,7 +38,10 @@
               <div class="field">
                 <label class="label">Price</label>
                 <p class="control">
-                  <input @keyup.enter="validateAndUpdate()" v-model="product_price = product_old.product_price" class="input" name="price" v-validate="'required'" type="text" placeholder="Price">
+                  <input @keyup.enter="validateAndUpdate()"
+                  v-model="product_price = product_old.product_price"
+                  class="input" name="price" v-validate="'required|numeric'" type="number"
+                  placeholder="Price">
                 </p>
                 <div v-show="errors.has('price')" class="help is-danger">
                   The Price is required.
