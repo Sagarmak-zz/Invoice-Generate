@@ -371,7 +371,7 @@ export default {
   .a4size {
     padding: 0;
     width: 21cm;
-    height: 30.2cm;
+    height: 29.7cm;
   }
   .template-body-main {
     max-height: 6cm;
@@ -422,7 +422,6 @@ export default {
       display: flex;
       justify-content: space-evenly;
       align-items: center;
-      margin-top: 0.5rem;
       margin-bottom: 0.5rem;
       .invoice-details {
         padding-right: 0.5rem;
@@ -430,6 +429,7 @@ export default {
     }
   }
   .buyer {
+    max-height: 3cm;
     padding: 1.5rem;
     padding-top: 1rem;
     padding-bottom: 1rem;
@@ -456,8 +456,7 @@ export default {
   }
   .template-body-items {
     height: 17cm;
-    padding: 2rem;
-    padding-top: 1rem;
+    padding: 1rem 2rem;
     border-bottom: solid 2px #ddd;
     display: flex;
     flex-direction: column;
@@ -497,6 +496,7 @@ export default {
     }
   }
   .template-bottom {
+    max-height: 3cm;
     padding: 1rem;
     display: flex;
     justify-content: space-between;
