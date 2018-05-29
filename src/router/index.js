@@ -7,15 +7,15 @@ let router = new Router({
   mode: "history",
   linkExactActiveClass: "is-active",
   routes: [
+    // {
+    //   path: "/",
+    //   name: "Login",
+    //   component: require("@/container/Login"),
+    //   meta: { requiresAuth: false }
+    // },
     {
       path: "/",
       name: "Login",
-      component: require("@/container/Login"),
-      meta: { requiresAuth: false }
-    },
-    {
-      path: "/login2",
-      name: "Login2",
       component: require("@/container/Login2"),
       meta: { requiresAuth: false }
     },
