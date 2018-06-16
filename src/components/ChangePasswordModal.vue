@@ -10,11 +10,13 @@
 				<section class="modal-card-body">
 
 					<LoadingLight name="BounceLoader" v-if="loadingLight"></LoadingLight>
+
 					<div class="not-loading" v-if="!loading">
 						<div class="field">
 							<label class="label">Email</label>
 							<div class="control">
-								<input disabled v-model="user_email" name="email" class="input" type="email" placeholder="Email">
+								<input disabled v-model="user_email" name="email"
+                class="input" type="email" placeholder="Email">
 							</div>
 							<div v-show="errors.has('email')" class="help is-danger">
 								The Email is required.
@@ -24,7 +26,8 @@
 						<div class="field">
 							<label class="label">Password</label>
 							<div class="control">
-								<input v-validate="'required'" v-model="password" name="password" class="input" type="password" placeholder="********">
+								<input v-validate="'required'" v-model="password" name="password"
+                class="input" type="password" placeholder="********">
 							</div>
 							<div v-show="errors.has('password')" class="help is-danger">
 								The Password is required.
@@ -34,12 +37,14 @@
 						<div class="field">
 							<label class="label">Confirm Password</label>
 							<div class="control">
-								<input v-validate="'required|confirmed:password'" v-model="confirm" @keyup.enter="validateAndUpdateAdminPassword" name="confirm" class="input" type="password" placeholder="********">
+								<input v-model="confirm" @keyup.enter="validateAndUpdateAdminPassword"
+                 v-validate="'required|confirmed:password'" name="confirm" class="input" type="password" placeholder="********">
 							</div>
 							<div v-show="errors.has('confirm')" class="help is-danger">
 								The Confirm Password should match the Password field.
 							</div>
 						</div>
+
 					</div>
 
 					<div class="loading" v-show="loading">
@@ -133,7 +138,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .change-password {
     .field {
         .label {

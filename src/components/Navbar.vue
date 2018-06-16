@@ -73,6 +73,9 @@
       min-width: 100%;
       z-index: 1024;
       box-shadow: 0 2px 3px rgba(17, 17, 17, 0.1), 0 0 0 1px rgba(17, 17, 17, 0.1);
+      .nav {
+        text-align: auto;
+      }
       .container {
         margin: auto 10px;
       }
