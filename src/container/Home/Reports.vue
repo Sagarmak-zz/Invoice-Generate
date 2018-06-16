@@ -103,16 +103,16 @@
                     </thead>
                     <tbody>
                       <tr v-for="d,index in data">
-                        <td>{{index+1}}</td>
-                        <td>{{d.invoice_no}}</td>
-                        <td>{{moment(d.created_at.date).format('DD/MM/YYYY')}}</td>
-                        <td>{{d.firm_name}}</td>
-                        <td>Rs {{d.taxable_amount}}</td>
-                        <td>Rs {{d.cgst_amount}}</td>
-                        <td>Rs {{d.sgst_amount}}</td>
-                        <td>Rs {{d.igst_amount}}</td>
-                        <td>Rs {{d.total_payable_amount}}</td>
-                        <td>NOGSTNOGSTNOGST</td>
+                        <td>{{ index+1 }}</td>
+                        <td>{{ d.invoice_no }}</td>
+                        <td>{{ moment(d.created_at.date).format('DD/MM/YYYY') }}</td>
+                        <td>{{ d.firm_name }}</td>
+                        <td>Rs {{ d.taxable_amount }}</td>
+                        <td>Rs {{ d.cgst_amount }}</td>
+                        <td>Rs {{ d.sgst_amount }}</td>
+                        <td>Rs {{ d.igst_amount }}</td>
+                        <td>Rs {{ d.total_payable_amount }}</td>
+                        <td>{{ d.gstNumber }}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -178,7 +178,6 @@ export default {
     date() {
       api.betweenDate(this.start_date, this.end_date)
       .then(response => {
-        console.log(response);
         this.loading = false;
         if (response.data.message == 'Data not found') {
           //no data present
