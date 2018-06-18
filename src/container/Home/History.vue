@@ -15,8 +15,57 @@
         </div>
       </div>
 
-      <!-- Bills -->
       <div class="bills" v-if="invoice.invoice_type == 'Bills' && invoice.isData == true">
+        <div class="list" v-if="type == 'List'">
+          <div class="tile is-ancestor">
+            <div class="tile is-parent">
+              <article class="tile is-child">
+                <div class="table-responsive">
+                  <table class="table is-bordered is-striped is-narrow">
+                    <thead>
+                      <tr>
+                        <th>SR</th>
+                        <th>Bill No</th>
+                        <th>Date</th>
+                        <th>Party Name</th>
+                        <th>Bill Amount</th>
+                        <th>SGST</th>
+                        <th>CGST</th>
+                        <th>IGST</th>
+                        <th>Total</th>
+                        <th>GST No</th>
+                        <th>Print</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr v-for="bill,index in bills">
+                        <td>{{index+1}}</td>
+                        <td>{{bill.invoice_no}}</td>
+                        <td v-if="bill.created_at">{{moment(bill.created_at.date).format('DD/MM/YYYY')}}</td>
+                        <td>{{bill.firm_name}}</td>
+                        <td>Rs {{bill.taxable_amount}}</td>
+                        <td>Rs {{bill.cgst_amount}}</td>
+                        <td>Rs {{bill.sgst_amount}}</td>
+                        <td>Rs {{bill.igst_amount}}</td>
+                        <td>Rs {{bill.total_payable_amount}}</td>
+                        <td>{{bill.gstNumber}}</td>
+                        <td>
+                          <router-link class="icon"
+                          :to="{ name: 'BillTemplate', params: {
+                            invoice_no: bill.invoice_no,
+                            fiscal_year: bill.invoiceYear
+                            } }">
+                            <i class="fas fa-print" aria-hidden="true"></i>
+                          </router-link>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
         <div class="grid" v-if="type == 'Grid'">
           <div class="columns is-multiline need-padding">
             <div class="column is-one-third" v-for="bill in bills" v-if="!loading">
@@ -60,66 +109,14 @@
           </div>
         </div>
       </div>
-      <div class="list" v-if="type == 'List'">
-        <div class="tile is-ancestor">
-          <div class="tile is-parent">
-            <article class="tile is-child">
-              <div class="table-responsive">
-                <table class="table is-bordered is-striped is-narrow">
-                  <thead>
-                    <tr>
-                      <th>SR</th>
-                      <th>Bill No</th>
-                      <th>Date</th>
-                      <th>Party Name</th>
-                      <th>Bill Amount</th>
-                      <th>SGST</th>
-                      <th>CGST</th>
-                      <th>IGST</th>
-                      <th>Total</th>
-                      <th>GST No</th>
-                      <th>Print</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="bill,index in bills">
-                      <td>{{index+1}}</td>
-                      <td>{{bill.invoice_no}}</td>
-                      <td v-if="bill.created_at">{{moment(bill.created_at.date).format('DD/MM/YYYY')}}</td>
-                      <td>{{bill.firm_name}}</td>
-                      <td>Rs {{bill.taxable_amount}}</td>
-                      <td>Rs {{bill.cgst_amount}}</td>
-                      <td>Rs {{bill.sgst_amount}}</td>
-                      <td>Rs {{bill.igst_amount}}</td>
-                      <td>Rs {{bill.total_payable_amount}}</td>
-                      <td>{{bill.gstNumber}}</td>
-                      <td>
-                        <router-link class="icon"
-                        :to="{ name: 'BillTemplate', params: {
-                          invoice_no: bill.invoice_no,
-                          fiscal_year: bill.invoiceYear
-                          } }">
-                          <i class="fas fa-print" aria-hidden="true"></i>
-                        </router-link>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </article>
-          </div>
-        </div>
-      </div>
+
     </div>
 
     <div class="isData" v-if="invoice.invoice_type == 'Bills' && invoice.isData == false">
       <span class="title">No Bills at the Moment!</span>
     </div>
 
-    <!-- Chalan -->
-    <div class="need-padding chalans"
-    v-if="invoice.invoice_type == 'Chalans' && invoice.isData == true">
-    <div v-if="!loading">
+    <div class="need-padding chalans" v-if="invoice.invoice_type == 'Chalans' && invoice.isData == true">
       <div class="tile is-ancestor">
         <div class="tile is-parent">
           <article class="tile is-child">
@@ -158,26 +155,22 @@
           </article>
         </div>
       </div>
+      <div class="loading" v-show="loading">
+        <span class="title is-4">Please wait while we load the data...</span>
+        <div class="fa fa-spinner fa-spin"> </div>
+      </div>
     </div>
-    <div class="loading" v-show="loading">
-      <span class="title is-4">Please wait while we load the data...</span>
-      <div class="fa fa-spinner fa-spin"> </div>
+
+    <div class="isData" v-if="invoice.invoice_type == 'Chalans' && invoice.isData == false">
+      <span class="title">No Chalans at the Moment!</span>
+    </div>
+
+    <div class="noData" v-if="bills.length != 0 && invoice.invoice_type == 'Chalans' || chalans.length != 0 && invoice.invoice_type == 'Bills'">
+      <span class="title">Please select Submit to continue!</span>
+    </div>
+
     </div>
   </div>
-  <div class="isData" v-if="invoice.invoice_type == 'Chalans' && invoice.isData == false">
-    <span class="title">No Chalans at the Moment!</span>
-  </div>
-
-  <div class="noData" v-if="bills.length != 0 && invoice.invoice_type == 'Chalans' || chalans.length != 0 && invoice.invoice_type == 'Bills'">
-    <span class="title">Please select Submit to continue!</span>
-  </div>
-
-</div>
-<simplert :useRadius="true"
-:useIcon="true"
-ref="simplert">
-</simplert>
-</div>
 </template>
 
 <script>
@@ -194,7 +187,7 @@ export default {
     return {
       type: 'List',
       invoice: {
-        invoice_type: 'Bills',
+        invoice_type: 'Chalans',
         isData: true,
         fiscal_year: '',
       },

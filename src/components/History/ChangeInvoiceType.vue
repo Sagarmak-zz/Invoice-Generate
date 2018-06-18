@@ -2,7 +2,7 @@
   <div class="change-invoice-type">
 
     <span class="select is-fullwidth">
-      <select v-validate="'required|not_in:null'" name="invoice_type" v-model="getInvoiceType"
+      <select v-validate="'required|not_in:null'" name="invoice_type"
       @change="$emit('update:invoice_type', $event.target.value)">
       <option v-for="type in invoice_types" :value="type">{{type}}</option>
     </select>
@@ -22,22 +22,12 @@ export default {
   },
   data() {
     return {
-      invoice_types: ['Bills', 'Chalans'],
+      invoice_types: ['Chalans', 'Bills'],
       invoice_type_name: ''
     }
   },
   methods: {
 
-  },
-  computed: {
-    getInvoiceType() {
-      if(!this.invoice_type) {
-        return this.invoice_types[0];
-      }
-      else {
-        return this.invoice_type;
-      }
-    }
   }
 }
 </script>
