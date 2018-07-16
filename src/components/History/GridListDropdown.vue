@@ -2,7 +2,7 @@
   <div class="grid-list-dropdown">
 
     <span class="select is-fullwidth">
-      <select name="type" v-model="getYear"
+      <select name="type"
       @change="$emit('update:type', $event.target.value)">
       <option v-for="type in types" :value="type">{{type}}</option>
     </select>
@@ -34,7 +34,5 @@ export default {
 </script>
 
 <style lang="scss">
-.fiscal-year-dropdown {
 
-}
 </style>
