@@ -5,18 +5,12 @@
 
       <div class="history-head">
         <div class="one">
-          <h3 class="title">History:</h3>
-          <ChangeInvoiceType :invoice_type.sync="invoice.invoice_type"></ChangeInvoiceType>
-          <FiscalYearDropdown :year.sync="invoice.fiscal_year"></FiscalYearDropdown>
-          <button class="button is-primary" @click="getInvoices">Submit</button>
-        </div>
-        <div class="two">
-          <GridListDropdown v-if="invoice.invoice_type != 'Chalans'" :type.sync="type"></GridListDropdown>
+          <h3 class="title">Bills:</h3>
         </div>
       </div>
 
-      <div class="bills" v-if="invoice.invoice_type == 'Bills' && invoice.isData == true">
-        <div class="list" v-if="type == 'List'">
+      <div class="bills" v-if="bills.length">
+        <div class="list">
           <div class="tile is-ancestor">
             <div class="tile is-parent">
               <article class="tile is-child">
@@ -66,107 +60,62 @@
             </div>
           </div>
         </div>
-        <div class="grid" v-if="type == 'Grid'">
-          <div class="columns is-multiline need-padding">
-            <div class="column is-one-third" v-for="bill in bills" v-if="!loading">
-              <div class="card">
-                <header class="card-header">
-                  <p class="card-header-title">
-                    <span>
-                      <span>To,</span>
-                      <span>{{bill.firm_name}}</span>
-                      <span></span>
-                    </span>
-                    <span class="tag is-info is-pulled-right">{{bill.invoice_no}}</span>
-                  </p>
-                </header>
-                <div class="card-content">
-                  <div class="content">
-                    <small v-if="bill.created_at">Date Created: <b>{{moment(bill.created_at.date).format('LL')}}</b></small><br>
-                    <span>Taxable Amount: <b>&#8377;{{bill.taxable_amount}}</b></span> <br>
-                    <div class="taxes">
-                      <span>SGST <b>&#8377;{{bill.sgst_amount}}</b></span>
-                      <span>CGST <b>&#8377;{{bill.cgst_amount}}</b></span>
-                      <span>IGST <b>&#8377;{{bill.igst_amount}}</b></span> <br>
-                    </div>
-                    <span>Total Amount: <b>&#8377;{{bill.total_payable_amount}}</b></span>
-                  </div>
-                </div>
-                <footer class="card-footer">
-                  <router-link :to="{
-                  name:'BillTemplate',
-                  params: {
-                  invoice_no: bill.invoice_no,
-                  fiscal_year: bill.invoiceYear
-                } }" class="card-footer-item">View</router-link>
-                <a @click="askHistoryDelete(bill.id)" class="card-footer-item">Delete</a>
-              </footer>
-            </div>
-          </div>
-          <div class="loading" v-show="loading">
-            <span class="title is-4">Please wait while we load the data...</span>
-            <div class="fa fa-spinner fa-spin"> </div>
+      </div>
+      <div class="reports-body" v-if="!bills.length">
+        No Bills present at the moment
+      </div>
+
+    </div>
+
+    <div class="box">
+      <div class="history-head">
+        <div class="one">
+          <h3 class="title">Chalans</h3>
+        </div>
+      </div>
+      <div class="need-padding chalans" v-if="chalans.length">
+        <div class="tile is-ancestor">
+          <div class="tile is-parent">
+            <article class="tile is-child">
+              <div class="table-responsive">
+                <table class="table is-bordered is-striped is-narrow">
+                  <thead>
+                    <tr>
+                      <th>SR</th>
+                      <th>Chalan No</th>
+                      <th>Date</th>
+                      <th>Party Name</th>
+                      <th>Total</th>
+                      <th>Print</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="chalan,index in chalans">
+                      <td>{{index+1}}</td>
+                      <td>{{chalan.challan_no}}</td>
+                      <td v-if="chalan.created_at">{{moment(chalan.created_at.date).format('DD/MM/YYYY')}}</td>
+                      <td>{{chalan.firm_name}}</td>
+                      <td>&#8377; {{chalan.total_payable_amount}}</td>
+                      <td>
+                        <router-link class="icon"
+                        :to="{ name: 'ChalanTemplate', params: {
+                          chalan_no: chalan.challan_no,
+                          fiscal_year: chalan.challanYear
+                          } }">
+                          <i class="fas fa-print" aria-hidden="true"></i>
+                        </router-link>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </article>
           </div>
         </div>
       </div>
-
-    </div>
-
-    <div class="isData" v-if="invoice.invoice_type == 'Bills' && invoice.isData == false">
-      <span class="title">No Bills at the Moment!</span>
-    </div>
-
-    <div class="need-padding chalans" v-if="invoice.invoice_type == 'Chalans' && invoice.isData == true">
-      <div class="tile is-ancestor">
-        <div class="tile is-parent">
-          <article class="tile is-child">
-            <div class="table-responsive">
-              <table class="table is-bordered is-striped is-narrow">
-                <thead>
-                  <tr>
-                    <th>SR</th>
-                    <th>Bill No</th>
-                    <th>Date</th>
-                    <th>Party Name</th>
-                    <th>Total</th>
-                    <th>Print</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="chalan,index in chalans">
-                    <td>{{index+1}}</td>
-                    <td>{{chalan.challan_no}}</td>
-                    <td v-if="chalan.created_at">{{moment(chalan.created_at.date).format('DD/MM/YYYY')}}</td>
-                    <td>{{chalan.firm_name}}</td>
-                    <td>&#8377; {{chalan.total_payable_amount}}</td>
-                    <td>
-                      <router-link class="icon"
-                      :to="{ name: 'ChalanTemplate', params: {
-                        chalan_no: chalan.challan_no,
-                        fiscal_year: chalan.challanYear
-                        } }">
-                        <i class="fas fa-print" aria-hidden="true"></i>
-                      </router-link>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </article>
-        </div>
+      <div class="reports-body" v-if="!chalans.length">
+        No Chalans present at the moment
       </div>
-      <div class="loading" v-show="loading">
-        <span class="title is-4">Please wait while we load the data...</span>
-        <div class="fa fa-spinner fa-spin"> </div>
-      </div>
-    </div>
-
-    <div class="isData" v-if="invoice.invoice_type == 'Chalans' && invoice.isData == false">
-      <span class="title">No Chalans at the Moment!</span>
-    </div>
-
-    <div class="noData" v-if="bills.length != 0 && invoice.invoice_type == 'Chalans' || chalans.length != 0 && invoice.invoice_type == 'Bills'">
-      <span class="title">Please select Submit to continue!</span>
     </div>
 
     </div>
@@ -212,7 +161,9 @@ export default {
     // to be implemented today
     // this.getHistoryYearsForBills();
     // this.getHistoryYearsForChalans();
-    this.getInvoices();
+    // this.getInvoices();
+    this.getAllBills();
+    this.getAllChalans();
   },
   methods: {
     getInvoices() {
@@ -359,7 +310,7 @@ export default {
   height: 100%;
   .box {
     padding: 0;
-    margin-bottom: 0;
+    margin-bottom: 0.5rem;
   }
 
   .reports-body {
@@ -388,9 +339,6 @@ export default {
       .title {
         margin: 0;
       }
-    }
-    .two {
-
     }
   }
 
