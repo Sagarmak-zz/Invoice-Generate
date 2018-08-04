@@ -20,6 +20,12 @@ let router = new Router({
       meta: { requiresAuth: false }
     },
     {
+      path: '/test',
+      name: 'Test',
+      component: require('@/Test'),
+      meta: { requiresAuth: false }
+    },
+    {
       path: "/home",
       component: require("@/container/Home"),
       meta: { requiresAuth: true },

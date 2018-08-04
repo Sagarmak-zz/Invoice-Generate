@@ -1,6 +1,6 @@
 <template lang="html">
-  <div class="navbar nodisplay">
-    <section class="hero is-bold app-navbar animated">
+   <div class="navbar nodisplay">
+   <!-- <section class="hero is-bold app-navbar animated">
       <div class="hero-head">
         <nav class="nav">
           <div class="nav-left">
@@ -26,9 +26,21 @@
             </div>
           </nav>
         </div>
-      </section>
+      </section> -->
+
+      <v-toolbar fixed app clipped-left>
+        <v-toolbar-side-icon @click.native="drawer = !drawer"></v-toolbar-side-icon>
+        <v-toolbar-title>
+          {{ 'Siddhartha Wear2' }}
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-toolbar-items class="hidden-sm-and-down">
+          <v-btn flat>Sagar12</v-btn>
+        </v-toolbar-items>
+      </v-toolbar>
+
     </div>
-  </template>
+</template>
 
   <script>
   import ChangePasswordModal from '@/components/ChangePasswordModal';
@@ -39,26 +51,13 @@
       return {
         name: '',
         changePassword: false,
-        firm_name_first: '',
-        firm_name_last: ''
+        drawer: null
       }
     },
     created() {
       this.$bus.$on( 'password-changed', () => {
         this.changePassword = false;
       } )
-    },
-    computed: {
-      getFirmName() {
-        return this.name = this.firm_name;
-      },
-      getComputedFirmName() {
-        let firmName = this.getFirmName;
-        let splittedFirmName = firmName.split(" ");
-        this.firm_name_first = splittedFirmName[0];
-        this.firm_name_last = splittedFirmName[1];
-        return;
-      }
     },
     components: {
       ChangePasswordModal

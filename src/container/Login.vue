@@ -135,13 +135,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.body {
-    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-    height: 100%;
-    padding: 0;
-    margin: 0;
-}
+<style lang="stylus">
 .login {
     .email-input,
     .password-input {

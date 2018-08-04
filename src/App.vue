@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
+  <v-app>
 
     <router-view></router-view>
 
-  </div>
+  </v-app>
 </template>
 
 <script>
@@ -12,10 +12,10 @@ export default {
 }
 </script>
 
-<style lang="scss">
-html {
-  span.required {
-    color: red;
-  }
+<style lang="stylus">
+@import './styles/app';
+.application {
+  font-family: 'Open Sans', sans-serif;
+  
 }
 </style>

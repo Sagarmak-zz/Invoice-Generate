@@ -8,6 +8,7 @@ import Autocomplete from 'vue-bulma-typeahead';
 import Auth from '@/packages/auth/Auth.js';
 import moment from 'moment';
 import swal from 'sweetalert2';
+import './vuetify';
 
 const flatpickr = require("flatpickr");
 Vue.prototype.flatpickr = flatpickr;
